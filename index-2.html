@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arsh — Photography</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ink:#14171c;
+    --ink-2:#1b1f26;
+    --paper:#ede7dd;
+    --paper-dim:#a9a49b;
+    --rust:#b5642c;
+    --slate:#5c6670;
+    --line: rgba(237,231,221,0.12);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  ::selection{ background:var(--rust); color:var(--ink); }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.6rem clamp(1.5rem, 5vw, 4rem);
+    mix-blend-mode:difference;
+  }
+  .nav-mark{ font-family:'Fraunces', serif; font-size:1.1rem; font-weight:500; letter-spacing:0.02em; }
+  .nav-links{ display:flex; gap:clamp(1rem,3vw,2.4rem); font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .nav-links a{ text-decoration:none; opacity:0.8; transition:opacity 0.2s; }
+  .nav-links a:hover{ opacity:1; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding: 8rem clamp(1.5rem, 5vw, 4rem) 4rem;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(181,100,44,0.16), transparent 45%),
+      repeating-linear-gradient(180deg, transparent, transparent 3px, rgba(255,255,255,0.012) 4px);
+    pointer-events:none;
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem; color:var(--rust); letter-spacing:0.12em;
+    text-transform:uppercase; margin-bottom:1.6rem;
+  }
+  .hero-eyebrow::before{ content:'● '; }
+  h1.hero-title{
+    font-family:'Fraunces', serif;
+    font-weight:300;
+    font-size:clamp(2.6rem, 8vw, 6.4rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    max-width:14ch;
+  }
+  h1.hero-title em{ font-style:italic; font-weight:500; color:var(--rust); }
+  .hero-sub{
+    margin-top:2rem; max-width:38ch;
+    color:var(--paper-dim); font-size:1.05rem; line-height:1.6;
+  }
+  .hero-meta{
+    position:absolute; right:clamp(1.5rem,5vw,4rem); bottom:4rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--paper-dim);
+    text-align:right; display:flex; flex-direction:column; gap:0.3rem;
+  }
+
+  /* ---------- GALLERY ---------- */
+  .gallery-section{ padding:6rem clamp(1.5rem,5vw,4rem); }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:3rem; flex-wrap:wrap; gap:1rem;
+  }
+  .section-title{
+    font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.8rem,4vw,2.6rem);
+  }
+  .section-note{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--paper-dim); }
+
+  /* ---------- FILTER TABS ---------- */
+  .filters{
+    display:flex; gap:0.6rem; flex-wrap:wrap;
+    margin-bottom:2.5rem;
+  }
+  .filter-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase;
+    background:none; border:1px solid var(--line); color:var(--paper-dim);
+    padding:0.55rem 1.1rem; cursor:pointer; transition:all 0.2s;
+  }
+  .filter-btn:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  .filter-btn.active{ color:var(--ink); background:var(--rust); border-color:var(--rust); }
+
+  .frame{ transition:opacity 0.3s, transform 0.3s; }
+  .frame.hidden{ display:none; }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .frame{
+    position:relative;
+    aspect-ratio:4/5;
+    background:var(--ink-2);
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .frame img{
+    width:100%; height:100%; object-fit:cover;
+    display:block;
+    filter:grayscale(15%);
+    transition:transform 0.8s cubic-bezier(.16,1,.3,1), filter 0.6s;
+  }
+  .frame:hover img{ transform:scale(1.06); filter:grayscale(0%); }
+
+  .placeholder-fill{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:1.5rem;
+    background:
+      linear-gradient(135deg, #22262e, #1b1f26 60%);
+    color:var(--paper-dim);
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; line-height:1.5;
+  }
+
+  .exif{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:1rem 1.2rem;
+    background:linear-gradient(0deg, rgba(20,23,28,0.95), transparent);
+    transform:translateY(100%);
+    transition:transform 0.4s cubic-bezier(.16,1,.3,1);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .frame:hover .exif{ transform:translateY(0); }
+  .exif-title{ font-size:0.85rem; color:var(--paper); margin-bottom:0.3rem; }
+  .exif-data{ font-size:0.68rem; color:var(--rust); letter-spacing:0.03em; }
+
+  .frame-index{
+    position:absolute; top:1rem; left:1.2rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+    opacity:0.7;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    padding:6rem clamp(1.5rem,5vw,4rem);
+    border-top:1px solid var(--line);
+    display:grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap:4rem;
+  }
+  @media(max-width:800px){ .about{ grid-template-columns:1fr; gap:2.5rem; } }
+  .about-label{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--rust); text-transform:uppercase; letter-spacing:0.1em; }
+  .about-text{
+    font-family:'Fraunces', serif; font-weight:300;
+    font-size:clamp(1.3rem,2.6vw,1.9rem); line-height:1.5;
+    color:var(--paper);
+  }
+  .about-text .accent{ color:var(--rust); font-style:italic; }
+  .kit-list{ margin-top:2rem; display:flex; flex-direction:column; gap:0.6rem; }
+  .kit-item{
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem; color:var(--paper-dim); border-bottom:1px solid var(--line); padding-bottom:0.6rem;
+  }
+  .kit-item span:last-child{ color:var(--paper); }
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    padding:8rem clamp(1.5rem,5vw,4rem) 5rem;
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+  .contact-title{
+    font-family:'Fraunces', serif; font-weight:300;
+    font-size:clamp(2rem,6vw,4rem);
+    max-width:16ch; margin:0 auto 2rem;
+  }
+  .contact-title em{ color:var(--rust); font-style:italic; }
+  .contact-links{
+    display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem;
+  }
+  .contact-links a{
+    text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:0.3rem;
+    transition:border-color 0.2s, color 0.2s;
+  }
+  .contact-links a:hover{ border-color:var(--rust); color:var(--rust); }
+
+  footer{
+    padding:2rem clamp(1.5rem,5vw,4rem);
+    display:flex; justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+    border-top:1px solid var(--line);
+  }
+
+  /* ---------- BRIDGE CARDS ---------- */
+  .bridge{
+    padding:2rem clamp(1.5rem,5vw,4rem) 6rem;
+    border-top:1px solid var(--line);
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1px;
+    background:var(--line);
+    border-left:0; border-right:0;
+  }
+  @media(max-width:700px){ .bridge{ grid-template-columns:1fr; padding-top:1px; } }
+  .bridge-card{
+    background:var(--ink);
+    padding:3rem clamp(1.5rem,4vw,3rem);
+    text-decoration:none;
+    display:flex; flex-direction:column; gap:1rem;
+    transition:background 0.3s;
+  }
+  .bridge-card:hover{ background:var(--ink-2); }
+  .bridge-eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--rust); text-transform:uppercase; letter-spacing:0.1em; }
+  .bridge-title{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.4rem,2.6vw,1.9rem); }
+  .bridge-desc{ color:var(--paper-dim); font-size:0.92rem; line-height:1.6; max-width:38ch; }
+  .bridge-arrow{ font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--rust); margin-top:0.4rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">A.S.</div>
+  <div class="nav-links">
+    <a href="index.html">Work</a>
+    <a href="blog.html">Journal</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Moncton, New Brunswick</div>
+  <h1 class="hero-title">Frames from<br><em>ordinary</em> streets.</h1>
+  <p class="hero-sub">A working portfolio of street, architecture, and cityscape photography — shot on a Sony A7III, edited slow, published here.</p>
+  <div class="hero-meta">
+    <span>SEL2870 · SEL50F18F · SEL85F18</span>
+    <span>EST. 2026</span>
+  </div>
+</section>
+
+<section class="gallery-section" id="work">
+  <div class="section-head">
+    <h2 class="section-title">Selected Work</h2>
+    <span class="section-note">06 FRAMES — REPLACE WITH YOUR OWN</span>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="moncton">Greater Moncton</button>
+    <button class="filter-btn" data-filter="atlantic">Atlantic Canada</button>
+    <button class="filter-btn" data-filter="gta">Greater Toronto</button>
+    <button class="filter-btn" data-filter="ontario">Ontario</button>
+    <button class="filter-btn" data-filter="west">Western Canada</button>
+    <button class="filter-btn" data-filter="usa">USA</button>
+  </div>
+
+  <div class="grid">
+
+    <div class="frame" data-category="moncton">
+      <img src="moncton-downtown.jpg" alt="Downtown Moncton, Blue Hour">
+      <div class="frame-index">01</div>
+      <div class="exif">
+        <div class="exif-title">Downtown Moncton, Blue Hour</div>
+        <div class="exif-data">A7III · 28mm · f/4 · 1/125 · ISO 800</div>
+      </div>
+    </div>
+
+    <div class="frame" data-category="gta">
+      <div class="placeholder-fill">02 — REPLACE<br>mississauga-01.jpg</div>
+      <div class="frame-index">02</div>
+      <div class="exif">
+        <div class="exif-title">Mississauga, Concrete Lines</div>
+        <div class="exif-data">A7III · 50mm · f/1.8 · 1/500 · ISO 100</div>
+      </div>
+    </div>
+
+    <div class="frame" data-category="west">
+      <div class="placeholder-fill">03 — REPLACE<br>calgary-skyline.jpg</div>
+      <div class="frame-index">03</div>
+      <div class="exif">
+        <div class="exif-title">Calgary Skyline, Overcast</div>
+        <div class="exif-data">A7III · 85mm · f/2.2 · 1/250 · ISO 200</div>
+      </div>
+    </div>
+
+    <div class="frame" data-category="atlantic">
+      <div class="placeholder-fill">04 — REPLACE<br>halifax-waterfront.jpg</div>
+      <div class="frame-index">04</div>
+      <div class="exif">
+        <div class="exif-title">Halifax Waterfront</div>
+        <div class="exif-data">A7III · 28mm · f/5.6 · 1/320 · ISO 100</div>
+      </div>
+    </div>
+
+    <div class="frame" data-category="ontario">
+      <div class="placeholder-fill">05 — REPLACE<br>elora-gorge.jpg</div>
+      <div class="frame-index">05</div>
+      <div class="exif">
+        <div class="exif-title">Elora Gorge</div>
+        <div class="exif-data">A7III · 85mm · f/1.8 · 1/200 · ISO 160</div>
+      </div>
+    </div>
+
+    <div class="frame" data-category="usa">
+      <div class="placeholder-fill">06 — REPLACE<br>buffalo-01.jpg</div>
+      <div class="frame-index">06</div>
+      <div class="exif">
+        <div class="exif-title">Buffalo, NY</div>
+        <div class="exif-data">A7III · 50mm · f/2.8 · 1/160 · ISO 400</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="bridge">
+  <a href="blog.html" class="bridge-card">
+    <span class="bridge-eyebrow">Journal</span>
+    <span class="bridge-title">Field notes from each shoot</span>
+    <span class="bridge-desc">How I ended up on a given street, what I was chasing, and what actually happened once the light showed up.</span>
+    <span class="bridge-arrow">Read the journal →</span>
+  </a>
+  <a href="about.html" class="bridge-card">
+    <span class="bridge-eyebrow">About</span>
+    <span class="bridge-title">Gear, process, and why I shoot</span>
+    <span class="bridge-desc">The camera and lenses behind these frames, the edit workflow, and where I'm based.</span>
+    <span class="bridge-arrow">Read more →</span>
+  </a>
+</div>
+
+<footer>
+  <span>© 2026 Arsh</span>
+  <span>Built &amp; hosted for free</span>
+</footer>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const frames = document.querySelectorAll('.frame');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+
+      frames.forEach(frame => {
+        if (filter === 'all' || frame.dataset.category === filter) {
+          frame.classList.remove('hidden');
+        } else {
+          frame.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
