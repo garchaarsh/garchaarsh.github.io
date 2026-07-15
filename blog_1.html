@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal — Arsh</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ink:#14171c;
+    --ink-2:#1b1f26;
+    --paper:#ede7dd;
+    --paper-dim:#a9a49b;
+    --rust:#b5642c;
+    --line: rgba(237,231,221,0.12);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--ink); color:var(--paper); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  ::selection{ background:var(--rust); color:var(--ink); }
+
+  nav{
+    position:sticky; top:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.6rem clamp(1.5rem, 5vw, 4rem);
+    background:rgba(20,23,28,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-mark{ font-family:'Fraunces', serif; font-size:1.1rem; font-weight:500; }
+  .nav-links{ display:flex; gap:clamp(1rem,3vw,2.4rem); font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .nav-links a{ text-decoration:none; opacity:0.8; transition:opacity 0.2s; }
+  .nav-links a:hover, .nav-links a.active{ opacity:1; color:var(--rust); }
+
+  .journal-hero{
+    padding:6rem clamp(1.5rem,5vw,4rem) 4rem;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--rust);
+    letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1.2rem;
+  }
+  .hero-eyebrow::before{ content:'● '; }
+  h1{
+    font-family:'Fraunces', serif; font-weight:300;
+    font-size:clamp(2.2rem, 6vw, 4rem); line-height:1; max-width:16ch;
+  }
+  h1 em{ font-style:italic; font-weight:500; color:var(--rust); }
+  .journal-sub{ margin-top:1.4rem; max-width:42ch; color:var(--paper-dim); line-height:1.6; }
+
+  /* ---------- ENTRY LIST ---------- */
+  .entries{ padding:2rem clamp(1.5rem,5vw,4rem) 6rem; max-width:900px; margin:0 auto; }
+
+  .entry{
+    border-bottom:1px solid var(--line);
+    padding:3rem 0;
+  }
+  .entry:first-child{ padding-top:2rem; }
+
+  .entry-meta{
+    display:flex; gap:1.2rem; align-items:center;
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper-dim);
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom:1rem;
+  }
+  .entry-meta .tag{ color:var(--rust); }
+
+  .entry-title{
+    font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.5rem,3vw,2rem);
+    margin-bottom:1.2rem; cursor:pointer;
+  }
+  .entry-title:hover{ color:var(--rust); }
+
+  .entry-body{
+    color:var(--paper-dim); line-height:1.75; font-size:0.98rem;
+  }
+  .entry-body p{ margin-bottom:1.1rem; }
+  .entry-body p:last-child{ margin-bottom:0; }
+  .entry-body strong{ color:var(--paper); font-weight:500; }
+
+  .entry-shot{
+    display:flex; gap:2rem; flex-wrap:wrap;
+    margin-top:1.4rem; padding:1rem 0;
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--paper-dim);
+    border-top:1px dashed var(--line); border-bottom:1px dashed var(--line);
+  }
+  .entry-shot span strong{ display:block; color:var(--rust); font-family:'Inter',sans-serif; font-size:0.65rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.2rem; }
+
+  footer{
+    padding:2rem clamp(1.5rem,5vw,4rem);
+    display:flex; justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+    border-top:1px solid var(--line);
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">A.S.</div>
+  <div class="nav-links">
+    <a href="index.html">Work</a>
+    <a href="blog.html" class="active">Journal</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<section class="journal-hero">
+  <div class="hero-eyebrow">Field Notes</div>
+  <h1>Where I've <em>shot</em>, and why.</h1>
+  <p class="journal-sub">Short write-ups from the days I go out shooting — how I got there, what I was chasing, and what actually happened.</p>
+</section>
+
+<section class="entries">
+
+  <article class="entry">
+    <div class="entry-meta"><span>July 2026</span><span class="tag">Street</span><span>Downtown Moncton</span></div>
+    <h2 class="entry-title">How I ended up shooting downtown at 6am</h2>
+    <div class="entry-body">
+      <p>REPLACE THIS: Say how the outing came about — a sleepless morning, a walk that turned into a shoot, a specific street or building that had been on your list for weeks.</p>
+      <p>Describe what you were actually chasing that day — a type of light, a subject, a mood — and whether you found it or got something else entirely. <strong>Be specific</strong>: the actual street name, the weather, what surprised you.</p>
+      <p>End with how it felt, or what you'd do differently next time.</p>
+      <div class="entry-shot">
+        <span><strong>Camera</strong>Sony A7III</span>
+        <span><strong>Lens</strong>28mm f/2.8</span>
+        <span><strong>Light</strong>Overcast, early</span>
+        <span><strong>Frames shot</strong>~40</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta"><span>June 2026</span><span class="tag">Architecture</span><span>Fredericton</span></div>
+    <h2 class="entry-title">Chasing hard shadows on a government building</h2>
+    <div class="entry-body">
+      <p>REPLACE THIS: Give the backstory — why Fredericton, what drew you to this particular building or structure, whether it was planned or you stumbled onto it.</p>
+      <p>Walk through the technical side briefly: what settings you leaned on and why, what didn't work, what you'd change. This is also a good place to mention gear decisions if relevant.</p>
+      <div class="entry-shot">
+        <span><strong>Camera</strong>Sony A7III</span>
+        <span><strong>Lens</strong>50mm f/1.8</span>
+        <span><strong>Light</strong>Harsh midday</span>
+        <span><strong>Frames shot</strong>~25</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta"><span>May 2026</span><span class="tag">Personal</span><span>Reflection</span></div>
+    <h2 class="entry-title">Why I started pointing a camera at strangers' cities</h2>
+    <div class="entry-body">
+      <p>REPLACE THIS: This is the "origin story" entry — how you got into photography, what pulled you toward street/architecture specifically, and what you're hoping this practice becomes.</p>
+      <p>You can be honest about the uncertain parts too — not knowing if it'll go anywhere, doing it because it's the only thing that quiets your head for an hour, whatever's true.</p>
+    </div>
+  </article>
+
+</section>
+
+<footer>
+  <span>© 2026 Arsh</span>
+  <span>Journal · updated as I go</span>
+</footer>
+
+</body>
+</html>

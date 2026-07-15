@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Arsh</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ink:#14171c;
+    --ink-2:#1b1f26;
+    --paper:#ede7dd;
+    --paper-dim:#a9a49b;
+    --rust:#b5642c;
+    --line: rgba(237,231,221,0.12);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--ink); color:var(--paper); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  ::selection{ background:var(--rust); color:var(--ink); }
+
+  nav{
+    position:sticky; top:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.6rem clamp(1.5rem, 5vw, 4rem);
+    background:rgba(20,23,28,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-mark{ font-family:'Fraunces', serif; font-size:1.1rem; font-weight:500; }
+  .nav-links{ display:flex; gap:clamp(1rem,3vw,2.4rem); font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .nav-links a{ text-decoration:none; opacity:0.8; transition:opacity 0.2s; }
+  .nav-links a:hover, .nav-links a.active{ opacity:1; color:var(--rust); }
+
+  .page-hero{ padding:6rem clamp(1.5rem,5vw,4rem) 3rem; border-bottom:1px solid var(--line); }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--rust); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1.2rem; }
+  .eyebrow::before{ content:'● '; }
+  h1{ font-family:'Fraunces', serif; font-weight:300; font-size:clamp(2.2rem, 6vw, 4rem); line-height:1; max-width:16ch; }
+  h1 em{ font-style:italic; font-weight:500; color:var(--rust); }
+
+  .about-body{
+    padding:5rem clamp(1.5rem,5vw,4rem);
+    display:grid; grid-template-columns:1.3fr 1fr; gap:4rem;
+    max-width:1100px; margin:0 auto;
+  }
+  @media(max-width:800px){ .about-body{ grid-template-columns:1fr; gap:2.5rem; } }
+  .about-copy p{
+    font-family:'Fraunces', serif; font-weight:300; font-size:clamp(1.2rem,2.4vw,1.6rem);
+    line-height:1.6; margin-bottom:1.6rem; color:var(--paper);
+  }
+  .about-copy .accent{ color:var(--rust); font-style:italic; }
+  .about-copy p:last-child{ margin-bottom:0; }
+
+  .kit-list{ display:flex; flex-direction:column; gap:0.9rem; align-self:start; }
+  .kit-label{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--rust); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.6rem; }
+  .kit-item{
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem; color:var(--paper-dim); border-bottom:1px solid var(--line); padding-bottom:0.7rem;
+  }
+  .kit-item span:last-child{ color:var(--paper); text-align:right; }
+
+  footer{
+    padding:2rem clamp(1.5rem,5vw,4rem);
+    display:flex; justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">A.S.</div>
+  <div class="nav-links">
+    <a href="index.html">Work</a>
+    <a href="blog.html">Journal</a>
+    <a href="about.html" class="active">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="eyebrow">About</div>
+  <h1>Gear, process, and <em>why</em> I shoot.</h1>
+</section>
+
+<section class="about-body">
+  <div class="about-copy">
+    <p>I shoot the parts of a city most people walk past — <span class="accent">stairwells, crosswalks, overcast skylines.</span> REPLACE THIS: expand on how you got into photography and what keeps you doing it.</p>
+    <p>REPLACE THIS: talk about your approach — what you're drawn to, how you decide what to shoot, whether you plan outings or shoot on impulse.</p>
+    <p>Based in Moncton, working across the Maritimes.</p>
+  </div>
+  <div class="kit-list">
+    <div class="kit-label">Kit</div>
+    <div class="kit-item"><span>Camera</span><span>Sony A7III</span></div>
+    <div class="kit-item"><span>Primes</span><span>28mm · 50mm · 85mm</span></div>
+    <div class="kit-item"><span>Edit</span><span>Lightroom → Snapseed → Filmborn</span></div>
+    <div class="kit-item"><span>Based in</span><span>Moncton, NB</span></div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Arsh</span>
+  <span>Built &amp; hosted for free</span>
+</footer>
+
+</body>
+</html>
