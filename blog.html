@@ -1,72 +1,112 @@
-<article class="entry">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal — Arsh</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root{
+--ink:#14171c;
+--ink-2:#1b1f26;
+--paper:#ede7dd;
+--paper-dim:#a9a49b;
+--rust:#b5642c;
+--line: rgba(237,231,221,0.12);
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:var(--ink); color:var(--paper); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased; }
+a{ color:inherit; }
+::selection{ background:var(--rust); color:var(--ink); }
+nav{
+position:sticky; top:0; z-index:100;
+display:flex; justify-content:space-between; align-items:center;
+padding:1.6rem clamp(1.5rem, 5vw, 4rem);
+background:rgba(20,23,28,0.9);
+backdrop-filter:blur(6px);
+border-bottom:1px solid var(--line);
+}
+.nav-mark{ font-family:'Fraunces', serif; font-size:1.1rem; font-weight:500; }
+.nav-links{ display:flex; gap:clamp(1rem,3vw,2.4rem); font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+.nav-links a{ text-decoration:none; opacity:0.8; transition:opacity 0.2s; }
+.nav-links a:hover, .nav-links a.active{ opacity:1; color:var(--rust); }
 
-  <div class="entry-meta">
-    <span>July 2026</span>
-    <span class="tag">Travel</span>
-    <span>Grand Manan, NB</span>
-  </div>
+.page-hero{ padding:6rem clamp(1.5rem,5vw,4rem) 3rem; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--rust); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1.2rem; }
+.eyebrow::before{ content:'● '; }
+h1{ font-family:'Fraunces', serif; font-weight:300; font-size:clamp(2.2rem, 6vw, 4rem); line-height:1; max-width:16ch; }
+h1 em{ font-style:italic; font-weight:500; color:var(--rust); }
 
-  <h2 class="entry-title">
-    Three Days on Grand Manan: Puffins, Whales & Sea Fog
-  </h2>
+.journal-list{
+max-width:900px; margin:0 auto;
+padding:4rem clamp(1.5rem,5vw,4rem) 6rem;
+display:flex; flex-direction:column; gap:1.6rem;
+}
+.post-card{
+display:block; text-decoration:none;
+border:1px solid var(--line); border-radius:6px;
+padding:2rem clamp(1.5rem,4vw,2.4rem);
+transition:border-color 0.2s, background 0.2s;
+}
+.post-card:hover{ border-color:var(--rust); background:var(--ink-2); }
+.post-tag{
+font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--rust);
+text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.9rem;
+}
+.post-card h2{
+font-family:'Fraunces', serif; font-weight:400; font-size:clamp(1.3rem,3vw,1.8rem);
+line-height:1.25; margin-bottom:0.9rem; color:var(--paper);
+}
+.post-excerpt{
+font-family:'Inter', sans-serif; font-size:0.95rem; line-height:1.6;
+color:var(--paper-dim); margin-bottom:1.2rem; max-width:65ch;
+}
+.read-more{
+font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--rust);
+text-transform:uppercase; letter-spacing:0.06em;
+}
 
-  <div class="entry-body">
+footer{
+padding:2rem clamp(1.5rem,5vw,4rem);
+display:flex; justify-content:space-between;
+font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+border-top:1px solid var(--line);
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-mark">A.S.</div>
+<div class="nav-links">
+<a href="index.html">Work</a>
+<a href="blog.html" class="active">Journal</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
 
-    <p>
-      A 7 a.m. rental pickup, a drive to Blacks Harbour, and a ferry I almost
-      missed. I arrived about thirty minutes before departure, boarded from the
-      non-reserved lane, and ninety minutes later Grand Manan appeared through
-      the morning haze. Three days on the island turned into one of my favourite
-      photography trips so far.
-    </p>
+<section class="page-hero">
+<div class="eyebrow">Journal</div>
+<h1>Field notes from <em>each shoot.</em></h1>
+</section>
 
-    <p><strong>Day 1 — Coastal Landmarks</strong></p>
+<section class="journal-list">
 
-    <p>
-      Swallowtail Lighthouse was my first stop. From the lookout I used the
-      shoreline as a leading line to frame the returning ferry before following
-      the cliffs toward a group of seals swimming below. The hike to the Hole
-      in the Wall became longer than expected after I missed the return trail,
-      but the basalt arch was worth every extra step. The day finished with sea
-      combing and a quiet sunset before checking into the cottage.
-    </p>
+<!-- Newest post always goes at the TOP of this list -->
+<a class="post-card" href="grand-manan.html">
+<div class="post-tag">July 2026 · Grand Manan, NB</div>
+<h2>Three Days on Grand Manan: Puffins, Whales, and Sea Fog</h2>
+<p class="post-excerpt">A ferry almost missed, a wooden blind full of puffins shot at three feet, and a foggy last morning before the long way home — three days chasing wildlife and coastline across the island.</p>
+<span class="read-more">Read full post →</span>
+</a>
 
-    <p><strong>Day 2 — Wildlife</strong></p>
+<!-- Add future posts as new <a class="post-card"> blocks ABOVE this comment, so newest stays first -->
 
-    <p>
-      The highlight of the trip was Machias Seal Island. From inside a small
-      wooden blind, Atlantic Puffins and Razorbills wandered to within only a
-      few feet. Nearly everything was photographed at 200 mm using continuous
-      autofocus and burst shooting to keep up with their constant movement. On
-      the way back we stopped to watch seals before heading straight into a
-      whale-watching tour where several humpbacks surfaced nearby. The evening
-      ended overlooking the towering volcanic cliffs at Southwest Head.
-    </p>
+</section>
 
-    <p><strong>Day 3 — Sea Fog</strong></p>
-
-    <p>
-      The final morning arrived under thick fog. High tide ruled out testing
-      the island's magnetic sand, but the shoreline still offered coral,
-      snail eggs, and one last surprise—a crane catching and eating a crab.
-      Before catching the ferry home from Dark Harbour I photographed the bird
-      at the long end of the lens, isolating it against the muted shoreline.
-    </p>
-
-    <p>
-      Throughout the trip I worked across the Tamron's full zoom range,
-      switching between wide landscapes and tight wildlife compositions.
-      Everything was captured in RAW, leaving plenty of flexibility for editing
-      before these images make their way into the gallery.
-    </p>
-
-    <div class="entry-shot">
-      <span><strong>Camera</strong>Sony A7 III</span>
-      <span><strong>Lens</strong>Tamron 28–200 mm</span>
-      <span><strong>Format</strong>RAW</span>
-      <span><strong>Highlights</strong>Puffins • Whales • Sea Fog</span>
-    </div>
-
-  </div>
-
-</article>
+<footer>
+<span>© 2026 Arsh</span>
+<span>Built &amp; hosted for free</span>
+</footer>
+</body>
+</html>
