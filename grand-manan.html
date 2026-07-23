@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Days on Grand Manan — Arsh</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root{
+--ink:#14171c;
+--ink-2:#1b1f26;
+--paper:#ede7dd;
+--paper-dim:#a9a49b;
+--rust:#b5642c;
+--line: rgba(237,231,221,0.12);
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:var(--ink); color:var(--paper); font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased; }
+a{ color:inherit; }
+::selection{ background:var(--rust); color:var(--ink); }
+nav{
+position:sticky; top:0; z-index:100;
+display:flex; justify-content:space-between; align-items:center;
+padding:1.6rem clamp(1.5rem, 5vw, 4rem);
+background:rgba(20,23,28,0.9);
+backdrop-filter:blur(6px);
+border-bottom:1px solid var(--line);
+}
+.nav-mark{ font-family:'Fraunces', serif; font-size:1.1rem; font-weight:500; }
+.nav-links{ display:flex; gap:clamp(1rem,3vw,2.4rem); font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+.nav-links a{ text-decoration:none; opacity:0.8; transition:opacity 0.2s; }
+.nav-links a:hover, .nav-links a.active{ opacity:1; color:var(--rust); }
+
+.page-hero{ padding:6rem clamp(1.5rem,5vw,4rem) 2.5rem; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--rust); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1.2rem; }
+.eyebrow::before{ content:'● '; }
+h1{ font-family:'Fraunces', serif; font-weight:300; font-size:clamp(2rem, 5.5vw, 3.4rem); line-height:1.1; max-width:20ch; }
+.post-meta{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--paper-dim); margin-top:1.2rem; }
+
+.post-body{ max-width:760px; margin:0 auto; padding:3.5rem clamp(1.5rem,5vw,4rem) 6rem; }
+.hero-image{ width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:4px; margin-bottom:2.5rem; background:var(--ink-2); }
+.post-body p{ font-family:'Fraunces', serif; font-weight:300; font-size:1.15rem; line-height:1.75; margin-bottom:1.5rem; color:var(--paper); }
+
+.day-divider{
+display:flex; align-items:center; gap:1rem;
+font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--rust);
+text-transform:uppercase; letter-spacing:0.15em;
+margin:3.2rem 0 1.6rem;
+}
+.day-divider::before, .day-divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+/* Flexible photo grid: handles mixed portrait/landscape without breaking layout */
+.photo-grid{ display:flex; flex-wrap:wrap; gap:0.8rem; margin:1.8rem 0; }
+.photo-grid img{ border-radius:4px; object-fit:cover; background:var(--ink-2); }
+.photo-grid img.landscape{ flex:2 1 320px; aspect-ratio:3/2; }
+.photo-grid img.portrait{ flex:1 1 220px; aspect-ratio:3/4; }
+.photo-grid.single img{ flex:1 1 100%; aspect-ratio:16/9; }
+.caption{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper-dim); margin-top:-1.2rem; margin-bottom:1.8rem; }
+
+footer{
+padding:2rem clamp(1.5rem,5vw,4rem);
+display:flex; justify-content:space-between;
+font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+border-top:1px solid var(--line);
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-mark">A.S.</div>
+<div class="nav-links">
+<a href="index.html">Work</a>
+<a href="blog.html" class="active">Journal</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+
+<section class="page-hero">
+<div class="eyebrow">Journal</div>
+<h1>Three Days on Grand Manan: Puffins, Whales, and Sea Fog</h1>
+<div class="post-meta">July 17–19, 2026 · Grand Manan Island, NB</div>
+</section>
+
+<section class="post-body">
+
+<!-- HERO: ferry shot from Net Point Trail, lined up with trees and rocks -->
+<img class="hero-image" src="images/journal/grandmanan-hero.jpg" alt="Ferry framed by trees and rocks, Net Point Trail, Grand Manan">
+
+<p>The trip started early — a 7 a.m. rental pickup and a drive to the Blacks Harbour ferry terminal. I cut it close and rolled in about 30 minutes before departure, which meant parking in the non-reserved lane and boarding after everyone else. Ninety minutes later, Grand Manan came into view.</p>
+
+<div class="day-divider">Day 1 — Coastal Landmarks</div>
+
+<p>The walk out to Swallowtail Lighthouse starts with the trail opening up ahead — sea on one side, the lighthouse itself in the distance, and the passage cutting through to reach it.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d1-01.jpg" alt="Aerial view of trail, sea, and Swallowtail Lighthouse in the distance">
+</div>
+<div class="caption">The trail opening up toward Swallowtail Lighthouse.</div>
+
+<p>Further along, the passage itself — trees lining the background, a couple of hikers on the boardwalk for scale.</p>
+
+<div class="photo-grid">
+<img class="portrait" src="images/journal/grandmanan-d1-02.jpg" alt="Passage to the lighthouse with trees and two hikers">
+</div>
+<div class="caption">The passage out to the lighthouse.</div>
+
+<p>Near the top, another angle felt like Grand Manan distilled into one frame — cliff, sea, and a line of trees in the foreground.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d1-03.jpg" alt="Cliff, sea, and trees representing Grand Manan Island">
+</div>
+<div class="caption">Cliff, sea, and trees — Grand Manan in one frame.</div>
+
+<p>A couple minutes' drive further, along Net Point Trail, the sea opened up from an elevated point where a group of seals were playing in the water below — too far off for a usable shot, but worth remembering. That's also where the ferry shot at the top of this post was taken, lined up through the trees and rocks.</p>
+
+<p>From there, a hike out to the Hole in the Wall — a 12-metre basalt arch — turned into a longer detour than planned when the trail back wasn't the one expected. Instead of heading straight to the parking lot, it led out to Fish Head first, then back.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d1-04.jpg" alt="Hole in the Wall basalt rock arch">
+<img class="landscape" src="images/journal/grandmanan-d1-05.jpg" alt="Fish Head coastline">
+</div>
+<div class="caption">The Hole in the Wall, and the detour out to Fish Head.</div>
+
+<p>Late afternoon was a quiet stretch of sea combing along the shore — nothing that made the cut for photos, but a good way to slow the pace down after the hike. Wrapped up the day back at the cottage, watching the sunset from the deck with a hot coffee.</p>
+
+<div class="day-divider">Day 2 — Wildlife and High Cliffs</div>
+
+<p>The morning started with a boat out to Machias Seal Island, after a brief scheduling mix-up with the tour organizers got sorted. A small boat drops people at the island's edge before the walk in to the blinds.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d2-01.jpg" alt="Boat drop-off point at Machias Seal Island">
+<img class="portrait" src="images/journal/grandmanan-d2-02.jpg" alt="Sign board at Machias Seal Island">
+</div>
+<div class="caption">The landing point, and the island's sign board.</div>
+
+<p>From a wooden blind, Atlantic Puffins and Razorbills were close — sometimes as near as three feet. I shot this on a mixed focal range, primarily at the longer end, to isolate each bird from the background.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d2-03.jpg" alt="Atlantic Puffin with a fish in its mouth">
+<img class="landscape" src="images/journal/grandmanan-d2-04.jpg" alt="Three puffins together">
+</div>
+<div class="photo-grid">
+<img class="portrait" src="images/journal/grandmanan-d2-05.jpg" alt="Close-up portrait of a puffin">
+<img class="portrait" src="images/journal/grandmanan-d2-06.jpg" alt="Second close-up portrait of a puffin">
+</div>
+<div class="caption">Puffins — with a catch, in a group, and up close.</div>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d2-07.jpg" alt="Razorbill portrait">
+<img class="landscape" src="images/journal/grandmanan-d2-08.jpg" alt="Wooden blind used for bird photography">
+</div>
+<div class="caption">A Razorbill, and the blind we shot from.</div>
+
+<p>On the way back, a stop at Seal Island for more seals basking in the sun, then a whale-watching tour where a few humpbacks surfaced — tails and backs breaking the water mid-sea.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d2-09.jpg" alt="Seals basking at Seal Island">
+<img class="landscape" src="images/journal/grandmanan-d2-10.jpg" alt="Humpback whale surfacing">
+</div>
+<div class="caption">Seal Island, and a humpback surfacing.</div>
+
+<p>The afternoon closed at the Southwest Head lightstation, where volcanic cliffs rise straight out of the ocean.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d2-11.jpg" alt="Southwest Head volcanic cliffs, view one">
+<img class="landscape" src="images/journal/grandmanan-d2-12.jpg" alt="Southwest Head volcanic cliffs, view two">
+</div>
+<div class="caption">Southwest Head — volcanic cliffs meeting the sea.</div>
+
+<div class="day-divider">Day 3 — Fog and the Long Way Home</div>
+
+<p>The last morning rolled in thick with fog along the coastline. A stop at a curvy stretch of road became an impromptu portrait backdrop, using the road's own lines as a guide into the frame — no photos from that one made the post, but it was worth the stop.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d3-01.jpg" alt="Foggy coastline, view one">
+<img class="landscape" src="images/journal/grandmanan-d3-02.jpg" alt="Foggy coastline, view two">
+</div>
+<div class="caption">Fog rolling over the coastline.</div>
+
+<p>A beach known for its magnetic sand came next, though high tide ruled out testing it. Snail eggs turned up scattered along the shoreline instead.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d3-03.jpg" alt="Snail eggs along the shoreline">
+</div>
+<div class="caption">Snail eggs found along the shore.</div>
+
+<p>The second stop of the day, before heading to the ferry, was Dark Harbour — rocky cliffs framing the water.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d3-04.jpg" alt="Dark Harbour rocky cliffs, view one">
+<img class="landscape" src="images/journal/grandmanan-d3-05.jpg" alt="Dark Harbour rocky cliffs, view two">
+</div>
+<div class="caption">Dark Harbour.</div>
+
+<p>One last sea-combing session turned up a crane hunting and eating a crab — timed at the tighter end of the zoom to isolate the subject and cut out anything competing for attention.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d3-06.jpg" alt="Crane hunting a crab, view one">
+<img class="landscape" src="images/journal/grandmanan-d3-07.jpg" alt="Crane hunting a crab, view two">
+</div>
+<div class="caption">A crane hunting a crab, shot tight to isolate the subject.</div>
+
+<p>After the ferry back to the mainland, a stop at Irving Nature Park near Saint John, then Reversing Falls to close out the trip.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d3-08.jpg" alt="Irving Nature Park, view one">
+<img class="landscape" src="images/journal/grandmanan-d3-09.jpg" alt="Irving Nature Park, view two">
+</div>
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-d3-10.jpg" alt="Reversing Falls, view one">
+<img class="landscape" src="images/journal/grandmanan-d3-11.jpg" alt="Reversing Falls, view two">
+</div>
+<div class="caption">Irving Nature Park, and Reversing Falls to close the trip.</div>
+
+<p>Across the three days, I moved through the Tamron's full range depending on what the scene called for — wide to hold the whole cliffside or coastline in frame, tight to pick out a single plant clinging to the rock, or a bird mid-hunt. Everything was shot RAW, so there's room to fine-tune light and colour before the strongest frames make it into the main gallery.</p>
+
+</section>
+
+<footer>
+<span>© 2026 Arsh</span>
+<span>Built &amp; hosted for free</span>
+</footer>
+</body>
+</html>
