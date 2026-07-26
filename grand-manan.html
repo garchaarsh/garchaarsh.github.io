@@ -49,13 +49,17 @@ margin:3.2rem 0 1.6rem;
 }
 .day-divider::before, .day-divider::after{ content:''; flex:1; height:1px; background:var(--line); }
 
+.subhead{
+font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper-dim);
+text-transform:uppercase; letter-spacing:0.1em; margin:2.2rem 0 1rem;
+}
+
 /* Flexible photo grid: handles mixed portrait/landscape without breaking layout */
-.photo-grid{ display:flex; flex-wrap:wrap; gap:0.8rem; margin:1.8rem 0; }
+.photo-grid{ display:flex; flex-wrap:wrap; gap:0.8rem; margin:1.4rem 0; }
 .photo-grid img{ border-radius:4px; object-fit:cover; background:var(--ink-2); }
 .photo-grid img.landscape{ flex:2 1 320px; aspect-ratio:3/2; }
-.photo-grid img.portrait{ flex:1 1 220px; aspect-ratio:3/4; }
-.photo-grid.single img{ flex:1 1 100%; aspect-ratio:16/9; }
-.caption{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper-dim); margin-top:-1.2rem; margin-bottom:1.8rem; }
+.photo-grid img.portrait{ flex:1 1 200px; aspect-ratio:3/4; }
+.caption{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper-dim); margin-top:-0.6rem; margin-bottom:1.6rem; }
 
 footer{
 padding:2rem clamp(1.5rem,5vw,4rem);
@@ -84,136 +88,177 @@ border-top:1px solid var(--line);
 
 <section class="post-body">
 
-<!-- HERO: ferry shot from Net Point Trail, lined up with trees and rocks -->
+<!-- HERO (landscape): ferry shot from Net Point Trail -->
 <img class="hero-image" src="images/journal/grandmanan-hero.jpg" alt="Ferry framed by trees and rocks, Net Point Trail, Grand Manan">
 
 <p>The trip started early — a 7 a.m. rental pickup and a drive to the Blacks Harbour ferry terminal. I cut it close and rolled in about 30 minutes before departure, which meant parking in the non-reserved lane and boarding after everyone else. Ninety minutes later, Grand Manan came into view.</p>
 
 <div class="day-divider">Day 1 — Coastal Landmarks</div>
 
-<p>The walk out to Swallowtail Lighthouse starts with the trail opening up ahead — sea on one side, the lighthouse itself in the distance, and the passage cutting through to reach it.</p>
+<p>The walk out to Swallowtail Lighthouse starts with the trail opening up ahead — sea on one side, the lighthouse itself in the distance.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d1-01.jpg" alt="Aerial view of trail, sea, and Swallowtail Lighthouse in the distance">
+<img class="landscape" src="images/journal/grandmanan-02.jpg" alt="Aerial view of the trail, sea, and Swallowtail Lighthouse">
 </div>
 <div class="caption">The trail opening up toward Swallowtail Lighthouse.</div>
 
-<p>Further along, the passage itself — trees lining the background, a couple of hikers on the boardwalk for scale.</p>
+<p>Further along, the passage itself — a couple of hikers on the boardwalk for scale.</p>
 
 <div class="photo-grid">
-<img class="portrait" src="images/journal/grandmanan-d1-02.jpg" alt="Passage to the lighthouse with trees and two hikers">
+<img class="portrait" src="images/journal/grandmanan-03.jpg" alt="Two hikers on the passage to the lighthouse">
 </div>
 <div class="caption">The passage out to the lighthouse.</div>
 
 <p>Near the top, another angle felt like Grand Manan distilled into one frame — cliff, sea, and a line of trees in the foreground.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d1-03.jpg" alt="Cliff, sea, and trees representing Grand Manan Island">
+<img class="landscape" src="images/journal/grandmanan-04.jpg" alt="Cliff, sea, and trees representing Grand Manan Island">
 </div>
 <div class="caption">Cliff, sea, and trees — Grand Manan in one frame.</div>
 
-<p>A couple minutes' drive further, along Net Point Trail, the sea opened up from an elevated point where a group of seals were playing in the water below — too far off for a usable shot, but worth remembering. That's also where the ferry shot at the top of this post was taken, lined up through the trees and rocks.</p>
+<p>A couple minutes' drive further, along Net Point Trail, the sea opened up from an elevated point where a group of seals were playing in the water below — too far off for a usable shot, but worth remembering. That's also where the ferry shot at the top of this post was taken.</p>
 
 <p>From there, a hike out to the Hole in the Wall — a 12-metre basalt arch — turned into a longer detour than planned when the trail back wasn't the one expected. Instead of heading straight to the parking lot, it led out to Fish Head first, then back.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d1-04.jpg" alt="Hole in the Wall basalt rock arch">
-<img class="landscape" src="images/journal/grandmanan-d1-05.jpg" alt="Fish Head coastline">
+<img class="portrait" src="images/journal/grandmanan-05.jpg" alt="Hole in the Wall basalt rock arch">
+<img class="landscape" src="images/journal/grandmanan-06.jpg" alt="Fish Head coastline">
 </div>
 <div class="caption">The Hole in the Wall, and the detour out to Fish Head.</div>
 
-<p>Late afternoon was a quiet stretch of sea combing along the shore — nothing that made the cut for photos, but a good way to slow the pace down after the hike. Wrapped up the day back at the cottage, watching the sunset from the deck with a hot coffee.</p>
+<p>Late afternoon was a quiet stretch of sea combing along the shore — that's also where the snail eggs turned up, tucked along the tide line. Nothing from the combing made the cut for photos, but it was a good way to slow down after the hike. Wrapped up the day back at the cottage, watching the sunset from the deck with a hot coffee.</p>
 
 <div class="day-divider">Day 2 — Wildlife and High Cliffs</div>
 
-<p>The morning started with a boat out to Machias Seal Island, after a brief scheduling mix-up with the tour organizers got sorted. A small boat drops people at the island's edge before the walk in to the blinds.</p>
+<p>The morning started with a boat out to Machias Seal Island, after a brief scheduling mix-up with the tour organizers got sorted.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d2-01.jpg" alt="Boat drop-off point at Machias Seal Island">
-<img class="portrait" src="images/journal/grandmanan-d2-02.jpg" alt="Sign board at Machias Seal Island">
+<img class="portrait" src="images/journal/grandmanan-07.jpg" alt="Sign board at Machias Seal Island">
+<img class="portrait" src="images/journal/grandmanan-08.jpg" alt="Small boat dropping visitors off at the island">
 </div>
-<div class="caption">The landing point, and the island's sign board.</div>
+<div class="caption">The island's sign board, and the boat dropping everyone at the landing point.</div>
 
-<p>From a wooden blind, Atlantic Puffins and Razorbills were close — sometimes as near as three feet. I shot this on a mixed focal range, primarily at the longer end, to isolate each bird from the background.</p>
+<p>Shooting happened from inside a wooden blind, tucked right at the edge of the colony.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d2-03.jpg" alt="Atlantic Puffin with a fish in its mouth">
-<img class="landscape" src="images/journal/grandmanan-d2-04.jpg" alt="Three puffins together">
+<img class="portrait" src="images/journal/grandmanan-10.jpg" alt="Wooden blind used for bird photography">
 </div>
+<div class="caption">The blind we shot from.</div>
+
+<div class="subhead">Puffins &amp; Razorbills</div>
+
+<p>From there, puffins and razorbills came and went constantly — I shot this on a mixed focal range, primarily at the longer end, to isolate each bird from the background.</p>
+
 <div class="photo-grid">
-<img class="portrait" src="images/journal/grandmanan-d2-05.jpg" alt="Close-up portrait of a puffin">
-<img class="portrait" src="images/journal/grandmanan-d2-06.jpg" alt="Second close-up portrait of a puffin">
+<img class="landscape" src="images/journal/grandmanan-09.jpg" alt="Atlantic Puffin with a fish in its mouth">
 </div>
-<div class="caption">Puffins — with a catch, in a group, and up close.</div>
+<div class="caption">A puffin returning with a catch.</div>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d2-07.jpg" alt="Razorbill portrait">
-<img class="landscape" src="images/journal/grandmanan-d2-08.jpg" alt="Wooden blind used for bird photography">
+<img class="portrait" src="images/journal/grandmanan-11.jpg" alt="Single puffin sitting on a rock">
+<img class="portrait" src="images/journal/grandmanan-12.jpg" alt="Razorbill sitting on a rock">
+<img class="portrait" src="images/journal/grandmanan-13.jpg" alt="Puffin with its mouth wide open">
 </div>
-<div class="caption">A Razorbill, and the blind we shot from.</div>
-
-<p>On the way back, a stop at Seal Island for more seals basking in the sun, then a whale-watching tour where a few humpbacks surfaced — tails and backs breaking the water mid-sea.</p>
+<div class="caption">A puffin at rest, a razorbill on the rocks, and a puffin mid-call.</div>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d2-09.jpg" alt="Seals basking at Seal Island">
-<img class="landscape" src="images/journal/grandmanan-d2-10.jpg" alt="Humpback whale surfacing">
+<img class="portrait" src="images/journal/grandmanan-14.jpg" alt="A line of razorbills sitting on a rock">
+<img class="portrait" src="images/journal/grandmanan-15.jpg" alt="A puffin and razorbill sharing a rock">
+<img class="portrait" src="images/journal/grandmanan-16.jpg" alt="A lone razorbill on a rock">
 </div>
-<div class="caption">Seal Island, and a humpback surfacing.</div>
-
-<p>The afternoon closed at the Southwest Head lightstation, where volcanic cliffs rise straight out of the ocean.</p>
+<div class="caption">Razorbills lined up, an unlikely rock-mate, and one on its own.</div>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d2-11.jpg" alt="Southwest Head volcanic cliffs, view one">
-<img class="landscape" src="images/journal/grandmanan-d2-12.jpg" alt="Southwest Head volcanic cliffs, view two">
+<img class="portrait" src="images/journal/grandmanan-17.jpg" alt="A wider view of many birds, mostly razorbills, on the rocks">
+<img class="portrait" src="images/journal/grandmanan-18.jpg" alt="Three puffins sharing a rock">
+<img class="portrait" src="images/journal/grandmanan-19.jpg" alt="Close-up portrait of a puffin">
+</div>
+<div class="caption">The colony at a wider view, three puffins sharing a rock, and one last close-up.</div>
+
+<div class="subhead">Seal Island &amp; the Whale Watch</div>
+
+<p>A short crossing over, Seal Island came into view, its old lighthouse tower rising over the rocks.</p>
+
+<div class="photo-grid">
+<img class="portrait" src="images/journal/grandmanan-20.jpg" alt="Seal Island with its lighthouse tower">
+</div>
+<div class="caption">Seal Island and its tower.</div>
+
+<p>From there we boarded a smaller boat for the whale-watching leg, everyone lined up along the railing scanning the water.</p>
+
+<div class="photo-grid">
+<img class="portrait" src="images/journal/grandmanan-21.jpg" alt="Passengers lined up along the railing during the whale-watching crossing">
+</div>
+<div class="caption">On the railing, watching for the first sign of a whale.</div>
+
+<p>A few humpbacks surfaced nearby — first just the tail slipping under, then a clearer look at it a moment later.</p>
+
+<div class="photo-grid">
+<img class="portrait" src="images/journal/grandmanan-22.jpg" alt="Humpback whale tail submerging">
+<img class="portrait" src="images/journal/grandmanan-23.jpg" alt="Closer, clearer shot of a humpback whale tail">
+</div>
+<div class="caption">A humpback's tail slipping under, then a closer look.</div>
+
+<p>At one point, what looked like a mother and calf surfaced close to the boat, giving a real sense of scale.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-24.jpg" alt="Mother and calf humpback whales surfacing near the boat">
+</div>
+<div class="caption">Mother and calf, with the boat for scale.</div>
+
+<p>A pair of seabirds skimmed low across the water while we watched, wingtips breaking the surface.</p>
+
+<div class="photo-grid">
+<img class="landscape" src="images/journal/grandmanan-25.jpg" alt="Two seabirds gliding low over the water, wings breaking the surface">
+</div>
+<div class="caption">Two seabirds gliding across the water mid-whale-watch.</div>
+
+<div class="subhead">Southwest Head</div>
+
+<p>The afternoon closed at the Southwest Head lightstation, where volcanic cliffs drop straight into the ocean.</p>
+
+<div class="photo-grid">
+<img class="portrait" src="images/journal/grandmanan-26.jpg" alt="Southwest Head volcanic cliffs">
 </div>
 <div class="caption">Southwest Head — volcanic cliffs meeting the sea.</div>
 
 <div class="day-divider">Day 3 — Fog and the Long Way Home</div>
 
-<p>The last morning rolled in thick with fog along the coastline. A stop at a curvy stretch of road became an impromptu portrait backdrop, using the road's own lines as a guide into the frame — no photos from that one made the post, but it was worth the stop.</p>
+<p>The last morning rolled in thick with fog. A stretch of curvy road along the way made for a quick portrait backdrop, though none of those shots made the final cut here.</p>
+
+<p>Fog sat heavy over Dark Harbour — boats anchored just offshore, a pickup truck parked along the water's edge.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d3-01.jpg" alt="Foggy coastline, view one">
-<img class="landscape" src="images/journal/grandmanan-d3-02.jpg" alt="Foggy coastline, view two">
+<img class="portrait" src="images/journal/grandmanan-27.jpg" alt="Foggy Dark Harbour with anchored boats and a pickup truck on shore">
+<img class="portrait" src="images/journal/grandmanan-28.jpg" alt="Dark Harbour split diagonally between sea and rock in the fog">
 </div>
-<div class="caption">Fog rolling over the coastline.</div>
+<div class="caption">Dark Harbour — boats in the fog, and the harbour split between sea and rock.</div>
 
-<p>A beach known for its magnetic sand came next, though high tide ruled out testing it. Snail eggs turned up scattered along the shoreline instead.</p>
+<p>The next stop was Stanley Beach, near the ferry terminal that would carry us back to New Brunswick. A Kelp Gull came in low, hunting for crab along the shoreline.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d3-03.jpg" alt="Snail eggs along the shoreline">
+<img class="landscape" src="images/journal/grandmanan-29.jpg" alt="Kelp Gull flying in low over Stanley Beach">
 </div>
-<div class="caption">Snail eggs found along the shore.</div>
-
-<p>The second stop of the day, before heading to the ferry, was Dark Harbour — rocky cliffs framing the water.</p>
+<div class="caption">A Kelp Gull coming in to hunt.</div>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d3-04.jpg" alt="Dark Harbour rocky cliffs, view one">
-<img class="landscape" src="images/journal/grandmanan-d3-05.jpg" alt="Dark Harbour rocky cliffs, view two">
+<img class="landscape" src="images/journal/grandmanan-30.jpg" alt="Kelp Gull with a crab in its mouth, wings folding in">
 </div>
-<div class="caption">Dark Harbour.</div>
-
-<p>One last sea-combing session turned up a crane hunting and eating a crab — timed at the tighter end of the zoom to isolate the subject and cut out anything competing for attention.</p>
+<div class="caption">Crab caught, wings folding in.</div>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d3-06.jpg" alt="Crane hunting a crab, view one">
-<img class="landscape" src="images/journal/grandmanan-d3-07.jpg" alt="Crane hunting a crab, view two">
+<img class="landscape" src="images/journal/grandmanan-31.jpg" alt="Kelp Gull holding the crab as waves rise behind it">
 </div>
-<div class="caption">A crane hunting a crab, shot tight to isolate the subject.</div>
+<div class="caption">Holding on as the waves built up behind it.</div>
 
-<p>After the ferry back to the mainland, a stop at Irving Nature Park near Saint John, then Reversing Falls to close out the trip.</p>
+<p>One last stop after the ferry back: Reversing Falls, the bridge arching over the water.</p>
 
 <div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d3-08.jpg" alt="Irving Nature Park, view one">
-<img class="landscape" src="images/journal/grandmanan-d3-09.jpg" alt="Irving Nature Park, view two">
+<img class="portrait" src="images/journal/grandmanan-32.jpg" alt="Reversing Falls with the bridge arching over the water">
 </div>
-<div class="photo-grid">
-<img class="landscape" src="images/journal/grandmanan-d3-10.jpg" alt="Reversing Falls, view one">
-<img class="landscape" src="images/journal/grandmanan-d3-11.jpg" alt="Reversing Falls, view two">
-</div>
-<div class="caption">Irving Nature Park, and Reversing Falls to close the trip.</div>
+<div class="caption">Reversing Falls, to close out the trip.</div>
 
-<p>Across the three days, I moved through the Tamron's full range depending on what the scene called for — wide to hold the whole cliffside or coastline in frame, tight to pick out a single plant clinging to the rock, or a bird mid-hunt. Everything was shot RAW, so there's room to fine-tune light and colour before the strongest frames make it into the main gallery.</p>
+<p>Across the three days, I moved through the Tamron's full range depending on what the scene called for — wide to hold the whole cliffside or coastline in frame, tight to pick out a single bird mid-motion. Everything was shot RAW, so there's room to fine-tune light and colour before the strongest frames make it into the main gallery.</p>
 
 </section>
 
