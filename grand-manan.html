@@ -56,7 +56,7 @@ text-transform:uppercase; letter-spacing:0.1em; margin:2.2rem 0 1rem;
 
 /* Flexible photo grid: handles mixed portrait/landscape without breaking layout */
 .photo-grid{ display:flex; flex-wrap:wrap; gap:0.8rem; margin:1.4rem 0; }
-.photo-grid img{ border-radius:4px; object-fit:cover; background:var(--ink-2); }
+.photo-grid img{ border-radius:4px; object-fit:cover; background:var(--ink-2); width:100%; min-width:0; }
 .photo-grid img.landscape{ flex:2 1 320px; aspect-ratio:3/2; }
 .photo-grid img.portrait{ flex:1 1 200px; aspect-ratio:3/4; }
 .caption{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper-dim); margin-top:-0.6rem; margin-bottom:1.6rem; }
