@@ -4,45 +4,83 @@
 <meta charset="UTF-8">
 <title>A.S. — ordinary streets.</title>
 <style>
-  body { background:#0b0d10; color:#e8e6e1; font-family:Georgia, serif; margin:0; padding:40px; }
+  * { box-sizing: border-box; }
+  body { background:#0b0d10; color:#e8e6e1; font-family:Georgia, 'Times New Roman', serif; margin:0; }
+  a { color:inherit; text-decoration:none; }
+
+  header { display:flex; justify-content:space-between; align-items:center; padding:24px 40px; flex-wrap:wrap; gap:16px; }
+  .logo { font-size:1.3rem; letter-spacing:2px; }
+  nav { display:flex; gap:28px; font-family:monospace; font-size:0.85rem; letter-spacing:1px; color:#ccc; }
+  nav a:hover { color:#c8672f; }
+
+  .hero { padding:20px 40px 40px; }
+  .hero h1 { font-size:4rem; margin:0; line-height:1.1; }
+  .hero h1 .accent { font-style:italic; color:#e8a15c; }
+  .hero p { max-width:520px; color:#bbb; font-size:1.1rem; margin-top:20px; }
+  .gear { text-align:right; font-family:monospace; color:#888; font-size:0.85rem; margin-top:-40px; padding-right:40px; }
+
+  main { padding:40px; }
   h2 { font-size:2.5rem; margin-bottom:4px; }
   .sub-label { font-family:monospace; color:#888; font-size:0.85rem; margin:20px 0 6px; letter-spacing:1px; }
   .tabs { display:flex; flex-wrap:wrap; gap:10px; font-family:monospace; margin-bottom:10px; }
   .tab { border:1px solid #444; padding:8px 16px; cursor:pointer; background:transparent; color:#ccc; letter-spacing:1px; font-size:0.85rem; }
   .tab.active { background:#c8672f; border-color:#c8672f; color:#111; }
+
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:24px; }
   .frame { position:relative; aspect-ratio:3/4; overflow:hidden; background:#111; }
   .frame img { width:100%; height:100%; object-fit:cover; display:block; }
   .frame .num { position:absolute; top:10px; left:10px; font-family:monospace; color:#888; font-size:0.8rem; }
   .frame .cap { position:absolute; bottom:10px; left:10px; font-family:monospace; font-size:0.85rem; color:#eee; background:rgba(0,0,0,0.5); padding:2px 8px; }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size:2.6rem; }
+  }
 </style>
 </head>
 <body>
 
-<h2>Selected Work</h2>
+<header>
+  <div class="logo">A.S.</div>
+  <nav>
+    <a href="index.html">WORK</a>
+    <a href="blog.html">JOURNAL</a>
+    <a href="about.html">ABOUT</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+</header>
 
-<div class="sub-label">LOCATION</div>
-<div class="tabs" id="tabs-location"></div>
+<section class="hero">
+  <h1>ordinary <span class="accent">streets.</span></h1>
+  <p>A working portfolio of street, architecture, and travel photography — shot on a Sony A7III, edited slow, published here.</p>
+</section>
+<div class="gear">SEL2870 · SEL50F18F · SEL85F18<br>EST. 2026</div>
 
-<div class="sub-label">TYPE</div>
-<div class="tabs" id="tabs-genre"></div>
+<main>
+  <h2>Selected Work</h2>
 
-<div class="grid" id="grid"></div>
+  <div class="sub-label">LOCATION</div>
+  <div class="tabs" id="tabs-location"></div>
+
+  <div class="sub-label">TYPE</div>
+  <div class="tabs" id="tabs-genre"></div>
+
+  <div class="grid" id="grid"></div>
+</main>
 
 <script>
-// ---- 1. YOUR PHOTO DATA ----
-// One object per photo. Add a new entry every time you shoot — date controls order automatically.
-// region  = one of the LOCATIONS keys below
-// genre   = "street" | "architecture" | "travel"
-// city    = shown in the caption, so you keep the specific place even though the tab is province-level
 const photos = [
-  { file: "downtown-moncton-blue-hour.jpg", title: "Downtown Moncton, Blue Hour", city: "Moncton", region: "nb", genre: "architecture", date: "2026-07-20" },
-  { file: "mississauga-01.jpg",             title: "Mississauga Skyline",         city: "Mississauga", region: "on", genre: "architecture", date: "2026-06-15" },
-  // Add more entries here — order in this list doesn't matter, the code sorts it.
+  {
+    file: "new-brunswick/reversing-falls-saint-john.jpg",
+    title: "Reversing Falls, Saint John",
+    city: "Saint John",
+    region: "nb",
+    genre: "travel",
+    date: "2026-07-27"
+  },
 ];
 
-// ---- 2. LOCATION TABS (province / state / country tier — keep this consistent) ----
 const locations = [
   { key: "all", label: "ALL" },
   { key: "nb",  label: "NEW BRUNSWICK" },
@@ -54,7 +92,6 @@ const locations = [
   { key: "in",  label: "INDIA" },
 ];
 
-// ---- 3. GENRE TABS ----
 const genres = [
   { key: "all", label: "ALL" },
   { key: "street", label: "STREET" },
