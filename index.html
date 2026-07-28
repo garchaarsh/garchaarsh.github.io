@@ -63,24 +63,39 @@
   <div class="sub-label">LOCATION</div>
   <div class="tabs" id="tabs-location"></div>
 
-  <div class="sub-label">TYPE</div>
-  <div class="tabs" id="tabs-genre"></div>
-
   <div class="grid" id="grid"></div>
 </main>
 
 <script>
+// =========================================================
+// YOUR PHOTOS — add one entry per photo, anywhere in this list.
+// The site sorts by "date" automatically (newest first).
+//
+// If two photos share the same shoot date, add a time so ties
+// break the way you want: "2026-07-27T09:15" sorts BELOW
+// "2026-07-27T14:40" (later time = newer).
+//
+// region must be one of: nb, ns, pe, on, ab, usa, in
+// =========================================================
 const photos = [
   {
     file: "new-brunswick/reversing-falls-saint-john.jpg",
     title: "Reversing Falls, Saint John",
     city: "Saint John",
     region: "nb",
-    genre: "travel",
     date: "2026-07-27"
   },
+  // Add your next photo below, like this:
+  // {
+  //   file: "ontario/some-photo.jpg",
+  //   title: "Your Caption Here",
+  //   city: "Toronto",
+  //   region: "on",
+  //   date: "2026-08-02T10:00"
+  // },
 ];
 
+// Location tabs (province / state / country tier — stays consistent, no cities here)
 const locations = [
   { key: "all", label: "ALL" },
   { key: "nb",  label: "NEW BRUNSWICK" },
@@ -92,30 +107,17 @@ const locations = [
   { key: "in",  label: "INDIA" },
 ];
 
-const genres = [
-  { key: "all", label: "ALL" },
-  { key: "street", label: "STREET" },
-  { key: "architecture", label: "ARCHITECTURE" },
-  { key: "travel", label: "TRAVEL" },
-];
-
 let activeLocation = "all";
-let activeGenre = "all";
 
 function render() {
   const sorted = [...photos].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const filtered = sorted.filter(p =>
-    (activeLocation === "all" || p.region === activeLocation) &&
-    (activeGenre === "all" || p.genre === activeGenre)
-  );
+  const filtered = activeLocation === "all"
+    ? sorted
+    : sorted.filter(p => p.region === activeLocation);
 
   document.getElementById("tabs-location").innerHTML = locations.map(l => `
     <button class="tab ${l.key === activeLocation ? "active" : ""}" onclick="setLocation('${l.key}')">${l.label}</button>
-  `).join("");
-
-  document.getElementById("tabs-genre").innerHTML = genres.map(g => `
-    <button class="tab ${g.key === activeGenre ? "active" : ""}" onclick="setGenre('${g.key}')">${g.label}</button>
   `).join("");
 
   document.getElementById("grid").innerHTML = filtered.length
@@ -126,11 +128,10 @@ function render() {
           <span class="cap">${p.title}</span>
         </div>
       `).join("")
-    : `<div class="empty">No frames yet for this combination.</div>`;
+    : `<div class="empty">No frames yet for this region.</div>`;
 }
 
 function setLocation(key) { activeLocation = key; render(); }
-function setGenre(key) { activeGenre = key; render(); }
 
 render();
 </script>
