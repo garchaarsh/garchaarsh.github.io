@@ -28,15 +28,24 @@
 
   .grid {
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    grid-auto-flow: dense;
-    align-items: center;   /* fixes landscape photos hanging at the top */
+    grid-template-columns: repeat(6, 1fr);
     gap:8px;
     margin-top:24px;
   }
-  .frame { position:relative; background:#111; overflow:hidden; cursor:pointer; }
-  .frame.wide { grid-column: span 2; }   /* landscape photos get double width */
-  .frame img { width:100%; height:auto; display:block; }
+  .frame {
+    position:relative;
+    background:#111;
+    overflow:hidden;
+    cursor:pointer;
+    aspect-ratio: 1 / 1;
+  }
+  .frame img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+  }
   .frame .num { position:absolute; top:8px; left:8px; font-family:monospace; color:#888; font-size:0.75rem; }
   .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.75rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 7px; }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
@@ -52,10 +61,20 @@
   .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
+  @media (max-width: 1100px) {
+    .grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+    .hero h1 { font-size:3rem; }
+  }
   @media (max-width: 600px) {
-    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-    .frame.wide { grid-column: span 2; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
     .hero h1 { font-size:2.6rem; }
+    header { padding:20px 24px; }
+    .hero { padding:20px 24px 40px; }
+    .gear { padding-right:24px; }
+    main { padding:24px; }
   }
 </style>
 </head>
@@ -152,7 +171,7 @@ function render() {
 
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
-        <div class="frame ${p.wide ? "wide" : ""}" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
+        <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\'")}')">
           <img src="${encodeURI('images/' + p.file)}" alt="${p.title}" loading="lazy">
           <span class="num">${String(i + 1).padStart(2, "0")}</span>
           <span class="cap">${p.title}</span>
