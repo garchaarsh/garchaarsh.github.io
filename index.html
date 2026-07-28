@@ -26,28 +26,29 @@
   .tab { border:1px solid #444; padding:8px 16px; cursor:pointer; background:transparent; color:#ccc; letter-spacing:1px; font-size:0.85rem; }
   .tab.active { background:#c8672f; border-color:#c8672f; color:#111; }
 
+  /* Fixed 6-across grid, every tile the same size/ratio */
   .grid {
     display:grid;
     grid-template-columns: repeat(6, 1fr);
-    gap:8px;
+    gap:6px;
     margin-top:24px;
   }
   .frame {
     position:relative;
+    aspect-ratio: 3/4;
     background:#111;
     overflow:hidden;
     cursor:pointer;
-    aspect-ratio: 1 / 1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
-  .frame img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-    display:block;
-  }
+  /* object-fit: contain keeps the whole photo visible, centered,
+     with no cropping — portrait photos fill the frame edge to edge,
+     landscape photos sit centered with even space above/below. */
+  .frame img { width:100%; height:100%; object-fit:contain; display:block; }
   .frame .num { position:absolute; top:8px; left:8px; font-family:monospace; color:#888; font-size:0.75rem; }
-  .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.75rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 7px; }
+  .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.7rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 6px; }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
 
   /* Lightbox (tap a photo to see it full size) */
@@ -61,20 +62,12 @@
   .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
-  @media (max-width: 1100px) {
-    .grid { grid-template-columns: repeat(4, 1fr); }
-  }
-  @media (max-width: 800px) {
+  @media (max-width: 900px) {
     .grid { grid-template-columns: repeat(3, 1fr); }
-    .hero h1 { font-size:3rem; }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 500px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
     .hero h1 { font-size:2.6rem; }
-    header { padding:20px 24px; }
-    .hero { padding:20px 24px 40px; }
-    .gear { padding-right:24px; }
-    main { padding:24px; }
   }
 </style>
 </head>
@@ -114,34 +107,45 @@
 // =========================================================
 // YOUR PHOTOS — add one entry per photo, anywhere in this list.
 // The site sorts by "date" automatically (newest first).
-//
-// wide: true  -> photo is landscape orientation, gets double-width
-//                display so it doesn't get squeezed narrow.
-// wide: false -> photo is portrait, normal single-width tile.
-// I've guessed orientation from the PDF preview you sent — check
-// the live site and flip any that look wrong (just true/false).
-//
 // region must be one of: nb, ns, pe, on, ab, usa, in
 // =========================================================
 const photos = [
-  { file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", region: "nb", date: "2026-07-19T09:38", wide: false },
-  { file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", region: "nb", date: "2026-07-19T08:15", wide: true },
-  { file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", region: "nb", date: "2026-07-18T18:40", wide: true },
-  { file: "new-brunswick/Whale watching-1.jpg", title: "Whale Fluke, Diving", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26", wide: true },
-  { file: "new-brunswick/Whale watching-2.jpg", title: "Whale Tail, Calm Water", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26", wide: true },
-  { file: "new-brunswick/Seals.jpg", title: "Seal Colony Below the Light", city: "Grand Manan", region: "nb", date: "2026-07-18T10:40", wide: false },
-  { file: "new-brunswick/Puffin-1.jpg", title: "Puffin, Close Up", city: "Grand Manan", region: "nb", date: "2026-07-18T09:52", wide: false },
-  { file: "new-brunswick/Puffin-2.jpg", title: "Puffin Trio on the Rocks", city: "Grand Manan", region: "nb", date: "2026-07-18T09:51", wide: true },
-  { file: "new-brunswick/Razorbill-1.jpg", title: "Razorbill, Standing Watch", city: "Grand Manan", region: "nb", date: "2026-07-18T09:29", wide: false },
-  { file: "new-brunswick/Razorbill-3.jpg", title: "Razorbill and Puffin, Sharing a Rock", city: "Grand Manan", region: "nb", date: "2026-07-18T09:28", wide: false },
-  { file: "new-brunswick/Puffin-3.jpg", title: "Puffin, Mid-Call", city: "Grand Manan", region: "nb", date: "2026-07-18T09:26", wide: false },
-  { file: "new-brunswick/Razorbill-2.jpg", title: "Razorbill in Profile", city: "Grand Manan", region: "nb", date: "2026-07-18T09:25", wide: false },
-  { file: "new-brunswick/Puffin-4.jpg", title: "Puffin on the Boulder", city: "Grand Manan", region: "nb", date: "2026-07-18T09:01", wide: false },
-  { file: "new-brunswick/Boat dropping.jpg", title: "Dropping Off at the Weir", city: "Grand Manan", region: "nb", date: "2026-07-18T08:40", wide: true },
-  { file: "new-brunswick/Hole in the wall.jpg", title: "Hole in the Wall", city: "Grand Manan", region: "nb", date: "2026-07-17T14:28", wide: false },
-  { file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49", wide: true },
-  { file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17", wide: false },
-  { file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07", wide: true },
+  { file: "new-brunswick/NB-1.jpg", title: "Moncton Street Scene", city: "Moncton", region: "nb", date: "2026-07-11T16:16" },
+  { file: "new-brunswick/NB-2.jpg", title: "Downtown Corner", city: "Moncton", region: "nb", date: "2026-07-11T14:33" },
+  { file: "new-brunswick/NB-3.jpg", title: "Urban Shadows", city: "Moncton", region: "nb", date: "2026-07-11T14:32" },
+  { file: "new-brunswick/NB-4.jpg", title: "Evening Light", city: "Moncton", region: "nb", date: "2026-07-11T14:16" },
+  { file: "new-brunswick/NB-5.jpg", title: "Avenue Walk", city: "Moncton", region: "nb", date: "2026-07-09T12:28" },
+  { file: "new-brunswick/NB-6.jpg", title: "Suburban Calm", city: "Moncton", region: "nb", date: "2026-07-08T17:05" },
+  { file: "new-brunswick/NB-7.jpg", title: "Passing Train", city: "Moncton", region: "nb", date: "2026-07-08T16:24" },
+  { file: "new-brunswick/NB-8.jpg", title: "Brick Architecture", city: "Moncton", region: "nb", date: "2026-07-08T15:58" },
+  { file: "new-brunswick/NB-9.jpg", title: "Morning Commute", city: "Moncton", region: "nb", date: "2026-07-01T15:29" },
+  { file: "new-brunswick/NB-10.jpg", title: "Alleyway View", city: "Moncton", region: "nb", date: "2026-07-01T15:21" },
+  { file: "new-brunswick/NB-11.jpg", title: "Signage & Storefront", city: "Moncton", region: "nb", date: "2026-07-01T14:51" },
+  { file: "new-brunswick/NB-12.jpg", title: "Parked Vintage", city: "Moncton", region: "nb", date: "2026-06-28T13:48" },
+  { file: "new-brunswick/NB-13.jpg", title: "Crosswalk Lines", city: "Moncton", region: "nb", date: "2026-06-28T13:45" },
+  { file: "new-brunswick/NB-14.jpg", title: "Pavement Reflection", city: "Moncton", region: "nb", date: "2026-06-28T13:25" },
+  { file: "new-brunswick/NB-15.jpg", title: "Late Afternoon Glow", city: "Moncton", region: "nb", date: "2026-06-18T18:40" },
+  { file: "new-brunswick/NB-16.jpg", title: "Architectural Lines", city: "Moncton", region: "nb", date: "2026-06-18T18:39" },
+  { file: "new-brunswick/NB-17.jpg", title: "Sidewalk Cafe", city: "Moncton", region: "nb", date: "2026-06-18T17:38" },
+  { file: "new-brunswick/NB-18.jpg", title: "Dusk on Main", city: "Moncton", region: "nb", date: "2026-06-17T18:33" },
+  { file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", region: "nb", date: "2026-07-19T09:38" },
+  { file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", region: "nb", date: "2026-07-19T08:15" },
+  { file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", region: "nb", date: "2026-07-18T18:40" },
+  { file: "new-brunswick/Whale watching-1.jpg", title: "Whale Fluke, Diving", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
+  { file: "new-brunswick/Whale watching-2.jpg", title: "Whale Tail, Calm Water", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
+  { file: "new-brunswick/Seals.jpg", title: "Seal Colony Below the Light", city: "Grand Manan", region: "nb", date: "2026-07-18T10:40" },
+  { file: "new-brunswick/Puffin-1.jpg", title: "Puffin, Close Up", city: "Grand Manan", region: "nb", date: "2026-07-18T09:52" },
+  { file: "new-brunswick/Puffin-2.jpg", title: "Puffin Trio on the Rocks", city: "Grand Manan", region: "nb", date: "2026-07-18T09:51" },
+  { file: "new-brunswick/Razorbill-1.jpg", title: "Razorbill, Standing Watch", city: "Grand Manan", region: "nb", date: "2026-07-18T09:29" },
+  { file: "new-brunswick/Razorbill-3.jpg", title: "Razorbill and Puffin, Sharing a Rock", city: "Grand Manan", region: "nb", date: "2026-07-18T09:28" },
+  { file: "new-brunswick/Puffin-3.jpg", title: "Puffin, Mid-Call", city: "Grand Manan", region: "nb", date: "2026-07-18T09:26" },
+  { file: "new-brunswick/Razorbill-2.jpg", title: "Razorbill in Profile", city: "Grand Manan", region: "nb", date: "2026-07-18T09:25" },
+  { file: "new-brunswick/Puffin-4.jpg", title: "Puffin on the Boulder", city: "Grand Manan", region: "nb", date: "2026-07-18T09:01" },
+  { file: "new-brunswick/Boat dropping.jpg", title: "Dropping Off at the Weir", city: "Grand Manan", region: "nb", date: "2026-07-18T08:40" },
+  { file: "new-brunswick/Hole in the wall.jpg", title: "Hole in the Wall", city: "Grand Manan", region: "nb", date: "2026-07-17T14:28" },
+  { file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49" },
+  { file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17" },
+  { file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07" },
 ];
 
 // Location tabs (province / state / country tier — stays consistent, no cities here)
@@ -171,7 +175,7 @@ function render() {
 
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
-        <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\'")}')">
+        <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
           <img src="${encodeURI('images/' + p.file)}" alt="${p.title}" loading="lazy">
           <span class="num">${String(i + 1).padStart(2, "0")}</span>
           <span class="cap">${p.title}</span>
