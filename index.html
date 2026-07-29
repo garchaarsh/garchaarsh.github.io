@@ -25,6 +25,13 @@
   .tabs { display:flex; flex-wrap:wrap; gap:10px; font-family:monospace; margin-bottom:10px; }
   .tab { border:1px solid #444; padding:8px 16px; cursor:pointer; background:transparent; color:#ccc; letter-spacing:1px; font-size:0.85rem; }
   .tab.active { background:#c8672f; border-color:#c8672f; color:#111; }
+  .tab.goto { border-style:dashed; }
+  .tab.goto .chevron { display:inline-block; margin-left:6px; transition:transform 0.15s ease; }
+  .tab.goto.open .chevron { transform:rotate(180deg); }
+
+  .tabs-month { display:none; flex-wrap:wrap; gap:10px; font-family:monospace; margin:0 0 20px; padding:14px; border:1px dashed #444; }
+  .tabs-month.open { display:flex; }
+  .tabs-month .tab { border-color:#555; }
 
   /* Fixed 6-across grid, every tile the same size/ratio */
   .grid {
@@ -94,6 +101,7 @@
 
   <div class="sub-label">LOCATION</div>
   <div class="tabs" id="tabs-location"></div>
+  <div class="tabs-month" id="tabs-month"></div>
 
   <div class="grid" id="grid"></div>
 </main>
@@ -110,34 +118,6 @@
 // region must be one of: nb, ns, pe, on, ab, usa, in
 // =========================================================
 const photos = [
-  { file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", region: "ns", date: "2026-05-19T10:22" },
-  { file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", region: "ns", date: "2026-05-19T10:46" },
-  { file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", region: "ns", date: "2026-05-19T10:47" },
-  { file: "nova-scotia/AS30.jpg", title: "Historic Properties Corner", city: "Halifax", region: "ns", date: "2026-05-19T11:10" },
-  { file: "nova-scotia/AS32.jpg", title: "Spring Blossoms, Downtown Street", city: "Halifax", region: "ns", date: "2026-05-19T14:53" },
-  { file: "nova-scotia/AS33.jpg", title: "Old Town Clock, Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:01" },
-  { file: "nova-scotia/AS35.jpg", title: "View from Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:16" },
-  { file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
-  { file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
-  { file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
-  { file: "new-brunswick/NB 1.jpg", title: "Dancing in the Square", city: "Moncton", region: "nb", date: "2026-07-11T16:16" },
-  { file: "new-brunswick/NB 2.jpg", title: "Colors Flying at Festival", city: "Moncton", region: "nb", date: "2026-07-11T14:33" },
-  { file: "new-brunswick/NB 3.jpg", title: "Vibrant Crowd Covered in Powder", city: "Moncton", region: "nb", date: "2026-07-11T14:32" },
-  { file: "new-brunswick/NB 4.jpg", title: "Friends Smiling Through the Colors", city: "Moncton", region: "nb", date: "2026-07-11T14:16" },
-  { file: "new-brunswick/NB 5.jpg", title: "Perched on a Bare Branch", city: "Moncton", region: "nb", date: "2026-07-09T12:28" },
-  { file: "new-brunswick/NB 6.jpg", title: "Silhouette in the Green Canopy", city: "Moncton", region: "nb", date: "2026-07-08T17:05" },
-  { file: "new-brunswick/NB 7.jpg", title: "Quiet Moment on the Park Bench", city: "Moncton", region: "nb", date: "2026-07-08T16:24" },
-  { file: "new-brunswick/NB 8.jpg", title: "Striking Mural on Downtown Brick", city: "Moncton", region: "nb", date: "2026-07-08T15:58" },
-  { file: "new-brunswick/NB 9.jpg", title: "Strolling Through the Park Paths", city: "Moncton", region: "nb", date: "2026-07-01T15:29" },
-  { file: "new-brunswick/NB 10.jpg", title: "Looking Down Toward the Skyline Tower", city: "Moncton", region: "nb", date: "2026-07-01T15:21" },
-  { file: "new-brunswick/NB 11.jpg", title: "Gathered at the Festival Grounds", city: "Moncton", region: "nb", date: "2026-07-01T14:51" },
-  { file: "new-brunswick/NB 12.jpg", title: "Jet Streams Painting the Sky", city: "Moncton", region: "nb", date: "2026-06-28T13:48" },
-  { file: "new-brunswick/NB 13.jpg", title: "Acrobatic Planes Over the Trees", city: "Moncton", region: "nb", date: "2026-06-28T13:45" },
-  { file: "new-brunswick/NB 14.jpg", title: "Massive Crowd Enjoying the Event", city: "Moncton", region: "nb", date: "2026-06-28T13:25" },
-  { file: "new-brunswick/NB 15.jpg", title: "Gathered Under the Canadian Flag", city: "Moncton", region: "nb", date: "2026-06-18T18:40" },
-  { file: "new-brunswick/NB 16.jpg", title: "Watching the Show From the Sidelines", city: "Moncton", region: "nb", date: "2026-06-18T18:39" },
-  { file: "new-brunswick/NB 17.jpg", title: "Interactive Street Display", city: "Moncton", region: "nb", date: "2026-06-18T17:38" },
-  { file: "new-brunswick/NB 18.jpg", title: "Open Air Setup on Main Street", city: "Moncton", region: "nb", date: "2026-06-17T18:33" },
   { file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", region: "nb", date: "2026-07-19T09:38" },
   { file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", region: "nb", date: "2026-07-19T08:15" },
   { file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", region: "nb", date: "2026-07-18T18:40" },
@@ -156,10 +136,21 @@ const photos = [
   { file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49" },
   { file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17" },
   { file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07" },
+  { file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", region: "ns", date: "2026-05-19T10:22" },
+  { file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", region: "ns", date: "2026-05-19T10:46" },
+  { file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", region: "ns", date: "2026-05-19T10:47" },
+  { file: "nova-scotia/AS30.jpg", title: "Historic Properties Corner", city: "Halifax", region: "ns", date: "2026-05-19T11:10" },
+  { file: "nova-scotia/AS32.jpg", title: "Spring Blossoms, Downtown Street", city: "Halifax", region: "ns", date: "2026-05-19T14:53" },
+  { file: "nova-scotia/AS33.jpg", title: "Old Town Clock, Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:01" },
+  { file: "nova-scotia/AS35.jpg", title: "View from Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:16" },
+  { file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
+  { file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
+  { file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
 ];
+
 // Location tabs (province / state / country tier — stays consistent, no cities here)
+// Note: no "ALL" tab — default view with no tab active already shows everything.
 const locations = [
-  { key: "all", label: "ALL" },
   { key: "nb",  label: "NEW BRUNSWICK" },
   { key: "ns",  label: "NOVA SCOTIA" },
   { key: "pe",  label: "PRINCE EDWARD ISLAND" },
@@ -169,18 +160,52 @@ const locations = [
   { key: "in",  label: "INDIA" },
 ];
 
-let activeLocation = "all";
+const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+// activeFilter is either:
+//   null                              -> show everything
+//   { type: "location", key: "ns" }   -> filter by region
+//   { type: "month", key: "2026-05" } -> filter by year-month
+let activeFilter = null;
+let monthTabsOpen = false;
+
+function getAvailableMonths() {
+  const seen = new Map(); // "2026-05" -> { year, month }
+  photos.forEach(p => {
+    const d = new Date(p.date);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    if (!seen.has(key)) seen.set(key, { year: d.getFullYear(), month: d.getMonth() });
+  });
+  return [...seen.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([key, v]) => ({ key, label: `${MONTH_NAMES[v.month]} ${v.year}` }));
+}
 
 function render() {
   const sorted = [...photos].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const filtered = activeLocation === "all"
-    ? sorted
-    : sorted.filter(p => p.region === activeLocation);
+  let filtered = sorted;
+  if (activeFilter?.type === "location") {
+    filtered = sorted.filter(p => p.region === activeFilter.key);
+  } else if (activeFilter?.type === "month") {
+    filtered = sorted.filter(p => p.date.startsWith(activeFilter.key));
+  }
 
-  document.getElementById("tabs-location").innerHTML = locations.map(l => `
-    <button class="tab ${l.key === activeLocation ? "active" : ""}" onclick="setLocation('${l.key}')">${l.label}</button>
-  `).join("");
+  // Location tabs + GO TO toggle
+  document.getElementById("tabs-location").innerHTML =
+    locations.map(l => `
+      <button class="tab ${activeFilter?.type === "location" && activeFilter.key === l.key ? "active" : ""}" onclick="setLocation('${l.key}')">${l.label}</button>
+    `).join("") +
+    `<button class="tab goto ${monthTabsOpen ? "open" : ""} ${activeFilter?.type === "month" ? "active" : ""}" onclick="toggleGoTo()">GO TO<span class="chevron">▾</span></button>`;
+
+  // Month sub-tabs
+  const months = getAvailableMonths();
+  document.getElementById("tabs-month").className = `tabs-month ${monthTabsOpen ? "open" : ""}`;
+  document.getElementById("tabs-month").innerHTML = months.length
+    ? months.map(m => `
+        <button class="tab ${activeFilter?.type === "month" && activeFilter.key === m.key ? "active" : ""}" onclick="setMonth('${m.key}')">${m.label}</button>
+      `).join("")
+    : `<span class="empty">No dated photos yet.</span>`;
 
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
@@ -190,10 +215,25 @@ function render() {
           <span class="cap">${p.title}</span>
         </div>
       `).join("")
-    : `<div class="empty">No frames yet for this region.</div>`;
+    : `<div class="empty">No frames yet for this filter.</div>`;
 }
 
-function setLocation(key) { activeLocation = key; render(); }
+function setLocation(key) {
+  activeFilter = { type: "location", key };
+  monthTabsOpen = false;
+  render();
+}
+
+function toggleGoTo() {
+  monthTabsOpen = !monthTabsOpen;
+  render();
+}
+
+function setMonth(key) {
+  activeFilter = { type: "month", key };
+  monthTabsOpen = false;
+  render();
+}
 
 function openLightbox(src, alt) {
   document.getElementById("lightbox-img").src = src;
