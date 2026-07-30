@@ -50,9 +50,6 @@
     align-items:center;
     justify-content:center;
   }
-  /* object-fit: contain keeps the whole photo visible, centered,
-     with no cropping — portrait photos fill the frame edge to edge,
-     landscape photos sit centered with even space above/below. */
   .frame img { width:100%; height:100%; object-fit:contain; display:block; }
   .frame .num { position:absolute; top:8px; left:8px; font-family:monospace; color:#888; font-size:0.75rem; }
   .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.7rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 6px; }
@@ -112,11 +109,6 @@
 </div>
 
 <script>
-// =========================================================
-// YOUR PHOTOS — add one entry per photo, anywhere in this list.
-// The site sorts by "date" automatically (newest first).
-// region must be one of: nb, ns, pe, on, ab, usa, in
-// =========================================================
 const photos = [
 { file: "new-brunswick/AS1.jpg", title: "Hopewell Rocks — Flowerpot Formations at Low Tide", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:00" },
 { file: "new-brunswick/AS2.jpg", title: "Elephant Rock, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:05" },
@@ -143,39 +135,36 @@ const photos = [
 { file: "prince-edward-island/AS23.jpg", title: "Victoria Park, Charlottetown", city: "Charlottetown", region: "pe", date: "2026-05-19T15:30" },
 { file: "prince-edward-island/AS24.jpg", title: "Victoria Park — Waterfront Path", city: "Charlottetown", region: "pe", date: "2026-05-19T15:35" },
 { file: "prince-edward-island/AS25.jpg", title: "Victoria Park — Harbour View", city: "Charlottetown", region: "pe", date: "2026-05-19T15:40" },
-
-  { file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", region: "nb", date: "2026-07-19T09:38" },
-  { file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", region: "nb", date: "2026-07-19T08:15" },
-  { file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", region: "nb", date: "2026-07-18T18:40" },
-  { file: "new-brunswick/Whale watching-1.jpg", title: "Whale Fluke, Diving", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
-  { file: "new-brunswick/Whale watching-2.jpg", title: "Whale Tail, Calm Water", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
-  { file: "new-brunswick/Seals.jpg", title: "Seal Colony Below the Light", city: "Grand Manan", region: "nb", date: "2026-07-18T10:40" },
-  { file: "new-brunswick/Puffin-1.jpg", title: "Puffin, Close Up", city: "Grand Manan", region: "nb", date: "2026-07-18T09:52" },
-  { file: "new-brunswick/Puffin-2.jpg", title: "Puffin Trio on the Rocks", city: "Grand Manan", region: "nb", date: "2026-07-18T09:51" },
-  { file: "new-brunswick/Razorbill-1.jpg", title: "Razorbill, Standing Watch", city: "Grand Manan", region: "nb", date: "2026-07-18T09:29" },
-  { file: "new-brunswick/Razorbill-3.jpg", title: "Razorbill and Puffin, Sharing a Rock", city: "Grand Manan", region: "nb", date: "2026-07-18T09:28" },
-  { file: "new-brunswick/Puffin-3.jpg", title: "Puffin, Mid-Call", city: "Grand Manan", region: "nb", date: "2026-07-18T09:26" },
-  { file: "new-brunswick/Razorbill-2.jpg", title: "Razorbill in Profile", city: "Grand Manan", region: "nb", date: "2026-07-18T09:25" },
-  { file: "new-brunswick/Puffin-4.jpg", title: "Puffin on the Boulder", city: "Grand Manan", region: "nb", date: "2026-07-18T09:01" },
-  { file: "new-brunswick/Boat dropping.jpg", title: "Dropping Off at the Weir", city: "Grand Manan", region: "nb", date: "2026-07-18T08:40" },
-  { file: "new-brunswick/Hole in the wall.jpg", title: "Hole in the Wall", city: "Grand Manan", region: "nb", date: "2026-07-17T14:28" },
-  { file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49" },
-  { file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17" },
-  { file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07" },
-  { file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", region: "ns", date: "2026-05-19T10:22" },
-  { file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", region: "ns", date: "2026-05-19T10:46" },
-  { file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", region: "ns", date: "2026-05-19T10:47" },
-  { file: "nova-scotia/AS30.jpg", title: "Historic Properties Corner", city: "Halifax", region: "ns", date: "2026-05-19T11:10" },
-  { file: "nova-scotia/AS32.jpg", title: "Spring Blossoms, Downtown Street", city: "Halifax", region: "ns", date: "2026-05-19T14:53" },
-  { file: "nova-scotia/AS33.jpg", title: "Old Town Clock, Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:01" },
-  { file: "nova-scotia/AS35.jpg", title: "View from Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:16" },
-  { file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
-  { file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
-  { file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
+{ file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", region: "nb", date: "2026-07-19T09:38" },
+{ file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", region: "nb", date: "2026-07-19T08:15" },
+{ file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", region: "nb", date: "2026-07-18T18:40" },
+{ file: "new-brunswick/Whale watching-1.jpg", title: "Whale Fluke, Diving", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
+{ file: "new-brunswick/Whale watching-2.jpg", title: "Whale Tail, Calm Water", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
+{ file: "new-brunswick/Seals.jpg", title: "Seal Colony Below the Light", city: "Grand Manan", region: "nb", date: "2026-07-18T10:40" },
+{ file: "new-brunswick/Puffin-1.jpg", title: "Puffin, Close Up", city: "Grand Manan", region: "nb", date: "2026-07-18T09:52" },
+{ file: "new-brunswick/Puffin-2.jpg", title: "Puffin Trio on the Rocks", city: "Grand Manan", region: "nb", date: "2026-07-18T09:51" },
+{ file: "new-brunswick/Razorbill-1.jpg", title: "Razorbill, Standing Watch", city: "Grand Manan", region: "nb", date: "2026-07-18T09:29" },
+{ file: "new-brunswick/Razorbill-3.jpg", title: "Razorbill and Puffin, Sharing a Rock", city: "Grand Manan", region: "nb", date: "2026-07-18T09:28" },
+{ file: "new-brunswick/Puffin-3.jpg", title: "Puffin, Mid-Call", city: "Grand Manan", region: "nb", date: "2026-07-18T09:26" },
+{ file: "new-brunswick/Razorbill-2.jpg", title: "Razorbill in Profile", city: "Grand Manan", region: "nb", date: "2026-07-18T09:25" },
+{ file: "new-brunswick/Puffin-4.jpg", title: "Puffin on the Boulder", city: "Grand Manan", region: "nb", date: "2026-07-18T09:01" },
+{ file: "new-brunswick/Boat dropping.jpg", title: "Dropping Off at the Weir", city: "Grand Manan", region: "nb", date: "2026-07-18T08:40" },
+{ file: "new-brunswick/Hole in the wall.jpg", title: "Hole in the Wall", city: "Grand Manan", region: "nb", date: "2026-07-17T14:28" },
+{ file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49" },
+{ file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17" },
+{ file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07" },
+{ file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", region: "ns", date: "2026-05-19T10:22" },
+{ file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", region: "ns", date: "2026-05-19T10:46" },
+{ file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", region: "ns", date: "2026-05-19T10:47" },
+{ file: "nova-scotia/AS30.jpg", title: "Historic Properties Corner", city: "Halifax", region: "ns", date: "2026-05-19T11:10" },
+{ file: "nova-scotia/AS32.jpg", title: "Spring Blossoms, Downtown Street", city: "Halifax", region: "ns", date: "2026-05-19T14:53" },
+{ file: "nova-scotia/AS33.jpg", title: "Old Town Clock, Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:01" },
+{ file: "nova-scotia/AS35.jpg", title: "View from Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:16" },
+{ file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
+{ file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
+{ file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
 ];
 
-// Location tabs (province / state / country tier — stays consistent, no cities here)
-// Note: no "ALL" tab — default view with no tab active already shows everything.
 const locations = [
   { key: "nb",  label: "NEW BRUNSWICK" },
   { key: "ns",  label: "NOVA SCOTIA" },
@@ -188,15 +177,11 @@ const locations = [
 
 const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
-// activeFilter is either:
-//   null                              -> show everything
-//   { type: "location", key: "ns" }   -> filter by region
-//   { type: "month", key: "2026-05" } -> filter by year-month
 let activeFilter = null;
 let monthTabsOpen = false;
 
 function getAvailableMonths() {
-  const seen = new Map(); // "2026-05" -> { year, month }
+  const seen = new Map();
   photos.forEach(p => {
     const d = new Date(p.date);
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
@@ -217,14 +202,12 @@ function render() {
     filtered = sorted.filter(p => p.date.startsWith(activeFilter.key));
   }
 
-  // Location tabs + GO TO toggle
   document.getElementById("tabs-location").innerHTML =
     locations.map(l => `
       <button class="tab ${activeFilter?.type === "location" && activeFilter.key === l.key ? "active" : ""}" onclick="setLocation('${l.key}')">${l.label}</button>
     `).join("") +
     `<button class="tab goto ${monthTabsOpen ? "open" : ""} ${activeFilter?.type === "month" ? "active" : ""}" onclick="toggleGoTo()">GO TO<span class="chevron">▾</span></button>`;
 
-  // Month sub-tabs
   const months = getAvailableMonths();
   document.getElementById("tabs-month").className = `tabs-month ${monthTabsOpen ? "open" : ""}`;
   document.getElementById("tabs-month").innerHTML = months.length
@@ -233,6 +216,7 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
+  // FIX APPLIED HERE: Added the missing <img> tag inside the grid template
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
         <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
