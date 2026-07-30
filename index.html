@@ -17,7 +17,6 @@
   .hero h1 { font-size:4rem; margin:0; line-height:1.1; }
   .hero h1 .accent { font-style:italic; color:#e8a15c; }
   .hero p { max-width:520px; color:#bbb; font-size:1.1rem; margin-top:20px; }
-  .gear { text-align:right; font-family:monospace; color:#888; font-size:0.85rem; margin-top:-40px; padding-right:40px; }
 
   main { padding:40px; }
   h2 { font-size:2.5rem; margin-bottom:4px; }
@@ -33,11 +32,11 @@
   .tabs-month.open { display:flex; }
   .tabs-month .tab { border-color:#555; }
 
-  /* Fixed 6-across grid, every tile the same size/ratio */
+  /* Fixed 4-across grid, fits perfectly on screen view */
   .grid {
     display:grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap:6px;
+    grid-template-columns: repeat(4, 1fr);
+    gap:12px;
     margin-top:24px;
   }
   .frame {
@@ -50,12 +49,19 @@
     align-items:center;
     justify-content:center;
   }
-  .frame img { width:100%; height:100%; object-fit:contain; display:block; }
+  /* Low-res performance rendering optimization */
+  .frame img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    image-rendering: -webkit-optimize-contrast;
+  }
   .frame .num { position:absolute; top:8px; left:8px; font-family:monospace; color:#888; font-size:0.75rem; }
   .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.7rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 6px; }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
 
-  /* Lightbox (tap a photo to see it full size) */
+  /* Lightbox (tap a photo to see full resolution) */
   .lightbox {
     display:none;
     position:fixed; inset:0; background:rgba(0,0,0,0.9);
@@ -67,10 +73,10 @@
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
   @media (max-width: 900px) {
-    .grid { grid-template-columns: repeat(3, 1fr); }
+    .grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 500px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: repeat(1, 1fr); }
     .hero h1 { font-size:2.6rem; }
   }
 </style>
@@ -91,7 +97,6 @@
   <h1>ordinary <span class="accent">streets.</span></h1>
   <p>A working portfolio of street, architecture, and travel photography — shot on a Sony A7III, edited slow, published here.</p>
 </section>
-<div class="gear">SEL2870 · SEL50F18F · <br>EST. 2026</div>
 
 <main>
   <h2>Selected Work</h2>
@@ -177,7 +182,6 @@ const locations = [
 
 const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
-// Set default initial view to New Brunswick (nb) so it doesn't load everything at once
 let activeFilter = { type: "location", key: "nb" };
 let monthTabsOpen = false;
 
@@ -217,12 +221,10 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
-  // Grid uses downscaled thumbnail parameters (?w=400&q=40) for lightning-fast loading, 
-  // while the lightbox opens the full resolution image.
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
         <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
-          <img src="${encodeURI('images/' + p.file)}?w=400&q=40" alt="${p.title}" loading="lazy">
+          <img src="${encodeURI('images/' + p.file)}" alt="${p.title}" loading="lazy" width="300">
           <span class="num">${String(i + 1).padStart(2, "0")}</span>
           <span class="cap">${p.title}</span>
         </div>
