@@ -216,7 +216,6 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
-  // FIX APPLIED HERE: Added the missing <img> tag inside the grid template
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
         <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
