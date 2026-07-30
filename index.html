@@ -177,7 +177,8 @@ const locations = [
 
 const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
-let activeFilter = null;
+// Set default initial view to New Brunswick (nb) so it doesn't load everything at once
+let activeFilter = { type: "location", key: "nb" };
 let monthTabsOpen = false;
 
 function getAvailableMonths() {
@@ -216,10 +217,12 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
+  // Grid uses downscaled thumbnail parameters (?w=400&q=40) for lightning-fast loading, 
+  // while the lightbox opens the full resolution image.
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => `
         <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
-          <img src="${encodeURI('images/' + p.file)}" alt="${p.title}" loading="lazy">
+          <img src="${encodeURI('images/' + p.file)}?w=400&q=40" alt="${p.title}" loading="lazy">
           <span class="num">${String(i + 1).padStart(2, "0")}</span>
           <span class="cap">${p.title}</span>
         </div>
