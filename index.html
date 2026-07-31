@@ -214,12 +214,11 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
-  // Safely checks if a thumbs folder exists; falls back to main image if not yet created for other regions
+  // Enables thumbs for New Brunswick (nb), Prince Edward Island (pe), and Nova Scotia (ns)
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
-        // If thumbs folder isn't made for other regions yet, this gracefully handles it
-        const hasThumbs = (p.region === 'nb'); 
+        const hasThumbs = (p.region === 'nb' || p.region === 'pe' || p.region === 'ns');
         const displayFile = hasThumbs ? (parts[0] + '/thumbs/' + parts[1]) : p.file;
         
         return `
