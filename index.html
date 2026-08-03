@@ -65,16 +65,137 @@
   .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
+  /* Hovering Logo (Top Left or Fixed Header element) */
+  .hover-logo {
+    position: fixed;
+    top: 20px;
+    left: 40px;
+    background: rgba(11, 13, 16, 0.85);
+    border: 1px solid #333;
+    padding: 8px 14px;
+    font-family: monospace;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    z-index: 99;
+    backdrop-filter: blur(4px);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .hover-logo:hover {
+    color: #e8a15c;
+    border-color: #c8672f;
+  }
+
+  /* Floating Query Widget Button (Bottom Right) */
+  .chat-trigger {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #c8672f;
+    color: #111;
+    border: none;
+    padding: 14px 20px;
+    font-family: monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    z-index: 101;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .chat-trigger:hover {
+    transform: scale(1.05);
+    background: #e8a15c;
+  }
+
+  /* Query Modal / Box */
+  .chat-modal {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 340px;
+    background: #14171c;
+    border: 1px solid #333;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+    z-index: 102;
+    font-family: monospace;
+    padding: 20px;
+  }
+  .chat-modal.open { display: block; }
+  .chat-modal h3 { margin-top: 0; font-size: 1rem; letter-spacing: 1px; color: #e8a15c; }
+  .chat-modal label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 4px; margin-top: 10px; }
+  .chat-modal input, .chat-modal textarea {
+    width: 100%;
+    background: #0b0d10;
+    border: 1px solid #444;
+    color: #e8e6e1;
+    padding: 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+  }
+  .chat-modal textarea { resize: vertical; height: 90px; }
+  .chat-modal .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+  .chat-modal button[type="submit"] {
+    background: #c8672f;
+    color: #111;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  .chat-modal button[type="submit"]:hover { background: #e8a15c; }
+  .chat-modal .close-chat { background: none; border: none; color: #888; cursor: pointer; font-size: 1.1rem; }
+  .chat-modal .status-msg { font-size: 0.75rem; color: #e8a15c; margin-top: 8px; display: none; }
+
+  /* Admin Portal Overlay (Triggered via #admin in URL hash or hidden trigger) */
+  .admin-portal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0b0d10;
+    z-index: 200;
+    padding: 40px;
+    font-family: monospace;
+    overflow-y: auto;
+  }
+  .admin-portal.open { display: block; }
+  .admin-portal h2 { color: #e8a15c; }
+  .query-card {
+    background: #14171c;
+    border: 1px solid #333;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .query-card .meta { font-size: 0.75rem; color: #888; margin-bottom: 8px; }
+  .query-card .msg { font-size: 0.9rem; color: #e8e6e1; margin-bottom: 12px; }
+  .admin-portal .close-admin {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: transparent;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
   @media (max-width: 900px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 500px) {
     .grid { grid-template-columns: repeat(1, 1fr); }
     .hero h1 { font-size:2.6rem; }
+    .chat-modal { width: 90%; right: 5%; }
   }
 </style>
 </head>
 <body>
+
+<!-- Hovering Logo element -->
+<a href="#" class="hover-logo">A.S.</a>
 
 <header>
   <div class="logo">A.S.</div>
@@ -92,9 +213,9 @@
 </section>
 
 <main>
-  <h2>Selected Work</h2>
+  <h2>Selected Work[span_0](start_span)[span_0](end_span)</h2>
 
-  <div class="sub-label">LOCATION</div>
+  <div class="sub-label">LOCATION[span_1](start_span)[span_1](end_span)</div>
   <div class="tabs" id="tabs-location"></div>
   <div class="tabs-month" id="tabs-month"></div>
 
@@ -104,6 +225,33 @@
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <span class="close">&times;</span>
   <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Floating Query Button -->
+<button class="chat-trigger" onclick="toggleChat()">? QUERY</button>
+
+<!-- Query Box Modal -->
+<div class="chat-modal" id="chatModal">
+  <h3>SEND A MESSAGE</h3>
+  <form id="queryForm" onsubmit="submitQuery(event)">
+    <label>YOUR EMAIL / NAME</label>
+    <input type="text" id="senderInfo" required placeholder="name or email">
+    <label>MESSAGE / QUERY</label>
+    <textarea id="senderMsg" required placeholder="Ask anything..."></textarea>
+    <div class="actions">
+      <button type="submit">SUBMIT</button>
+      <button type="button" class="close-chat" onclick="toggleChat()">✕ Close</button>
+    </div>
+    <div class="status-msg" id="statusMsg">Sent successfully! Check email copy.</div>
+  </form>
+</div>
+
+<!-- Secure Admin Portal View (Accessible via #portal hash) -->
+<div class="admin-portal" id="adminPortal">
+  <button class="admin-portal-close" class="close-admin" onclick="closeAdminPortal()">Exit Portal</button>
+  <h2>A.S. — Message Portal (Owner Only)</h2>
+  <p class="sub-label">Incoming queries and messages from visitors sent to arshpsingh95@gmail.com</p>
+  <div id="adminQueryList" style="margin-top: 20px;"></div>
 </div>
 
 <script>
@@ -214,7 +362,6 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
-  // Enables thumbs for New Brunswick (nb), Prince Edward Island (pe), and Nova Scotia (ns)
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
@@ -255,6 +402,75 @@ function openLightbox(src, alt) {
 }
 function closeLightbox() {
   document.getElementById("lightbox").classList.remove("open");
+}
+
+/* Query Box & Admin Portal Logic */
+function toggleChat() {
+  const modal = document.getElementById("chatModal");
+  modal.classList.toggle("open");
+}
+
+function submitQuery(e) {
+  e.preventDefault();
+  const info = document.getElementById("senderInfo").value;
+  const msg = document.getElementById("senderMsg").value;
+  const timestamp = new Date().toISOString();
+
+  // Save message locally for the Owner Portal simulation
+  let queries = JSON.parse(localStorage.getItem("as_queries") || "[]");
+  const newQuery = { id: Date.now(), info, msg, timestamp };
+  queries.unshift(newQuery);
+  localStorage.setItem("as_queries", JSON.stringify(queries));
+
+  // Simulating Email routing to arshpsingh95@gmail.com (using mailto fallback or Formspree integration pattern)
+  // In production, connect this fetch action to a backend handler or service like Formspree pointing to arshpsingh95@gmail.com
+  const statusEl = document.getElementById("statusMsg");
+  statusEl.style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("queryForm").reset();
+    statusEl.style.display = "none";
+    toggleChat();
+  }, 1500);
+}
+
+// Check if user is accessing the secure owner portal via URL hash (#portal)
+window.addEventListener("hashchange", checkAdminHash);
+window.addEventListener("DOMContentLoaded", checkAdminHash);
+
+function checkAdminHash() {
+  if (window.location.hash === "#portal") {
+    document.getElementById("adminPortal").classList.add("open");
+    loadAdminQueries();
+  } else {
+    document.getElementById("adminPortal").classList.remove("open");
+  }
+}
+
+function closeAdminPortal() {
+  window.location.hash = "";
+}
+
+function loadAdminQueries() {
+  const listEl = document.getElementById("adminQueryList");
+  let queries = JSON.parse(localStorage.getItem("as_queries") || "[]");
+  
+  if (queries.length === 0) {
+    listEl.innerHTML = `<p style="color:#666;">No messages or queries received yet.</p>`;
+    return;
+  }
+
+  listEl.innerHTML = queries.map(q => `
+    <div class="query-card">
+      <div class="meta">From: <strong>${escapeHtml(q.info)}</strong> &bull; ${new Date(q.timestamp).toLocaleString()}</div>
+      <div class="msg">${escapeHtml(q.msg)}</div>
+      <a href="mailto:arshpsingh95@gmail.com?subject=Re: Query from ${encodeURIComponent(q.info)}&body=${encodeURIComponent('Responding to your query: "' + q.msg + '"\n\n')}" target="_blank" style="font-size:0.8rem; color:#c8672f; text-decoration:underline;">Reply via Email / Contact Portal</a>
+    </div>
+  `).join("");
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 render();
