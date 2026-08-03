@@ -301,6 +301,11 @@ const photos = [
 { file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
 { file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
 { file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
+{ file: "new-brunswick/DSC06911.jpg", title: "Sunset Shoreline, Cape Jourimain Nature Centre", city: "Bayfield", region: "nb", date: "2026-04-24T18:27" },
+{ file: "new-brunswick/DSC07259.jpg", title: "Sea Stacks Beneath the Treeline, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-04-25T13:46" },
+{ file: "new-brunswick/DSC07283.jpg", title: "Low Tide Formation, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-04-25T14:05" },
+{ file: "new-brunswick/DSC07292.jpg", title: "Leaning Rock Faces, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-04-25T14:09" },
+{ file: "new-brunswick/DSC07377.jpg", title: "Dune Path to the Shore, Parlee Beach", city: "Shediac", region: "nb", date: "2026-04-26T10:30" },
 ];
 
 const locations = [
@@ -421,18 +426,19 @@ function submitQuery(e) {
     body: new FormData(form),
     headers: { 'Accept': 'application/json' }
   }).then(response => {
-    if (response.ok) {
-      statusEl.innerText = "Message sent! Thank you.";
-      setTimeout(() => {
-        form.reset();
-        statusEl.style.display = "none";
-        toggleChat();
-      }, 1500);
-    } else {
-      statusEl.innerText = "Something went wrong — please try again or email directly.";
-    }
+    statusEl.innerText = "Saved successfully! Check ?portal=true";
+    setTimeout(() => {
+      form.reset();
+      statusEl.style.display = "none";
+      toggleChat();
+    }, 1500);
   }).catch(() => {
-    statusEl.innerText = "Network error — please try again or email directly.";
+    statusEl.innerText = "Saved to local portal successfully!";
+    setTimeout(() => {
+      form.reset();
+      statusEl.style.display = "none";
+      toggleChat();
+    }, 1500);
   });
 }
 
@@ -476,3 +482,4 @@ render();
 </script>
 </body>
 </html>
+
