@@ -65,7 +65,7 @@
   .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
-  /* Hovering Logo (Top Left or Fixed Header element) */
+  /* Hovering Logo */
   .hover-logo {
     position: fixed;
     top: 20px;
@@ -85,7 +85,7 @@
     border-color: #c8672f;
   }
 
-  /* Floating Query Widget Button (Bottom Right) */
+  /* Floating Query Widget Button */
   .chat-trigger {
     position: fixed;
     bottom: 30px;
@@ -149,7 +149,7 @@
   .chat-modal .close-chat { background: none; border: none; color: #888; cursor: pointer; font-size: 1.1rem; }
   .chat-modal .status-msg { font-size: 0.75rem; color: #e8a15c; margin-top: 8px; display: none; }
 
-  /* Admin Portal Overlay (Triggered via #admin in URL hash or hidden trigger) */
+  /* Admin Portal Overlay */
   .admin-portal {
     display: none;
     position: fixed;
@@ -194,7 +194,6 @@
 </head>
 <body>
 
-<!-- Hovering Logo element -->
 <a href="#" class="hover-logo">A.S.</a>
 
 <header>
@@ -213,9 +212,9 @@
 </section>
 
 <main>
-  <h2>Selected Work[span_0](start_span)[span_0](end_span)</h2>
+  <h2>Selected Work</h2>
 
-  <div class="sub-label">LOCATION[span_1](start_span)[span_1](end_span)</div>
+  <div class="sub-label">LOCATION</div>
   <div class="tabs" id="tabs-location"></div>
   <div class="tabs-month" id="tabs-month"></div>
 
@@ -227,10 +226,8 @@
   <img id="lightbox-img" src="" alt="">
 </div>
 
-<!-- Floating Query Button -->
 <button class="chat-trigger" onclick="toggleChat()">? QUERY</button>
 
-<!-- Query Box Modal -->
 <div class="chat-modal" id="chatModal">
   <h3>SEND A MESSAGE</h3>
   <form id="queryForm" onsubmit="submitQuery(event)">
@@ -246,9 +243,8 @@
   </form>
 </div>
 
-<!-- Secure Admin Portal View (Accessible via #portal hash) -->
 <div class="admin-portal" id="adminPortal">
-  <button class="admin-portal-close" class="close-admin" onclick="closeAdminPortal()">Exit Portal</button>
+  <button class="close-admin" onclick="closeAdminPortal()">Exit Portal</button>
   <h2>A.S. — Message Portal (Owner Only)</h2>
   <p class="sub-label">Incoming queries and messages from visitors sent to arshpsingh95@gmail.com</p>
   <div id="adminQueryList" style="margin-top: 20px;"></div>
@@ -404,7 +400,6 @@ function closeLightbox() {
   document.getElementById("lightbox").classList.remove("open");
 }
 
-/* Query Box & Admin Portal Logic */
 function toggleChat() {
   const modal = document.getElementById("chatModal");
   modal.classList.toggle("open");
@@ -416,14 +411,11 @@ function submitQuery(e) {
   const msg = document.getElementById("senderMsg").value;
   const timestamp = new Date().toISOString();
 
-  // Save message locally for the Owner Portal simulation
   let queries = JSON.parse(localStorage.getItem("as_queries") || "[]");
   const newQuery = { id: Date.now(), info, msg, timestamp };
   queries.unshift(newQuery);
   localStorage.setItem("as_queries", JSON.stringify(queries));
 
-  // Simulating Email routing to arshpsingh95@gmail.com (using mailto fallback or Formspree integration pattern)
-  // In production, connect this fetch action to a backend handler or service like Formspree pointing to arshpsingh95@gmail.com
   const statusEl = document.getElementById("statusMsg");
   statusEl.style.display = "block";
 
@@ -434,7 +426,6 @@ function submitQuery(e) {
   }, 1500);
 }
 
-// Check if user is accessing the secure owner portal via URL hash (#portal)
 window.addEventListener("hashchange", checkAdminHash);
 window.addEventListener("DOMContentLoaded", checkAdminHash);
 
