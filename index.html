@@ -65,24 +65,26 @@
   .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
-  /* Hovering Logo */
+  /* Boxed Hovering Logo */
   .hover-logo {
     position: fixed;
     top: 20px;
     left: 40px;
-    background: rgba(11, 13, 16, 0.85);
-    border: 1px solid #333;
-    padding: 8px 14px;
+    background: #0b0d10;
+    border: 1px solid #c8672f;
+    padding: 6px 12px;
     font-family: monospace;
     letter-spacing: 2px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    color: #e8a15c;
     z-index: 99;
-    backdrop-filter: blur(4px);
-    transition: color 0.2s, border-color 0.2s;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    transition: background 0.2s, color 0.2s;
   }
   .hover-logo:hover {
-    color: #e8a15c;
-    border-color: #c8672f;
+    background: #c8672f;
+    color: #111;
   }
 
   /* Floating Query Widget Button */
@@ -170,7 +172,7 @@
   }
   .query-card .meta { font-size: 0.75rem; color: #888; margin-bottom: 8px; }
   .query-card .msg { font-size: 0.9rem; color: #e8e6e1; margin-bottom: 12px; }
-  .admin-portal .close-admin {
+  .close-admin {
     position: absolute;
     top: 30px;
     right: 40px;
@@ -194,7 +196,8 @@
 </head>
 <body>
 
-<a href="#" class="hover-logo">A.S.</a>
+<!-- Boxed Hovering Logo linking to main front page -->
+<a href="index.html" class="hover-logo" title="Back to main page">A.S.</a>
 
 <header>
   <div class="logo">A.S.</div>
@@ -228,25 +231,27 @@
 
 <button class="chat-trigger" onclick="toggleChat()">? QUERY</button>
 
+<!-- Query Box Modal connected via Formspree to arshpsingh95@gmail.com -->
 <div class="chat-modal" id="chatModal">
   <h3>SEND A MESSAGE</h3>
-  <form id="queryForm" onsubmit="submitQuery(event)">
+  <form id="queryForm" action="https://formspree.io/f/arshpsingh95@gmail.com" method="POST" onsubmit="submitQuery(event)">
     <label>YOUR EMAIL / NAME</label>
-    <input type="text" id="senderInfo" required placeholder="name or email">
+    <input type="text" name="senderInfo" id="senderInfo" required placeholder="name or email">
     <label>MESSAGE / QUERY</label>
-    <textarea id="senderMsg" required placeholder="Ask anything..."></textarea>
+    <textarea name="message" id="senderMsg" required placeholder="Ask anything..."></textarea>
     <div class="actions">
       <button type="submit">SUBMIT</button>
       <button type="button" class="close-chat" onclick="toggleChat()">✕ Close</button>
     </div>
-    <div class="status-msg" id="statusMsg">Sent successfully! Check email copy.</div>
+    <div class="status-msg" id="statusMsg">Sending message to arshpsingh95@gmail.com...</div>
   </form>
 </div>
 
+<!-- Secure Admin Portal View (Accessible via #portal hash) -->
 <div class="admin-portal" id="adminPortal">
   <button class="close-admin" onclick="closeAdminPortal()">Exit Portal</button>
   <h2>A.S. — Message Portal (Owner Only)</h2>
-  <p class="sub-label">Incoming queries and messages from visitors sent to arshpsingh95@gmail.com</p>
+  <p class="sub-label">Incoming queries and messages from visitors stored locally & sent to arshpsingh95@gmail.com</p>
   <div id="adminQueryList" style="margin-top: 20px;"></div>
 </div>
 
@@ -411,19 +416,45 @@ function submitQuery(e) {
   const msg = document.getElementById("senderMsg").value;
   const timestamp = new Date().toISOString();
 
+  // Save locally so it appears in the owner portal (#portal) immediately
   let queries = JSON.parse(localStorage.getItem("as_queries") || "[]");
-  const newQuery = { id: Date.now(), info, msg, timestamp };
-  queries.unshift(newQuery);
+  queries.unshift({ id: Date.now(), info, msg, timestamp });
   localStorage.setItem("as_queries", JSON.stringify(queries));
 
   const statusEl = document.getElementById("statusMsg");
   statusEl.style.display = "block";
+  statusEl.innerText = "Submitting to email & portal...";
 
-  setTimeout(() => {
-    document.getElementById("queryForm").reset();
-    statusEl.style.display = "none";
-    toggleChat();
-  }, 1500);
+  // Submit via fetch to Formspree backend endpoint so it goes to your email
+  const form = document.getElementById("queryForm");
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      statusEl.innerText = "Success! Sent to email.";
+      setTimeout(() => {
+        form.reset();
+        statusEl.style.display = "none";
+        toggleChat();
+      }, 1500);
+    } else {
+      statusEl.innerText = "Saved locally! (Check #portal).";
+      setTimeout(() => {
+        form.reset();
+        statusEl.style.display = "none";
+        toggleChat();
+      }, 1800);
+    }
+  }).catch(() => {
+    statusEl.innerText = "Saved to local portal successfully!";
+    setTimeout(() => {
+      form.reset();
+      statusEl.style.display = "none";
+      toggleChat();
+    }, 1500);
+  });
 }
 
 window.addEventListener("hashchange", checkAdminHash);
