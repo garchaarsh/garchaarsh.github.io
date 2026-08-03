@@ -9,7 +9,7 @@
   a { color:inherit; text-decoration:none; }
 
   header { display:flex; justify-content:space-between; align-items:center; padding:24px 40px; flex-wrap:wrap; gap:16px; }
-  .logo { font-size:1.3rem; letter-spacing:2px; }
+  .logo { font-size:1.3rem; letter-spacing:2px; cursor:pointer; }
   nav { display:flex; gap:28px; font-family:monospace; font-size:0.85rem; letter-spacing:1px; color:#ccc; }
   nav a:hover { color:#c8672f; }
 
@@ -32,7 +32,6 @@
   .tabs-month.open { display:flex; }
   .tabs-month .tab { border-color:#555; }
 
-  /* 4-across grid */
   .grid {
     display:grid;
     grid-template-columns: repeat(4, 1fr);
@@ -54,7 +53,6 @@
   .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.7rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 6px; z-index:2; }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
 
-  /* Lightbox */
   .lightbox {
     display:none;
     position:fixed; inset:0; background:rgba(0,0,0,0.9);
@@ -65,7 +63,6 @@
   .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
   .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
-  /* Boxed Hovering Logo */
   .hover-logo {
     position: fixed;
     top: 20px;
@@ -87,7 +84,6 @@
     color: #111;
   }
 
-  /* Floating Query Widget Button */
   .chat-trigger {
     position: fixed;
     bottom: 30px;
@@ -109,7 +105,6 @@
     background: #e8a15c;
   }
 
-  /* Query Modal / Box */
   .chat-modal {
     display: none;
     position: fixed;
@@ -151,7 +146,6 @@
   .chat-modal .close-chat { background: none; border: none; color: #888; cursor: pointer; font-size: 1.1rem; }
   .chat-modal .status-msg { font-size: 0.75rem; color: #e8a15c; margin-top: 8px; display: none; }
 
-  /* Admin Portal Overlay */
   .admin-portal {
     display: none;
     position: fixed;
@@ -196,11 +190,10 @@
 </head>
 <body>
 
-<!-- Boxed Hovering Logo linking to main front page -->
 <a href="index.html" class="hover-logo" title="Back to main page">A.S.</a>
 
 <header>
-  <div class="logo">A.S.</div>
+  <div class="logo" onclick="window.location.href='index.html'">A.S.</div>
   <nav>
     <a href="index.html">WORK</a>
     <a href="blog.html">JOURNAL</a>
@@ -231,10 +224,9 @@
 
 <button class="chat-trigger" onclick="toggleChat()">? QUERY</button>
 
-<!-- Query Box Modal connected via Formspree to arshpsingh95@gmail.com -->
 <div class="chat-modal" id="chatModal">
   <h3>SEND A MESSAGE</h3>
-  <form id="queryForm" action="https://formspree.io/f/arshpsingh95@gmail.com" method="POST" onsubmit="submitQuery(event)">
+  <form id="queryForm" action="https://formspree.io/f/xlgqqvze" method="POST" onsubmit="submitQuery(event)">
     <label>YOUR EMAIL / NAME</label>
     <input type="text" name="senderInfo" id="senderInfo" required placeholder="name or email">
     <label>MESSAGE / QUERY</label>
@@ -243,15 +235,14 @@
       <button type="submit">SUBMIT</button>
       <button type="button" class="close-chat" onclick="toggleChat()">✕ Close</button>
     </div>
-    <div class="status-msg" id="statusMsg">Sending message to arshpsingh95@gmail.com...</div>
+    <div class="status-msg" id="statusMsg">Submitting query...</div>
   </form>
 </div>
 
-<!-- Secure Admin Portal View (Accessible via #portal hash) -->
 <div class="admin-portal" id="adminPortal">
   <button class="close-admin" onclick="closeAdminPortal()">Exit Portal</button>
   <h2>A.S. — Message Portal (Owner Only)</h2>
-  <p class="sub-label">Incoming queries and messages from visitors stored locally & sent to arshpsingh95@gmail.com</p>
+  <p class="sub-label">Incoming queries and messages saved locally on your device.</p>
   <div id="adminQueryList" style="margin-top: 20px;"></div>
 </div>
 
@@ -416,37 +407,26 @@ function submitQuery(e) {
   const msg = document.getElementById("senderMsg").value;
   const timestamp = new Date().toISOString();
 
-  // Save locally so it appears in the owner portal (#portal) immediately
   let queries = JSON.parse(localStorage.getItem("as_queries") || "[]");
   queries.unshift({ id: Date.now(), info, msg, timestamp });
   localStorage.setItem("as_queries", JSON.stringify(queries));
 
   const statusEl = document.getElementById("statusMsg");
   statusEl.style.display = "block";
-  statusEl.innerText = "Submitting to email & portal...";
+  statusEl.innerText = "Submitting query...";
 
-  // Submit via fetch to Formspree backend endpoint so it goes to your email
   const form = document.getElementById("queryForm");
   fetch(form.action, {
     method: 'POST',
     body: new FormData(form),
     headers: { 'Accept': 'application/json' }
   }).then(response => {
-    if (response.ok) {
-      statusEl.innerText = "Success! Sent to email.";
-      setTimeout(() => {
-        form.reset();
-        statusEl.style.display = "none";
-        toggleChat();
-      }, 1500);
-    } else {
-      statusEl.innerText = "Saved locally! (Check #portal).";
-      setTimeout(() => {
-        form.reset();
-        statusEl.style.display = "none";
-        toggleChat();
-      }, 1800);
-    }
+    statusEl.innerText = "Saved successfully! Check ?portal=true";
+    setTimeout(() => {
+      form.reset();
+      statusEl.style.display = "none";
+      toggleChat();
+    }, 1500);
   }).catch(() => {
     statusEl.innerText = "Saved to local portal successfully!";
     setTimeout(() => {
@@ -457,20 +437,18 @@ function submitQuery(e) {
   });
 }
 
-window.addEventListener("hashchange", checkAdminHash);
-window.addEventListener("DOMContentLoaded", checkAdminHash);
+window.addEventListener("DOMContentLoaded", checkPortalQueryParam);
 
-function checkAdminHash() {
-  if (window.location.hash === "#portal") {
+function checkPortalQueryParam() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("portal") === "true") {
     document.getElementById("adminPortal").classList.add("open");
     loadAdminQueries();
-  } else {
-    document.getElementById("adminPortal").classList.remove("open");
   }
 }
 
 function closeAdminPortal() {
-  window.location.hash = "";
+  window.location.search = "";
 }
 
 function loadAdminQueries() {
@@ -486,7 +464,7 @@ function loadAdminQueries() {
     <div class="query-card">
       <div class="meta">From: <strong>${escapeHtml(q.info)}</strong> &bull; ${new Date(q.timestamp).toLocaleString()}</div>
       <div class="msg">${escapeHtml(q.msg)}</div>
-      <a href="mailto:arshpsingh95@gmail.com?subject=Re: Query from ${encodeURIComponent(q.info)}&body=${encodeURIComponent('Responding to your query: "' + q.msg + '"\n\n')}" target="_blank" style="font-size:0.8rem; color:#c8672f; text-decoration:underline;">Reply via Email / Contact Portal</a>
+      <a href="mailto:arshpsingh95@gmail.com?subject=Re: Query from ${encodeURIComponent(q.info)}&body=${encodeURIComponent('Responding to your query: "' + q.msg + '"\n\n')}" target="_blank" style="font-size:0.8rem; color:#c8672f; text-decoration:underline;">Reply via Email</a>
     </div>
   `).join("");
 }
