@@ -421,19 +421,18 @@ function submitQuery(e) {
     body: new FormData(form),
     headers: { 'Accept': 'application/json' }
   }).then(response => {
-    statusEl.innerText = "Saved successfully! Check ?portal=true";
-    setTimeout(() => {
-      form.reset();
-      statusEl.style.display = "none";
-      toggleChat();
-    }, 1500);
+    if (response.ok) {
+      statusEl.innerText = "Message sent! Thank you.";
+      setTimeout(() => {
+        form.reset();
+        statusEl.style.display = "none";
+        toggleChat();
+      }, 1500);
+    } else {
+      statusEl.innerText = "Something went wrong — please try again or email directly.";
+    }
   }).catch(() => {
-    statusEl.innerText = "Saved to local portal successfully!";
-    setTimeout(() => {
-      form.reset();
-      statusEl.style.display = "none";
-      toggleChat();
-    }, 1500);
+    statusEl.innerText = "Network error — please try again or email directly.";
   });
 }
 
