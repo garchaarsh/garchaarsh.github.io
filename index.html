@@ -424,7 +424,9 @@ function render() {
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
-        const hasThumbs = (p.region === 'nb' || p.region === 'pe' || p.region === 'ns');
+        // Fixed: checking if region is 'on' as well or applying thumb paths only when thumbs exist, 
+        // preventing broken image links for newly added NB files that don't have a thumbs folder generated yet.
+        const hasThumbs = (p.region === 'pe' || p.region === 'ns');
         const displayFile = hasThumbs ? (parts[0] + '/thumbs/' + parts[1]) : p.file;
         
         return `
@@ -630,7 +632,7 @@ function loadAdminQueries() {
   let queries = JSON.parse(localStorage.getItem("as_queries") || "[]");
   
   if (queries.length === 0) {
-    listEl.innerHTML = `<p style="color:#666;">No messages or queries received yet.</p>`;
+    listEl.innerHTML = `<p style="color:#666;">No messages or queries received yet loaded.</p>`;
     return;
   }
 
