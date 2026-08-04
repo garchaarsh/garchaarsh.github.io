@@ -219,8 +219,13 @@
   @media (max-width: 900px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    main { padding: 15px; }
+    .frame .cap { font-size: 0.5rem; padding: 1px 4px; }
+    .frame .num { font-size: 0.6rem; top: 4px; left: 4px; }
+  }
   @media (max-width: 500px) {
-    .grid { grid-template-columns: repeat(1, 1fr); }
     .hero h1 { font-size:2.6rem; }
     .chat-modal { width: 90%; right: 5%; }
   }
@@ -582,7 +587,7 @@ function submitQuery(e) {
       toggleChat();
     }, 1500);
   }).catch(() => {
-    statusEl.innerText = "Saved to local portal successfully!";
+    statusInfo.innerText = "Saved to local portal successfully!";
     setTimeout(() => {
       form.reset();
       statusEl.style.display = "none";
