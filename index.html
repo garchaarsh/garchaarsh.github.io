@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>A.S. — ordinary streets.</title>
 <style>
   * { box-sizing: border-box; }
@@ -59,47 +58,10 @@
     position:fixed; inset:0; background:rgba(0,0,0,0.9);
     z-index:100; align-items:center; justify-content:center;
     padding:20px;
-    touch-action:none;
-    overscroll-behavior:contain;
   }
   .lightbox.open { display:flex; }
-  .lightbox-img-wrap {
-    position:relative;
-    width:100%; height:100%;
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
-    touch-action:none;
-  }
-  .lightbox img {
-    max-width:100%; max-height:100%; object-fit:contain;
-    touch-action:none;
-    user-select:none;
-    -webkit-user-drag:none;
-    will-change:transform;
-    transform-origin:center center;
-    cursor:grab;
-  }
-  .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; z-index:4; }
-  .lightbox .nav-btn {
-    position:absolute; top:50%; transform:translateY(-50%);
-    background:rgba(0,0,0,0.5); color:#eee; border:1px solid #444;
-    font-family:monospace; font-size:1.6rem; line-height:1;
-    width:46px; height:46px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer; z-index:4; user-select:none;
-  }
-  .lightbox .nav-btn:hover { background:#c8672f; color:#111; border-color:#c8672f; }
-  .lightbox .nav-prev { left:14px; }
-  .lightbox .nav-next { right:14px; }
-  .lightbox .lb-cap {
-    position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
-    font-family:monospace; font-size:0.8rem; color:#eee;
-    background:rgba(0,0,0,0.6); padding:6px 16px;
-    z-index:4; max-width:85%; text-align:center;
-  }
-  @media (max-width:500px) {
-    .lightbox .nav-btn { width:38px; height:38px; font-size:1.3rem; }
-  }
+  .lightbox img { max-width:100%; max-height:100%; object-fit:contain; }
+  .lightbox .close { position:absolute; top:20px; right:30px; color:#eee; font-family:monospace; font-size:1.5rem; cursor:pointer; }
 
   .hover-logo {
     position: fixed;
@@ -256,13 +218,8 @@
 </main>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <span class="close" onclick="event.stopPropagation(); closeLightbox()">&times;</span>
-  <button class="nav-btn nav-prev" onclick="event.stopPropagation(); navLightbox(-1)">‹</button>
-  <div class="lightbox-img-wrap" id="lightboxImgWrap" onclick="event.stopPropagation()">
-    <img id="lightbox-img" src="" alt="">
-  </div>
-  <button class="nav-btn nav-next" onclick="event.stopPropagation(); navLightbox(1)">›</button>
-  <div class="lb-cap" id="lightbox-cap" onclick="event.stopPropagation()"></div>
+  <span class="close">&times;</span>
+  <img id="lightbox-img" src="" alt="">
 </div>
 
 <button class="chat-trigger" onclick="toggleChat()">? QUERY</button>
@@ -334,6 +291,11 @@ const photos = [
 { file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49" },
 { file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17" },
 { file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07" },
+{ file: "new-brunswick/SJ4.jpg", title: "Trinity Church Spire, Window Seat", city: "Saint John", region: "nb", date: "2026-03-27T18:45" },
+{ file: "new-brunswick/SJ5.jpg", title: "Trinity Church Spire, Rooftop View", city: "Saint John", region: "nb", date: "2026-03-27T18:46" },
+{ file: "new-brunswick/SJ1.jpg", title: "Harbour Passage, Red Path at Dusk", city: "Saint John", region: "nb", date: "2026-03-27T19:05" },
+{ file: "new-brunswick/SJ2.jpg", title: "Fire Escapes Near the Port, Dusk", city: "Saint John", region: "nb", date: "2026-03-27T19:12" },
+{ file: "new-brunswick/SJ3.jpg", title: "Chubb's Corner, Prince William Street", city: "Saint John", region: "nb", date: "2026-03-28T06:51" },
 { file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", region: "ns", date: "2026-05-19T10:22" },
 { file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", region: "ns", date: "2026-05-19T10:46" },
 { file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", region: "ns", date: "2026-05-19T10:47" },
@@ -344,12 +306,6 @@ const photos = [
 { file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
 { file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
 { file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
-{ file: "new-brunswick/DSC06911.jpg", title: "Sunset Shoreline, Cape Jourimain Nature Centre", city: "Bayfield", region: "nb", date: "2026-04-24T18:27" },
-{ file: "new-brunswick/DSC07259.jpg", title: "Sea Stacks Beneath the Treeline, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-04-25T13:46" },
-{ file: "new-brunswick/DSC07283.jpg", title: "Low Tide Formation, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-04-25T14:05" },
-{ file: "new-brunswick/DSC07292.jpg", title: "Leaning Rock Faces, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-04-25T14:09" },
-{ file: "new-brunswick/DSC07377.jpg", title: "Dune Path to the Shore, Parlee Beach", city: "Shediac", region: "nb", date: "2026-04-26T10:30" },
-{ file: "new-brunswick/DSC07477.jpg", title: "Channel Marker Beyond the Dune Grass, Aboiteau Beach", city: "Cap-Pelé", region: "nb", date: "2026-04-26T11:45" },
 ];
 
 const locations = [
@@ -366,13 +322,6 @@ const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT"
 
 let activeFilter = { type: "location", key: "nb" };
 let monthTabsOpen = false;
-
-let galleryPhotos = [];
-let lightboxIndex = 0;
-let lbScale = 1, lbPanX = 0, lbPanY = 0;
-let lbPointers = new Map();
-let lbLastDist = 0;
-let lbPanStart = null;
 
 function getAvailableMonths() {
   const seen = new Map();
@@ -410,8 +359,6 @@ function render() {
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
 
-  galleryPhotos = filtered;
-
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
@@ -419,7 +366,7 @@ function render() {
         const displayFile = hasThumbs ? (parts[0] + '/thumbs/' + parts[1]) : p.file;
         
         return `
-        <div class="frame" onclick="openLightbox(${i})">
+        <div class="frame" onclick="openLightbox('${encodeURI('images/' + p.file)}', '${p.title.replace(/'/g, "\\'")}')">
           <img src="${encodeURI('images/' + displayFile)}" alt="${p.title}" loading="lazy">
           <span class="num">${String(i + 1).padStart(2, "0")}</span>
           <span class="cap">${p.title}</span>
@@ -445,110 +392,13 @@ function setMonth(key) {
   render();
 }
 
-function openLightbox(index) {
-  lightboxIndex = index;
-  showLightboxPhoto();
+function openLightbox(src, alt) {
+  document.getElementById("lightbox-img").src = src;
+  document.getElementById("lightbox-img").alt = alt;
   document.getElementById("lightbox").classList.add("open");
 }
-
-function showLightboxPhoto() {
-  const p = galleryPhotos[lightboxIndex];
-  if (!p) return;
-  const img = document.getElementById("lightbox-img");
-  img.src = encodeURI('images/' + p.file);
-  img.alt = p.title;
-  document.getElementById("lightbox-cap").innerText = `${String(lightboxIndex + 1).padStart(2, "0")} / ${String(galleryPhotos.length).padStart(2, "0")} — ${p.title}`;
-  resetZoom();
-}
-
-function navLightbox(dir) {
-  if (!galleryPhotos.length) return;
-  lightboxIndex = (lightboxIndex + dir + galleryPhotos.length) % galleryPhotos.length;
-  showLightboxPhoto();
-}
-
 function closeLightbox() {
   document.getElementById("lightbox").classList.remove("open");
-  resetZoom();
-}
-
-function resetZoom() {
-  lbScale = 1; lbPanX = 0; lbPanY = 0;
-  lbPointers.clear();
-  lbLastDist = 0;
-  lbPanStart = null;
-  applyZoomTransform();
-}
-
-function applyZoomTransform() {
-  const img = document.getElementById("lightbox-img");
-  if (img) img.style.transform = `translate(${lbPanX}px, ${lbPanY}px) scale(${lbScale})`;
-}
-
-function lbPointerDown(e) {
-  e.stopPropagation();
-  lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-  if (lbPointers.size === 1) {
-    lbPanStart = { x: e.clientX - lbPanX, y: e.clientY - lbPanY };
-  } else if (lbPointers.size === 2) {
-    const pts = [...lbPointers.values()];
-    lbLastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-  }
-}
-
-function lbPointerMove(e) {
-  if (!lbPointers.has(e.pointerId)) return;
-  e.stopPropagation();
-  lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-
-  if (lbPointers.size === 2) {
-    const pts = [...lbPointers.values()];
-    const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-    if (lbLastDist > 0) {
-      const delta = dist / lbLastDist;
-      lbScale = Math.min(5, Math.max(1, lbScale * delta));
-    }
-    lbLastDist = dist;
-    applyZoomTransform();
-  } else if (lbPointers.size === 1 && lbScale > 1 && lbPanStart) {
-    lbPanX = e.clientX - lbPanStart.x;
-    lbPanY = e.clientY - lbPanStart.y;
-    applyZoomTransform();
-  }
-}
-
-function lbPointerUp(e) {
-  lbPointers.delete(e.pointerId);
-  lbLastDist = 0;
-  if (lbPointers.size === 1) {
-    const pt = [...lbPointers.values()][0];
-    lbPanStart = { x: pt.x - lbPanX, y: pt.y - lbPanY };
-  } else {
-    lbPanStart = null;
-  }
-  if (lbPointers.size === 0 && lbScale < 1.05) {
-    resetZoom();
-  }
-}
-
-function lbDoubleClick(e) {
-  e.stopPropagation();
-  if (lbScale > 1) {
-    resetZoom();
-  } else {
-    lbScale = 2.5;
-    applyZoomTransform();
-  }
-}
-
-function setupLightboxZoom() {
-  const img = document.getElementById("lightbox-img");
-  img.addEventListener("pointerdown", lbPointerDown);
-  img.addEventListener("pointermove", lbPointerMove);
-  img.addEventListener("pointerup", lbPointerUp);
-  img.addEventListener("pointercancel", lbPointerUp);
-  img.addEventListener("pointerleave", lbPointerUp);
-  img.addEventListener("dblclick", lbDoubleClick);
 }
 
 function toggleChat() {
@@ -592,17 +442,7 @@ function submitQuery(e) {
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  checkPortalQueryParam();
-  setupLightboxZoom();
-});
-
-document.addEventListener("keydown", (e) => {
-  if (!document.getElementById("lightbox").classList.contains("open")) return;
-  if (e.key === "ArrowLeft") navLightbox(-1);
-  if (e.key === "ArrowRight") navLightbox(1);
-  if (e.key === "Escape") closeLightbox();
-});
+window.addEventListener("DOMContentLoaded", checkPortalQueryParam);
 
 function checkPortalQueryParam() {
   const urlParams = new URLSearchParams(window.location.search);
