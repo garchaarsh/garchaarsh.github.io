@@ -400,7 +400,7 @@ function getAvailableMonths() {
     if (!seen.has(key)) seen.set(key, { year: d.getFullYear(), month: d.getMonth() });
   });
   return [...seen.entries()]
-    .sort((a, b) => a[0].localeCompare(b[0]))
+    .sort((a, b) => b[0].localeCompare(a[0]))
     .map(([key, v]) => ({ key, label: `${MONTH_NAMES[v.month]} ${v.year}` }));
 }
 
