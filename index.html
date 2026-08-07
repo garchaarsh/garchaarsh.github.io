@@ -431,7 +431,7 @@ function render() {
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
         // Only look for thumbs if the region explicitly has a thumbs folder (PE, NS, NB)
-        const hasThumbs = (p.region === 'pe' || p.region === 'ns' || p.region === 'nb');
+        const hasThumbs = (p.region === 'pe' || p.region === 'ns' || p.region === 'nb' || p.region === 'on');
         const displayFile = hasThumbs ? (parts[0] + '/thumbs/' + parts[1]) : p.file;
         
         return `
@@ -660,4 +660,3 @@ render();
 </script>
 </body>
 </html>
-
