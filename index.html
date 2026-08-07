@@ -142,6 +142,9 @@
     transform: scale(1.05);
     background: #e8a15c;
   }
+  .chat-trigger.behind-lightbox {
+    z-index: 1;
+  }
 
   .chat-modal {
     display: none;
@@ -462,6 +465,7 @@ function openLightbox(index) {
   lightboxIndex = index;
   showLightboxPhoto();
   document.getElementById("lightbox").classList.add("open");
+  document.querySelector(".chat-trigger").classList.add("behind-lightbox");
 }
 
 function showLightboxPhoto() {
@@ -482,6 +486,7 @@ function navLightbox(dir) {
 
 function closeLightbox() {
   document.getElementById("lightbox").classList.remove("open");
+  document.querySelector(".chat-trigger").classList.remove("behind-lightbox");
   resetZoom();
 }
 
@@ -655,3 +660,4 @@ render();
 </script>
 </body>
 </html>
+
