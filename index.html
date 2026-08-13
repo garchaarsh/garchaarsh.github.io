@@ -98,6 +98,20 @@
     background:rgba(0,0,0,0.6); padding:6px 16px;
     z-index:4; max-width:85%; text-align:center;
   }
+  .lightbox .lb-copyright {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #bbb;
+    background: rgba(0,0,0,0.4);
+    padding: 4px 12px;
+    z-index: 4;
+    letter-spacing: 1px;
+    pointer-events: none;
+  }
   @media (max-width:500px) {
     .lightbox .nav-btn { width:38px; height:38px; font-size:1.3rem; }
   }
@@ -272,6 +286,7 @@
   </div>
   <button class="nav-btn nav-next" onclick="event.stopPropagation(); navLightbox(1)">›</button>
   <div class="lb-cap" id="lightbox-cap" onclick="event.stopPropagation()"></div>
+  <div class="lb-copyright">© ARSHPREET SINGH</div>
 </div>
 
 <button class="chat-trigger" onclick="toggleChat()">? QUERY</button>
@@ -300,17 +315,6 @@
 
 <script>
 const photos = [
-{ file: "new-brunswick/A.jpg", title: "Suspension bridge trail walk", city: "Grand Manan", region: "nb", date: "2026-07-17T12:29" },
-{ file: "new-brunswick/APS03558.jpg", title: "Ferry porthole reflection portrait", city: "Grand Manan", region: "nb", date: "2026-07-17T11:51" },
-{ file: "new-brunswick/APS07665.jpg", title: "Misty and foggy road view", city: "Blacks Harbour", region: "nb", date: "2026-07-19T07:59" },
-{ file: "new-brunswick/APS08522.jpg", title: "Passengers at the ferry railing", city: "Grand Manan", region: "nb", date: "2026-07-19T10:53" },
-{ file: "new-brunswick/APS08551.jpg", title: "Reading a book by the ferry window", city: "Grand Manan", region: "nb", date: "2026-07-19T11:03" },
-{ file: "new-brunswick/APS08673.jpg", title: "Cloudy walk toward the parking lot", city: "Saint John", region: "nb", date: "2026-07-19T13:38" },
-{ file: "new-brunswick/APS08723.jpg", title: "Hillside house near Reversing Falls", city: "Saint John", region: "nb", date: "2026-07-19T14:17" },
-{ file: "ontario/DSC03065.jpg", title: "Sunny trail and dead tree portrait", city: "Scarborough", region: "on", date: "2025-05-12T14:11" },
-{ file: "ontario/DSC04901.jpg", title: "Kids on the beach at sunset", city: "Toronto", region: "on", date: "2025-07-21T20:39" },
-{ file: "ontario/DSC05496.jpg", title: "Gairloch Gardens sunset view", city: "Mississauga", region: "on", date: "2025-07-25T20:35" },
-{ file: "ontario/DSC08593.jpg", title: "Lush green trail in the woods", city: "North York", region: "on", date: "2025-08-31T19:00" },
 { file: "ontario/DSC06396.jpg", title: "Looking Out, Elora Gorge Overlook", city: "Elora", region: "on", date: "2025-08-01T10:48" },
 { file: "ontario/DSC06564.jpg", title: "Riverbed Portrait, Elora Gorge Bridge", city: "Elora", region: "on", date: "2025-08-01T13:16" },
 { file: "ontario/DSC06203.jpg", title: "Golden Hour Portrait, Elora Mills overlook", city: "Elora", region: "on", date: "2025-08-01T07:59" },
@@ -379,6 +383,17 @@ const photos = [
 { file: "ontario/DSC03004.jpeg", title: "Silk Worm Nest on Trail, Cheltenham Badlands", city: "Caledon", region: "on", date: "2025-05-12T12:15" },
 { file: "ontario/DSC02785.jpeg", title: "Red Slopes and Forest, Cheltenham Badlands", city: "Caledon", region: "on", date: "2025-05-12T11:30" },
 { file: "ontario/DSC02769.jpeg", title: "Rolling Red Hills, Cheltenham Badlands", city: "Caledon", region: "on", date: "2025-05-12T11:26" },
+{ file: "new-brunswick/A.jpg", title: "Suspension bridge trail walk", city: "Grand Manan", region: "nb", date: "2026-07-17T12:29" },
+{ file: "new-brunswick/APS03558.jpg", title: "Ferry porthole reflection portrait", city: "Grand Manan", region: "nb", date: "2026-07-17T11:51" },
+{ file: "new-brunswick/APS07665.jpg", title: "Misty and foggy road view", city: "Blacks Harbour", region: "nb", date: "2026-07-19T07:59" },
+{ file: "new-brunswick/APS08522.jpg", title: "Passengers at the ferry railing", city: "Grand Manan", region: "nb", date: "2026-07-19T10:53" },
+{ file: "new-brunswick/APS08551.jpg", title: "Reading a book by the ferry window", city: "Grand Manan", region: "nb", date: "2026-07-19T11:03" },
+{ file: "new-brunswick/APS08673.jpg", title: "Cloudy walk toward the parking lot", city: "Saint John", region: "nb", date: "2026-07-19T13:38" },
+{ file: "new-brunswick/APS08723.jpg", title: "Hillside house near Reversing Falls", city: "Saint John", region: "nb", date: "2026-07-19T14:17" },
+{ file: "ontario/DSC03065.jpg", title: "Sunny trail and dead tree portrait", city: "Scarborough", region: "on", date: "2025-05-12T14:11" },
+{ file: "ontario/DSC04901.jpg", title: "Kids on the beach at sunset", city: "Toronto", region: "on", date: "2025-07-21T20:39" },
+{ file: "ontario/DSC05496.jpg", title: "Gairloch Gardens sunset view", city: "Mississauga", region: "on", date: "2025-07-25T20:35" },
+{ file: "ontario/DSC08593.jpg", title: "Lush green trail in the woods", city: "North York", region: "on", date: "2025-08-31T19:00" }
 ];
 
 const locations = [
@@ -444,7 +459,6 @@ function render() {
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
-        // Only look for thumbs if the region explicitly has a thumbs folder (PE, NS, NB)
         const hasThumbs = (p.region === 'pe' || p.region === 'ns' || p.region === 'nb' || p.region === 'on');
         const displayFile = hasThumbs ? (parts[0] + '/thumbs/' + parts[1]) : p.file;
         
