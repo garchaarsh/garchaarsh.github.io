@@ -159,10 +159,10 @@
     color: #eee;
     border: 1px solid #555;
     font-family: monospace;
-    font-size: 1.8rem;
+    font-size: 2.6rem;
     line-height: 1;
-    width: 50px;
-    height: 50px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -170,10 +170,16 @@
     cursor: pointer;
     z-index: 1000002;
     user-select: none;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
   }
-  .lightbox .nav-btn:hover { background: #c8672f; color: #111; border-color: #c8672f; }
-  .lightbox .nav-prev { left: 24px; }
-  .lightbox .nav-next { right: 24px; }
+  .lightbox .nav-btn:hover {
+    background: #c8672f;
+    color: #111;
+    border-color: #c8672f;
+    transform: translateY(-50%) scale(1.08);
+  }
+  .lightbox .nav-prev { left: 28px; }
+  .lightbox .nav-next { right: 28px; }
 
   .lightbox .lb-cap {
     position: fixed;
@@ -210,7 +216,7 @@
   }
 
   @media (max-width: 768px) {
-    .lightbox .nav-btn { width: 40px; height: 40px; font-size: 1.4rem; }
+    .lightbox .nav-btn { width: 48px; height: 48px; font-size: 1.6rem; }
     .lightbox .nav-prev { left: 12px; }
     .lightbox .nav-next { right: 12px; }
     .lightbox .close { top: 16px; right: 16px; width: 42px; height: 42px; font-size: 2rem; }
