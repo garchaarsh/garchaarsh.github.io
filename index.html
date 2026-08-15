@@ -10,25 +10,29 @@
   a { color:inherit; text-decoration:none; }
 
   header { display:flex; justify-content:space-between; align-items:center; padding:24px 40px; flex-wrap:wrap; gap:16px; }
-  .logo-search-wrapper { display: flex; align-items: center; gap: 20px; }
-  .logo { font-size:1.3rem; letter-spacing:2px; cursor:pointer; }
+  .logo { font-size:1.3rem; letter-spacing:2px; cursor:pointer; margin-right: auto; }
   
-  /* Search Icon & Input Styles */
-  .search-container { position: relative; display: flex; align-items: center; }
-  .search-icon-btn { background: transparent; border: 1px solid #444; color: #ccc; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
-  .search-icon-btn:hover { background: #c8672f; color: #111; border-color: #c8672f; }
-  .search-input { display: none; background: #0b0d10; border: 1px solid #c8672f; color: #e8e6e1; padding: 6px 12px; font-family: monospace; font-size: 0.85rem; border-radius: 4px; width: 200px; outline: none; }
-  .search-input.open { display: block; }
-  
-  /* Search Results Dropdown */
-  .search-dropdown { display: none; position: absolute; top: 45px; left: 0; width: 280px; max-height: 250px; overflow-y: auto; background: #14171c; border: 1px solid #333; z-index: 150; box-shadow: 0 4px 20px rgba(0,0,0,0.7); }
-  .search-dropdown.open { display: block; }
-  .search-item { padding: 10px; font-size: 0.75rem; font-family: monospace; color: #ccc; border-bottom: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
-  .search-item:hover { background: #c8672f; color: #111; }
-  .search-item span { color: #888; }
-  .search-item:hover span { color: #111; }
+  /* Search Container Spacing & Layout */
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: 28px;
+  }
+  .search-input {
+    background: #14171c;
+    border: 1px solid #444;
+    color: #e8e6e1;
+    padding: 8px 14px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: #c8672f; }
 
-  nav { display:flex; gap:28px; font-family:monospace; font-size:0.85rem; letter-spacing:1px; color:#ccc; }
+  nav { display:flex; gap:28px; font-family:monospace; font-size:0.85rem; letter-spacing:1px; color:#ccc; align-items: center; }
   nav a:hover { color:#c8672f; }
 
   .hero { padding:20px 40px 40px; }
@@ -271,18 +275,9 @@
 <a href="index.html" class="hover-logo" title="Back to main page">A.S.</a>
 
 <header>
-  <div class="logo-search-wrapper">
-    <div class="logo" onclick="window.location.href='index.html'">A.S.</div>
-    <div class="search-container">
-      <button class="search-icon-btn" onclick="toggleSearchInput()" title="Search Captions">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
-      <input type="text" id="captionSearchInput" class="search-input" placeholder="Search captions..." oninput="handleCaptionSearch(event)" />
-      <div id="searchResultsDropdown" class="search-dropdown"></div>
-    </div>
+  <div class="logo" onclick="window.location.href='index.html'">A.S.</div>
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search photos..." oninput="handleSearch(this.value)">
   </div>
   <nav>
     <a href="index.html">WORK</a>
@@ -298,11 +293,13 @@
 </section>
 
 <main>
-  <h2>Selected Work</h2>
+  <h2 id="sectionTitle">Selected Work</h2>
 
-  <div class="sub-label">LOCATION</div>
-  <div class="tabs" id="tabs-location"></div>
-  <div class="tabs-month" id="tabs-month"></div>
+  <div id="filterControls">
+    <div class="sub-label">LOCATION</div>
+    <div class="tabs" id="tabs-location"></div>
+    <div class="tabs-month" id="tabs-month"></div>
+  </div>
 
   <div class="grid" id="grid"></div>
 </main>
@@ -439,6 +436,7 @@ const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT"
 
 let activeFilter = { type: "location", key: "nb" };
 let monthTabsOpen = false;
+let searchQuery = "";
 
 let galleryPhotos = [];
 let lightboxIndex = 0;
@@ -459,14 +457,37 @@ function getAvailableMonths() {
     .map(([key, v]) => ({ key, label: `${MONTH_NAMES[v.month]} ${v.year}` }));
 }
 
+function handleSearch(query) {
+  searchQuery = query.trim().toLowerCase();
+  const filterControls = document.getElementById("filterControls");
+  const sectionTitle = document.getElementById("sectionTitle");
+
+  if (searchQuery.length > 0) {
+    filterControls.style.display = "none";
+    sectionTitle.innerText = `Search Results (${searchQuery})`;
+  } else {
+    filterControls.style.display = "block";
+    sectionTitle.innerText = "Selected Work";
+  }
+  render();
+}
+
 function render() {
   const sorted = [...photos].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   let filtered = sorted;
-  if (activeFilter?.type === "location") {
-    filtered = sorted.filter(p => p.region === activeFilter.key);
-  } else if (activeFilter?.type === "month") {
-    filtered = sorted.filter(p => p.date.startsWith(activeFilter.key));
+  if (searchQuery.length > 0) {
+    filtered = sorted.filter(p => 
+      p.title.toLowerCase().includes(searchQuery) || 
+      p.city.toLowerCase().includes(searchQuery) ||
+      p.region.toLowerCase().includes(searchQuery)
+    );
+  } else {
+    if (activeFilter?.type === "location") {
+      filtered = sorted.filter(p => p.region === activeFilter.key);
+    } else if (activeFilter?.type === "month") {
+      filtered = sorted.filter(p => p.date.startsWith(activeFilter.key));
+    }
   }
 
   document.getElementById("tabs-location").innerHTML =
@@ -498,7 +519,7 @@ function render() {
           <span class="cap">${p.title}</span>
         </div>`;
       }).join("")
-    : `<div class="empty">No frames yet for this filter.</div>`;
+    : `<div class="empty">No frames match your search.</div>`;
 }
 
 function setLocation(key) {
@@ -517,67 +538,6 @@ function setMonth(key) {
   monthTabsOpen = false;
   render();
 }
-
-function toggleSearchInput() {
-  const input = document.getElementById("captionSearchInput");
-  input.classList.toggle("open");
-  if (input.classList.contains("open")) {
-    input.focus();
-  } else {
-    document.getElementById("searchResultsDropdown").classList.remove("open");
-  }
-}
-
-function handleCaptionSearch(e) {
-  const query = e.target.value.toLowerCase().trim();
-  const dropdown = document.getElementById("searchResultsDropdown");
-
-  if (!query) {
-    dropdown.classList.remove("open");
-    dropdown.innerHTML = "";
-    return;
-  }
-
-  const matches = photos.map((p, originalIndex) => ({ ...p, originalIndex })).filter(p => 
-    p.title.toLowerCase().includes(query) || p.city.toLowerCase().includes(query)
-  );
-
-  if (matches.length === 0) {
-    dropdown.innerHTML = `<div style="padding:10px; font-family:monospace; font-size:0.75rem; color:#888;">No matching captions found.</div>`;
-    dropdown.classList.add("open");
-    return;
-  }
-
-  dropdown.innerHTML = matches.map(m => `
-    <div class="search-item" onclick="jumpToPhotoMatch('${m.region}', ${m.originalIndex})">
-      <div>${m.title}</div>
-      <span>${m.city}</span>
-    </div>
-  `).join("");
-  dropdown.classList.add("open");
-}
-
-function jumpToPhotoMatch(regionKey, originalIndex) {
-  setLocation(regionKey);
-
-  document.getElementById("captionSearchInput").classList.remove("open");
-  document.getElementById("captionSearchInput").value = "";
-  document.getElementById("searchResultsDropdown").classList.remove("open");
-
-  setTimeout(() => {
-    const targetIdx = galleryPhotos.findIndex(p => p.file === photos[originalIndex].file);
-    if (targetIdx !== -1) {
-      openLightbox(targetIdx);
-    }
-  }, 50);
-}
-
-document.addEventListener("click", (e) => {
-  const searchContainer = document.querySelector(".search-container");
-  if (searchContainer && !searchContainer.contains(e.target)) {
-    document.getElementById("searchResultsDropdown").classList.remove("open");
-  }
-});
 
 function openLightbox(index) {
   lightboxIndex = index;
