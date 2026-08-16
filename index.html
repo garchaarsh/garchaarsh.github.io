@@ -151,36 +151,6 @@
   }
   .lightbox .close:hover { background: #c8672f; color: #111; border-color: #c8672f; }
 
-  .lightbox .nav-btn {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.75);
-    color: #eee;
-    border: 1px solid #555;
-    font-family: monospace;
-    font-size: 2.6rem;
-    line-height: 1;
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 1000002;
-    user-select: none;
-    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
-  }
-  .lightbox .nav-btn:hover {
-    background: #c8672f;
-    color: #111;
-    border-color: #c8672f;
-    transform: translateY(-50%) scale(1.08);
-  }
-  .lightbox .nav-prev { left: 28px; }
-  .lightbox .nav-next { right: 28px; }
-
   .lightbox .lb-cap {
     position: fixed;
     bottom: 24px;
@@ -216,9 +186,6 @@
   }
 
   @media (max-width: 768px) {
-    .lightbox .nav-btn { width: 48px; height: 48px; font-size: 1.6rem; }
-    .lightbox .nav-prev { left: 12px; }
-    .lightbox .nav-next { right: 12px; }
     .lightbox .close { top: 16px; right: 16px; width: 42px; height: 42px; font-size: 2rem; }
     .lightbox .lb-copyright { top: 16px; left: 16px; font-size: 0.65rem; padding: 4px 8px; }
     .lightbox img { max-width: 92%; max-height: 68%; }
@@ -397,14 +364,12 @@
   <div class="grid" id="grid"></div>
 </main>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <span class="close" onclick="event.stopPropagation(); closeLightbox()">&times;</span>
-  <button class="nav-btn nav-prev" onclick="event.stopPropagation(); navLightbox(-1)">‹</button>
+<div class="lightbox" id="lightbox">
+  <span class="close" onclick="closeLightbox()">&times;</span>
   <div class="lightbox-img-wrap" id="lightboxImgWrap">
     <img id="lightbox-img" src="" alt="">
   </div>
-  <button class="nav-btn nav-next" onclick="event.stopPropagation(); navLightbox(1)">›</button>
-  <div class="lb-cap" id="lightbox-cap" onclick="event.stopPropagation()"></div>
+  <div class="lb-cap" id="lightbox-cap"></div>
   <div class="lb-copyright">© ARSHPREET SINGH</div>
 </div>
 
@@ -759,14 +724,27 @@ function applyZoomTransform() {
   if (img) img.style.transform = `translate(${lbPanX}px, ${lbPanY}px) scale(${lbScale})`;
 }
 
+let lbSwipeStart = null;
+let lbSwipeActive = false;
+const LB_SWIPE_THRESHOLD = 50;
+
 function lbPointerDown(e) {
   e.stopPropagation();
   lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
   if (lbPointers.size === 1) {
     lbPanStart = { x: e.clientX - lbPanX, y: e.clientY - lbPanY };
+    if (lbScale <= 1.01) {
+      lbSwipeStart = { x: e.clientX, y: e.clientY };
+      lbSwipeActive = true;
+    } else {
+      lbSwipeStart = null;
+      lbSwipeActive = false;
+    }
   } else if (lbPointers.size === 2) {
     const pts = [...lbPointers.values()];
     lbLastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    lbSwipeActive = false;
+    lbSwipeStart = null;
   }
 }
 
@@ -792,6 +770,13 @@ function lbPointerMove(e) {
 }
 
 function lbPointerUp(e) {
+  const wasSwipeCandidate = lbSwipeActive && lbPointers.size === 1 && lbSwipeStart;
+  let swipeDx = 0, swipeDy = 0;
+  if (wasSwipeCandidate) {
+    swipeDx = e.clientX - lbSwipeStart.x;
+    swipeDy = e.clientY - lbSwipeStart.y;
+  }
+
   lbPointers.delete(e.pointerId);
   lbLastDist = 0;
   if (lbPointers.size === 1) {
@@ -803,6 +788,14 @@ function lbPointerUp(e) {
   if (lbPointers.size === 0 && lbScale < 1.05) {
     resetZoom();
   }
+
+  if (wasSwipeCandidate && lbPointers.size === 0) {
+    if (Math.abs(swipeDx) > LB_SWIPE_THRESHOLD && Math.abs(swipeDx) > Math.abs(swipeDy)) {
+      navLightbox(swipeDx < 0 ? 1 : -1);
+    }
+  }
+  lbSwipeActive = false;
+  lbSwipeStart = null;
 }
 
 function lbDoubleClick(e) {
