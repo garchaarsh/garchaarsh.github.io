@@ -572,7 +572,7 @@ function render() {
   document.getElementById("grid").innerHTML = filtered.length
     ? filtered.map((p, i) => {
         const parts = p.file.split('/');
-        const hasThumbs = (p.region === 'pe' || p.region === 'ns' || p.region === 'nb' || p.region === 'on');
+        const hasThumbs = (p.region === 'pe' || p.region === 'ns' || p.region === 'nb' || p.region === 'on' || p.region === 'ab' || p.region === 'usa' || p.region === 'in');
         const displayFile = hasThumbs ? (parts[0] + '/thumbs/' + parts[1]) : p.file;
         
         return `
