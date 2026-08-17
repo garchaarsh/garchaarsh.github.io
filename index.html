@@ -88,12 +88,6 @@
     justify-content: center;
     touch-action: none;
     overscroll-behavior: contain;
-    /* transform (even identity) makes this the containing block for all
-       position:fixed descendants below, so close/nav/caption always sit
-       inside THIS box's on-screen bounds instead of the page's layout
-       viewport. JS keeps this box's size/position glued to the browser's
-       actual visible (visual) viewport, so this holds true no matter how
-       zoomed/panned the page was when the photo was opened. */
     transform: translate(0px, 0px);
   }
   .lightbox.open { display: flex; }
@@ -112,9 +106,6 @@
   }
 
   .lightbox img {
-    /* percentages of the wrap (not vw/vh) so the photo always fits the
-       real visible area, even when the page was pinch-zoomed before the
-       lightbox opened */
     max-width: 82%;
     max-height: 78%;
     width: auto;
@@ -129,7 +120,6 @@
     pointer-events: auto;
   }
 
-  /* Fixed UI Elements Resistant to Browser Page Zoom */
   .lightbox .close {
     position: fixed;
     top: 24px;
@@ -191,7 +181,6 @@
     .lightbox img { max-width: 92%; max-height: 68%; }
   }
 
-  /* Locks background scrolling while the lightbox is open */
   html.lb-lock, body.lb-lock {
     overflow: hidden !important;
     overscroll-behavior: none;
@@ -406,7 +395,7 @@ const photos = [
 { file: "usa/20240902_141936.jpeg", title: "Green lizard resting on branch", city: "Buffalo", region: "usa", date: "2024-09-02T14:19" },
 { file: "ontario/DSC04437.jpeg", title: "Winding green nature trail path", city: "Scarborough", region: "on", date: "2025-07-08T10:38" },
 { file: "ontario/LRM_EXPORT_20221228_205919-01.jpeg", title: "Stunning Toronto skyline winter sunset", city: "Toronto", region: "on", date: "2022-12-28T17:00" },
-{ file: "ontario/LRM_EXPORT_20221228_210300-01 (1).jpeg", title: "Vibrant winter sunset over skyscrapers", city: "Toronto", region: "on", date: "2022-12-28T17:05" }
+{ file: "ontario/LRM_EXPORT_20221228_210300-01 (1).jpeg", title: "Vibrant winter sunset over skyscrapers", city: "Toronto", region: "on", date: "2022-12-28T17:05" },
 { file: "ontario/DSC08261.jpeg", title: "Cyclist by the river", city: "North York", region: "on", date: "2025-08-29T14:56" },
 { file: "ontario/DSC08300.jpeg", title: "Walker on the trail", city: "North York", region: "on", date: "2025-08-29T15:32" },
 { file: "ontario/DSC08377.jpeg", title: "Bicycle by the lawn", city: "North York", region: "on", date: "2025-08-30T13:36" },
@@ -624,8 +613,6 @@ function openLightbox(index) {
   bindLightboxViewportSync();
   forceResetPageZoom();
 
-  // Re-sync a few times as the browser's zoom-reset / layout settles
-  // (some mobile browsers apply it a frame or two late).
   syncLightboxViewport();
   requestAnimationFrame(syncLightboxViewport);
   setTimeout(syncLightboxViewport, 60);
@@ -663,12 +650,6 @@ function closeLightbox() {
 
 /* ---------- Viewport-zoom-proofing for the lightbox ---------- */
 
-// Forces the browser's native pinch/page zoom back to 1x. Re-writing the
-// viewport meta tag's content is the standard trick mobile browsers honor
-// to snap the current zoom level back within its constraints. Some
-// browsers (Samsung Internet, some Chrome builds) will still allow the
-// user to have zoomed past what the meta tag nominally allows, so this
-// re-application forces a re-clamp.
 function forceResetPageZoom() {
   const vp = document.querySelector('meta[name="viewport"]');
   if (!vp) return;
@@ -680,14 +661,6 @@ function forceResetPageZoom() {
   window.scrollTo(0, 0);
 }
 
-// Keeps the lightbox's box glued to the browser's actual visible
-// (visual) viewport — not the layout viewport — so it always covers
-// exactly what's on screen, whatever the current zoom/pan is. Because
-// .lightbox has a CSS transform, it becomes the containing block for
-// its position:fixed children (close button, prev/next arrows,
-// caption, copyright), so once this box is sized/positioned correctly
-// those controls are guaranteed to land inside the visible screen area
-// too, and the image (sized in % of this box) is guaranteed to fit.
 function syncLightboxViewport() {
   const lb = document.getElementById("lightbox");
   if (!lb || !lb.classList.contains("open")) return;
@@ -697,7 +670,6 @@ function syncLightboxViewport() {
     lb.style.height = vv.height + "px";
     lb.style.transform = `translate(${vv.offsetLeft}px, ${vv.offsetTop}px)`;
   } else {
-    // No visualViewport support: fall back to the full layout viewport.
     lb.style.width = "100vw";
     lb.style.height = "100vh";
     lb.style.transform = "translate(0px, 0px)";
