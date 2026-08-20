@@ -74,6 +74,41 @@
   .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.7rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 6px; z-index:2; }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
 
+  #gridEndSentinel { height:1px; }
+
+  .next-location-prompt {
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    margin:50px 0 30px;
+    padding:28px 20px;
+    border:1px dashed #444;
+    text-align:center;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity 0.35s ease, transform 0.35s ease;
+  }
+  .next-location-prompt.show { display:flex; opacity:1; transform:translateY(0); }
+  .next-location-prompt .prompt-text {
+    font-family:monospace;
+    font-size:0.75rem;
+    letter-spacing:2px;
+    color:#888;
+  }
+  .next-location-prompt button {
+    background:transparent;
+    border:1px solid #c8672f;
+    color:#e8a15c;
+    padding:12px 26px;
+    font-family:monospace;
+    font-size:0.85rem;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:background 0.2s, color 0.2s;
+  }
+  .next-location-prompt button:hover { background:#c8672f; color:#111; }
+
   /* Bulletproof Zoom/Viewport-Aware Lightbox */
   .lightbox {
     display: none;
@@ -351,6 +386,8 @@
   </div>
 
   <div class="grid" id="grid"></div>
+  <div id="gridEndSentinel"></div>
+  <div class="next-location-prompt" id="nextLocationPrompt"></div>
 </main>
 
 <div class="lightbox" id="lightbox">
@@ -601,12 +638,70 @@ function render() {
         </div>`;
       }).join("")
     : `<div class="empty">No frames match your search.</div>`;
+
+  renderNextLocationPrompt();
 }
 
 function setLocation(key) {
   activeFilter = { type: "location", key };
   monthTabsOpen = false;
   render();
+}
+
+/* ---------- Next-location scroll prompt ---------- */
+
+function getNextLocation(currentKey) {
+  const idx = locations.findIndex(l => l.key === currentKey);
+  if (idx === -1) return null;
+  return locations[(idx + 1) % locations.length];
+}
+
+function renderNextLocationPrompt() {
+  const promptEl = document.getElementById("nextLocationPrompt");
+  if (!promptEl) return;
+
+  if (searchQuery.length > 0 || activeFilter?.type !== "location") {
+    promptEl.classList.remove("show");
+    promptEl.innerHTML = "";
+    return;
+  }
+
+  const current = locations.find(l => l.key === activeFilter.key);
+  const next = getNextLocation(activeFilter.key);
+  if (!current || !next) {
+    promptEl.innerHTML = "";
+    return;
+  }
+
+  promptEl.innerHTML = `
+    <span class="prompt-text">END OF ${current.label}</span>
+    <button onclick="jumpToNextLocation('${next.key}')">CONTINUE TO ${next.label} &rarr;</button>
+  `;
+}
+
+function jumpToNextLocation(key) {
+  setLocation(key);
+  const main = document.querySelector("main");
+  if (main) main.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+let gridEndObserver = null;
+
+function setupGridEndObserver() {
+  const sentinel = document.getElementById("gridEndSentinel");
+  if (!sentinel) return;
+  gridEndObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const promptEl = document.getElementById("nextLocationPrompt");
+      if (!promptEl || !promptEl.innerHTML.trim()) return;
+      if (entry.isIntersecting) {
+        promptEl.classList.add("show");
+      } else {
+        promptEl.classList.remove("show");
+      }
+    });
+  }, { threshold: 0.01 });
+  gridEndObserver.observe(sentinel);
 }
 
 function toggleGoTo() {
@@ -860,6 +955,7 @@ function submitQuery(e) {
 window.addEventListener("DOMContentLoaded", () => {
   checkPortalQueryParam();
   setupLightboxZoom();
+  setupGridEndObserver();
 });
 
 document.addEventListener("keydown", (e) => {
