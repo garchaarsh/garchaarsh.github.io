@@ -60,18 +60,43 @@
     margin-top:24px;
   }
   .frame {
+    display:flex;
+    flex-direction:column;
+    cursor:pointer;
+    background:#111;
+    border:1px solid #1d2026;
+    transition:border-color 0.2s;
+  }
+  .frame:hover { border-color:#c8672f; }
+  .frame .thumb {
     position:relative;
     aspect-ratio: 3/4;
-    background:#111;
+    background:#0d0f12;
     overflow:hidden;
-    cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
   }
   .frame img { width:100%; height:100%; object-fit:contain; display:block; }
-  .frame .num { position:absolute; top:8px; left:8px; font-family:monospace; color:#888; font-size:0.75rem; z-index:2; }
-  .frame .cap { position:absolute; bottom:8px; left:8px; font-family:monospace; font-size:0.7rem; color:#eee; background:rgba(0,0,0,0.55); padding:2px 6px; z-index:2; }
+  .frame .meta {
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    padding:8px 10px 9px;
+    border-top:1px solid #1d2026;
+    font-family:monospace;
+    min-width:0;
+  }
+  .frame .num { color:#c8672f; font-size:0.7rem; flex:none; }
+  .frame .cap {
+    color:#ddd;
+    font-size:0.72rem;
+    letter-spacing:0.5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    min-width:0;
+  }
   .empty { font-family:monospace; color:#666; padding:40px 0; }
 
   #gridEndSentinel { height:1px; }
@@ -345,8 +370,9 @@
   @media (max-width: 600px) {
     .grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
     main { padding: 15px; }
-    .frame .cap { font-size: 0.5rem; padding: 1px 4px; }
-    .frame .num { font-size: 0.6rem; top: 4px; left: 4px; }
+    .frame .meta { padding: 4px 5px 5px; gap: 4px; }
+    .frame .cap { font-size: 0.5rem; letter-spacing: 0; }
+    .frame .num { font-size: 0.5rem; }
   }
   @media (max-width: 500px) {
     .hero h1 { font-size:2.6rem; }
@@ -659,9 +685,13 @@ function render() {
 
         return `
         <div class="frame" onclick="openLightbox(${i})">
-          <img src="${thumbSrc}" data-full="${fullSrc}" alt="${p.title}" loading="lazy" decoding="async" onerror="thumbFallback(this)">
-          <span class="num">${String(i + 1).padStart(2, "0")}</span>
-          <span class="cap">${p.title}</span>
+          <div class="thumb">
+            <img src="${thumbSrc}" data-full="${fullSrc}" alt="${p.title}" loading="lazy" decoding="async" onerror="thumbFallback(this)">
+          </div>
+          <div class="meta" title="${p.title}">
+            <span class="num">${String(i + 1).padStart(2, "0")}</span>
+            <span class="cap">${p.title}</span>
+          </div>
         </div>`;
       }).join("")
     : `<div class="empty">No frames match your search.</div>`;
