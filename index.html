@@ -57,8 +57,8 @@
 
   .grid {
     display:grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap:12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap:14px;
     margin-top:24px;
   }
   .frame {
@@ -73,28 +73,29 @@
   .frame:hover { border-color:#c8672f; }
   .frame .thumb {
     position:relative;
-    aspect-ratio: 4/3;
+    aspect-ratio: 3/4;
     background:#0d0f12;
     overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
   }
-  .frame img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+  .frame img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
   .frame .meta {
     display:flex;
     align-items:flex-start;
     gap:8px;
-    padding:10px 12px 12px;
+    padding:7px 9px 8px;
+    gap:6px;
     border-top:1px solid #1d2026;
     font-family:monospace;
     min-width:0;
     flex:1;
   }
-  .frame .num { color:#c8672f; font-size:0.8rem; line-height:1.4; flex:none; }
+  .frame .num { color:#c8672f; font-size:0.66rem; line-height:1.4; flex:none; }
   .frame .cap {
-    color:#e2e0db;
-    font-size:0.85rem;
+    color:#cfcdc8;
+    font-size:0.68rem;
     line-height:1.4;
     min-height:2.8em;
     min-width:0;
@@ -375,21 +376,21 @@
   }
 
   @media (max-width: 1499px) {
-    .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
   @media (max-width: 1099px) {
-    .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 900px) {
     .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 600px) {
-    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     main { padding: 15px; }
     .frame .meta { padding: 4px 5px 5px; gap: 4px; align-items: center; flex: none; }
-    .frame .num { display: block; font-size: 0.5rem; line-height: 1.2; }
+    .frame .num { display: block; font-size: 0.52rem; line-height: 1.2; }
     .frame .cap {
-      font-size: 0.5rem;
+      font-size: 0.55rem;
       line-height: 1.2;
       min-height: 0;
       display: block;
@@ -646,6 +647,89 @@ function thumbFallback(imgEl) {
   imgEl.src = imgEl.dataset.full;
 }
 
+/* ---------- Smart crop: keep the main subject in portrait grid cells ----------
+   Landscape photos are shown in a portrait cell. Instead of a blind center crop,
+   we find the most "interesting" vertical strip (faces if the browser supports
+   FaceDetector, otherwise edges/contrast) and position the crop there.
+   Optional manual override per photo: add  focus: "30%"  to its entry in `photos`
+   (0% = left edge, 50% = center, 100% = right edge). The opened photo is never cropped. */
+async function smartFocus(img) {
+  const nw = img.naturalWidth, nh = img.naturalHeight;
+  if (!nw || !nh) return;
+  if (nw <= nh) { img.style.objectPosition = "center"; return; }
+
+  if (img.dataset.focus) { img.style.objectPosition = img.dataset.focus + " center"; return; }
+
+  const cellRatio = 3 / 4;
+  const visibleFrac = Math.min(1, (nh * cellRatio) / nw);
+
+  try {
+    if ("FaceDetector" in window) {
+      const faces = await new window.FaceDetector({ fastMode: true, maxDetectedFaces: 6 }).detect(img);
+      if (faces.length) {
+        let sum = 0, wsum = 0;
+        faces.forEach(f => {
+          const a = f.boundingBox.width * f.boundingBox.height;
+          sum += (f.boundingBox.x + f.boundingBox.width / 2) * a;
+          wsum += a;
+        });
+        setFocusX(img, sum / wsum / nw, visibleFrac);
+        return;
+      }
+    }
+  } catch (e) { /* fall through to saliency */ }
+
+  try {
+    const W = 80, H = Math.max(8, Math.round(W * nh / nw));
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, W, H);
+    const d = ctx.getImageData(0, 0, W, H).data;
+
+    const lum = new Float32Array(W * H);
+    let mr = 0, mg = 0, mb = 0;
+    for (let i = 0; i < W * H; i++) {
+      const r = d[i * 4], g = d[i * 4 + 1], b = d[i * 4 + 2];
+      lum[i] = 0.299 * r + 0.587 * g + 0.114 * b;
+      mr += r; mg += g; mb += b;
+    }
+    mr /= W * H; mg /= W * H; mb /= W * H;
+
+    const col = new Float32Array(W);
+    for (let y = 1; y < H - 1; y++) {
+      const vy = Math.abs(y / (H - 1) - 0.45);
+      const vWeight = 1 - 0.5 * vy;
+      for (let x = 1; x < W - 1; x++) {
+        const i = y * W + x;
+        const edge = Math.abs(lum[i + 1] - lum[i - 1]) + Math.abs(lum[i + W] - lum[i - W]);
+        const dist = Math.abs(d[i * 4] - mr) + Math.abs(d[i * 4 + 1] - mg) + Math.abs(d[i * 4 + 2] - mb);
+        col[x] += (edge + dist * 0.5) * vWeight;
+      }
+    }
+
+    const cw = Math.max(1, Math.round(W * visibleFrac));
+    let best = 0, bestScore = -1, run = 0;
+    for (let x = 0; x < cw; x++) run += col[x];
+    for (let s0 = 0; s0 <= W - cw; s0++) {
+      if (s0 > 0) run += col[s0 + cw - 1] - col[s0 - 1];
+      const centerOffset = Math.abs((s0 + cw / 2) / W - 0.5);
+      const score = run * (1 - 0.35 * centerOffset);
+      if (score > bestScore) { bestScore = score; best = s0; }
+    }
+    setFocusX(img, (best + cw / 2) / W, visibleFrac);
+  } catch (e) {
+    img.style.objectPosition = "center";
+  }
+}
+
+function setFocusX(img, centerFrac, visibleFrac) {
+  if (visibleFrac >= 1) { img.style.objectPosition = "center"; return; }
+  const start = Math.min(1 - visibleFrac, Math.max(0, centerFrac - visibleFrac / 2));
+  const pos = (start / (1 - visibleFrac)) * 100;
+  img.style.objectPosition = pos.toFixed(1) + "% center";
+}
+
 function getAvailableMonths() {
   const seen = new Map();
   photos.forEach(p => {
@@ -715,7 +799,7 @@ function render() {
         return `
         <div class="frame" onclick="openLightbox(${i})">
           <div class="thumb">
-            <img src="${thumbSrc}" data-full="${fullSrc}" alt="${p.title}" loading="lazy" decoding="async" onerror="thumbFallback(this)">
+            <img src="${thumbSrc}" data-full="${fullSrc}" data-focus="${p.focus || ''}" alt="${p.title}" loading="lazy" decoding="async" onload="smartFocus(this)" onerror="thumbFallback(this)">
           </div>
           <div class="meta" title="${p.title}">
             <span class="num">${String(i + 1).padStart(2, "0")}</span>
