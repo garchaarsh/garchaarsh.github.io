@@ -54,6 +54,11 @@
   .tabs-month { display:none; flex-wrap:wrap; gap:10px; font-family:monospace; margin:0 0 20px; padding:14px; border:1px dashed #444; }
   .tabs-month.open { display:flex; }
   .tabs-month .tab { border-color:#555; }
+  .tabs-genre { margin-bottom:20px; }
+  .tabs-genre .tab { padding:6px 12px; font-size:0.78rem; border-color:#333; }
+  .tabs-genre .tab.active { border-color:#c8672f; }
+  .tab .count { opacity:0.55; margin-left:6px; font-size:0.72rem; }
+  .tab.active .count { opacity:0.7; }
 
   .grid {
     display:grid;
@@ -429,6 +434,11 @@
     <div class="sub-label">LOCATION</div>
     <div class="tabs" id="tabs-location"></div>
     <div class="tabs-month" id="tabs-month"></div>
+    <div class="tabs-month" id="tabs-bytype"></div>
+    <div id="genreRow">
+      <div class="sub-label">TYPE</div>
+      <div class="tabs tabs-genre" id="tabs-genre"></div>
+    </div>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -471,165 +481,165 @@
 
 <script>
 const photos = [
-{ file: "new-brunswick/APS06096.jpg", title: "Crow standing on grass", city: "Moncton", region: "nb", date: "2026-10-09T09:56" },
-{ file: "new-brunswick/APS05983.jpg", title: "Two crows foraging outdoors", city: "Moncton", region: "nb", date: "2026-10-09T09:52" },
-{ file: "new-brunswick/APS07831.jpg", title: "Group portrait by display", city: "Moncton", region: "nb", date: "2026-10-10T20:28" },
-{ file: "new-brunswick/APS07812.jpg", title: "Friends gathered at festival entrance", city: "Moncton", region: "nb", date: "2026-10-10T19:35" },
-{ file: "new-brunswick/APS06341.jpg", title: "Chickadee taking flight outdoors", city: "Moncton", region: "nb", date: "2026-10-09T10:29" },
-{ file: "new-brunswick/APS06161.jpg", title: "Small bird perched on branch", city: "Moncton", region: "nb", date: "2026-10-09T10:15" },
-{ file: "new-brunswick/APS00217.jpg", title: "Classic blue car front view", city: "Moncton", region: "nb", date: "2026-10-11T16:11" },
-{ file: "new-brunswick/APS00213.jpg", title: "Vintage blue car parked outside", city: "Moncton", region: "nb", date: "2026-10-11T16:10" },
-{ file: "new-brunswick/APS00207.jpg", title: "Classic car wooden steering wheel", city: "Moncton", region: "nb", date: "2026-10-11T16:10" },
-{ file: "new-brunswick/APS07885.jpg", title: "Traditional dance celebration crowd", city: "Moncton", region: "nb", date: "2026-10-10T20:35" },
-{ file: "new-brunswick/APS00357.jpg", title: "Red foliage and autumn landscape", city: "Moncton", region: "nb", date: "2026-10-11T16:43" },
-{ file: "new-brunswick/APS00293.jpg", title: "Classic cars lined up outdoors", city: "Moncton", region: "nb", date: "2026-10-11T16:21" },
-{ file: "new-brunswick/APS00249.jpg", title: "Classic car dashboard interior", city: "Moncton", region: "nb", date: "2026-10-11T16:19" },
-{ file: "new-brunswick/APS00227.jpg", title: "Vintage cars parked in lot", city: "Moncton", region: "nb", date: "2026-10-11T16:17" },
-{ file: "new-brunswick/APS00618.jpg", title: "Sunlight beaming through autumn brush", city: "Moncton", region: "nb", date: "2026-10-11T17:02" },
-{ file: "new-brunswick/APS00588.jpg", title: "Golden hour red foliage close-up", city: "Moncton", region: "nb", date: "2026-10-11T17:01" },
-{ file: "new-brunswick/APS00555.jpg", title: "Vibrant red leaves backlit", city: "Moncton", region: "nb", date: "2026-10-11T16:59" },
-{ file: "new-brunswick/APS00414.jpg", title: "Boardwalk across red autumn fields", city: "Moncton", region: "nb", date: "2026-10-11T16:48" },
-{ file: "new-brunswick/APS01610.jpg", title: "Scenic valley farm and trees", city: "Sussex", region: "nb", date: "2026-10-12T11:07" },
-{ file: "new-brunswick/APS01343.jpg", title: "Autumn colors in dense forest", city: "Sussex", region: "nb", date: "2026-10-12T10:36" },
-{ file: "new-brunswick/APS01166.jpg", title: "Woodpecker clinging to tree bark", city: "Sussex", region: "nb", date: "2026-10-12T10:13" },
-{ file: "new-brunswick/APS01077.jpg", title: "Trail entrance amid golden foliage", city: "Sussex", region: "nb", date: "2026-10-12T09:59" },
-{ file: "new-brunswick/APS03650.jpg", title: "Couple walking along autumn path", city: "Moncton", region: "nb", date: "2026-10-20T16:58" },
-{ file: "new-brunswick/APS03555.jpg", title: "Groom adjusting bride's attire outdoors", city: "Moncton", region: "nb", date: "2026-10-20T16:54" },
-{ file: "new-brunswick/APS03356.jpg", title: "Couple showcasing wedding rings together", city: "Moncton", region: "nb", date: "2026-10-18T11:23" },
-{ file: "new-brunswick/APS03331.jpg", title: "Reading vows at ceremony arch", city: "Moncton", region: "nb", date: "2026-10-18T11:17" },
-{ file: "new-brunswick/APS04907.jpg", title: "Bride and groom sharing moment", city: "Moncton", region: "nb", date: "2026-10-20T17:33" },
-{ file: "new-brunswick/APS03900.jpg", title: "Groom resting head on bench", city: "Moncton", region: "nb", date: "2026-10-20T17:10" },
-{ file: "new-brunswick/APS04338.jpg", title: "Couple posing by wooden fence", city: "Moncton", region: "nb", date: "2026-10-20T17:22" },
-{ file: "new-brunswick/APS03818.jpg", title: "Embracing outdoors during golden hour", city: "Moncton", region: "nb", date: "2026-10-20T17:04" },
-{ file: "new-brunswick/APS08891.jpg", title: "Candidate speaking about campaign plans", city: "Moncton", region: "nb", date: "2026-08-08T09:54" },
-{ file: "new-brunswick/APS09011.jpg", title: "Locals listening to candidate speech", city: "Moncton", region: "nb", date: "2026-08-08T10:07" },
-{ file: "new-brunswick/APS09022.jpg", title: "Supporters gathered at election event", city: "Moncton", region: "nb", date: "2026-08-08T10:09" },
-{ file: "new-brunswick/APS09063.jpg", title: "Candidate discussing policy proposals outdoors", city: "Moncton", region: "nb", date: "2026-08-08T10:15" },
-{ file: "new-brunswick/APS09189.jpg", title: "Friends posing for a portrait", city: "Moncton", region: "nb", date: "2026-08-08T11:50" },
-{ file: "new-brunswick/APS09214.jpg", title: "Couple portrait by the trees", city: "Moncton", region: "nb", date: "2026-08-08T11:54" },
-{ file: "ontario/20240421_090541.jpeg", title: "Walking through High Park", city: "Toronto", region: "on", date: "2024-04-21T09:05" },
-{ file: "ontario/20240929_151130.jpeg", title: "Wooden staircase at Art Gallery", city: "Toronto", region: "on", date: "2024-09-29T15:11" },
-{ file: "ontario/20240929_151314.jpeg", title: "Archway and wooden stairs view", city: "Toronto", region: "on", date: "2024-09-29T15:13" },
-{ file: "ontario/20240929_152757.jpeg", title: "Staircase and glass door view", city: "Toronto", region: "on", date: "2024-09-29T15:27" },
-{ file: "ontario/20240929_151601.jpeg", title: "Swirl staircase at Art Gallery", city: "Toronto", region: "on", date: "2024-09-29T15:16" },
-{ file: "ontario/IMG-20240930-WA0080.jpeg", title: "CN Tower view through trees", city: "Toronto", region: "on", date: "2024-09-30T11:15" },
-{ file: "ontario/IMG-20240930-WA0141.jpeg", title: "Stairs descending at Art Gallery", city: "Toronto", region: "on", date: "2024-09-30T12:45" },
-{ file: "ontario/20241201_124711.jpeg", title: "Green snake at Toronto Zoo", city: "Toronto", region: "on", date: "2024-12-01T12:47" },
-{ file: "ontario/20241201_131406.jpeg", title: "Green lizard at Toronto Zoo", city: "Toronto", region: "on", date: "2024-12-01T13:14" },
-{ file: "ontario/20250220_015823.jpeg", title: "Car trade show display", city: "Toronto", region: "on", date: "2025-02-20T02:58" },
-{ file: "ontario/20250220_074147.jpeg", title: "Red car at trade show", city: "Toronto", region: "on", date: "2025-02-20T07:41" },
-{ file: "ontario/image.jpeg", title: "Upside down at Museum of Illusions", city: "Toronto", region: "on", date: "2025-03-04T12:53" },
-{ file: "ontario/DSC03390.jpeg", title: "Downtown CN Tower view", city: "Toronto", region: "on", date: "2025-05-28T12:57" },
-{ file: "ontario/DSC04549.jpeg", title: "Black crow on grass", city: "Scarborough", region: "on", date: "2025-07-08T12:40" },
-{ file: "ontario/DSC05794.jpeg", title: "Toronto Public Library reading room", city: "Toronto", region: "on", date: "2025-07-29T15:26" },
-{ file: "ontario/DSC05800.jpeg", title: "Toronto Public Library multi-level atrium", city: "Toronto", region: "on", date: "2025-07-29T15:29" },
-{ file: "ontario/DSC05834.jpeg", title: "Toronto Public Library study desks", city: "Toronto", region: "on", date: "2025-07-29T15:43" },
-{ file: "ontario/DSC05848.jpeg", title: "Toronto Public Library balcony overlook", city: "Toronto", region: "on", date: "2025-07-29T15:52" },
-{ file: "ontario/20200204_145011.jpeg", title: "Harbourfront Centre, Toronto", city: "Toronto", region: "on", date: "2020-02-04T14:50" },
-{ file: "alberta/20230502_151559.jpeg", title: "Lake Louise, Snowy Mountain View", city: "Lake Louise", region: "ab", date: "2023-05-02T15:15" },
-{ file: "alberta/20230502_180351.jpeg", title: "Vermillion Lakes, Mount Rundle Reflection", city: "Banff", region: "ab", date: "2023-05-02T18:03" },
-{ file: "ontario/20240513_181716.jpeg", title: "RC Harris Water Treatment Plant, Toronto", city: "Toronto", region: "on", date: "2024-05-13T18:17" },
-{ file: "usa/20240902_141936.jpeg", title: "Green lizard resting on branch", city: "Buffalo", region: "usa", date: "2024-09-02T14:19" },
-{ file: "ontario/DSC04437.jpeg", title: "Winding green nature trail path", city: "Scarborough", region: "on", date: "2025-07-08T10:38" },
-{ file: "ontario/LRM_EXPORT_20221228_205919-01.jpeg", title: "Polson Pier, Toronto Skyline at Dusk", city: "Toronto", region: "on", date: "2022-12-28T17:00" },
-{ file: "ontario/LRM_EXPORT_20221228_210300-01 (1).jpeg", title: "Polson Pier Skyline Viewpoint, Toronto", city: "Toronto", region: "on", date: "2022-12-28T17:05" },
-{ file: "ontario/DSC08261.jpeg", title: "Cyclist by the river", city: "North York", region: "on", date: "2025-08-29T14:56" },
-{ file: "ontario/DSC08300.jpeg", title: "Walker on the trail", city: "North York", region: "on", date: "2025-08-29T15:32" },
-{ file: "ontario/DSC08377.jpeg", title: "Bicycle by the lawn", city: "North York", region: "on", date: "2025-08-30T13:36" },
-{ file: "ontario/DSC08400.jpeg", title: "Bee on purple flowers", city: "North York", region: "on", date: "2025-08-30T13:44" },
-{ file: "ontario/DSC08402.jpeg", title: "Wooden ship art installation", city: "North York", region: "on", date: "2025-08-30T13:45" },
-{ file: "ontario/DSC08450.jpeg", title: "Pink water lily blossom", city: "North York", region: "on", date: "2025-08-31T16:46" },
-{ file: "ontario/DSC06747.jpeg", title: "Natural limestone swimming hole", city: "Elora", region: "on", date: "2025-08-01T18:59" },
-{ file: "ontario/DSC06498.jpeg", title: "The dramatic Elora Gorge", city: "Elora", region: "on", date: "2025-08-01T12:44" },
-{ file: "ontario/DSC06396.jpg", title: "Looking Out, Elora Gorge Overlook", city: "Elora", region: "on", date: "2025-08-01T10:48" },
-{ file: "ontario/DSC06564.jpg", title: "Riverbed Portrait, Elora Gorge Bridge", city: "Elora", region: "on", date: "2025-08-01T13:16" },
-{ file: "ontario/DSC06203.jpg", title: "Golden Hour Portrait, Elora Mills overlook", city: "Elora", region: "on", date: "2025-08-01T07:59" },
-{ file: "ontario/DSC06153.jpg", title: "Pedestrian Bridge, Elora Village Entrance", city: "Elora", region: "on", date: "2025-08-01T07:43" },
-{ file: "ontario/DSC06165.jpg", title: "Flower-Draped Lamp Post, Elora Streets", city: "Elora", region: "on", date: "2025-08-01T07:48" },
-{ file: "new-brunswick/AS1.jpg", title: "Hopewell Rocks — Flowerpot Formations at Low Tide", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:00" },
-{ file: "new-brunswick/AS2.jpg", title: "Elephant Rock, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:05" },
-{ file: "new-brunswick/AS3.jpg", title: "Lovers' Arch, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:10" },
-{ file: "new-brunswick/AS4.jpg", title: "Sea Stacks, Bay of Fundy", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:15" },
-{ file: "new-brunswick/AS5.jpg", title: "Ocean Floor at Low Tide, Hopewell Rocks", city: "Hopewell Cape", region: "nb", date: "2026-05-18T10:20" },
-{ file: "new-brunswick/AS6.jpg", title: "Confederation Bridge", city: "Borden-Carleton", region: "nb", date: "2026-05-18T13:00" },
-{ file: "new-brunswick/AS7.jpg", title: "Cape Jourimain Nature Centre", city: "Bayfield", region: "nb", date: "2026-05-18T14:00" },
-{ file: "new-brunswick/AS8.jpg", title: "Boardwalk over the Marsh, Cape Jourimain", city: "Bayfield", region: "nb", date: "2026-05-18T14:10" },
-{ file: "prince-edward-island/AS9.jpg", title: "Lloyd Inman Memorial Park — Red Sand Beach", city: "Canoe Cove", region: "pe", date: "2026-05-19T09:00" },
-{ file: "prince-edward-island/AS10.jpg", title: "Northumberland Strait View, Canoe Cove", city: "Canoe Cove", region: "pe", date: "2026-05-19T09:05" },
-{ file: "prince-edward-island/AS11.jpg", title: "Shoreline, Lloyd Inman Memorial Park", city: "Canoe Cove", region: "pe", date: "2026-05-19T09:10" },
-{ file: "prince-edward-island/AS12.jpg", title: "Lookoff, Lloyd Inman Memorial Park", city: "Canoe Cove", region: "pe", date: "2026-05-19T09:15" },
-{ file: "prince-edward-island/AS13.jpg", title: "Cavendish Beach — Red Sandstone Cliffs", city: "Cavendish", region: "pe", date: "2026-05-19T11:00" },
-{ file: "prince-edward-island/AS14.jpg", title: "Cavendish Beach — Dunes", city: "Cavendish", region: "pe", date: "2026-05-19T11:05" },
-{ file: "prince-edward-island/AS15.jpg", title: "Cavendish Beach — Shoreline", city: "Cavendish", region: "pe", date: "2026-05-19T11:10" },
-{ file: "prince-edward-island/AS16.jpg", title: "Cavendish Beach — Boardwalk", city: "Cavendish", region: "pe", date: "2026-05-19T11:15" },
-{ file: "prince-edward-island/AS17.jpg", title: "Cavendish Beach — Cliffside View", city: "Cavendish", region: "pe", date: "2026-05-19T11:20" },
-{ file: "prince-edward-island/AS18.jpg", title: "Cavendish Beach — Waves", city: "Cavendish", region: "pe", date: "2026-05-19T11:25" },
-{ file: "prince-edward-island/AS19.jpg", title: "Cavendish Beach — Dune Grass", city: "Cavendish", region: "pe", date: "2026-05-19T11:30" },
-{ file: "prince-edward-island/AS20.jpg", title: "Cavendish Beach — Coastal Trail", city: "Cavendish", region: "pe", date: "2026-05-19T11:35" },
-{ file: "prince-edward-island/AS21.jpg", title: "Kirk of St. James Presbyterian Church", city: "Charlottetown", region: "pe", date: "2026-05-19T14:00" },
-{ file: "prince-edward-island/AS22.jpg", title: "Brighton Beach Range Front Light", city: "Charlottetown", region: "pe", date: "2026-05-19T15:00" },
-{ file: "prince-edward-island/AS23.jpg", title: "Victoria Park, Charlottetown", city: "Charlottetown", region: "pe", date: "2026-05-19T15:30" },
-{ file: "prince-edward-island/AS24.jpg", title: "Victoria Park — Waterfront Path", city: "Charlottetown", region: "pe", date: "2026-05-19T15:35" },
-{ file: "prince-edward-island/AS25.jpg", title: "Victoria Park — Harbour View", city: "Charlottetown", region: "pe", date: "2026-05-19T15:40" },
-{ file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", region: "nb", date: "2026-07-19T09:38" },
-{ file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", region: "nb", date: "2026-07-19T08:15" },
-{ file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", region: "nb", date: "2026-07-18T18:40" },
-{ file: "new-brunswick/Whale watching-1.jpg", title: "Whale Fluke, Diving", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
-{ file: "new-brunswick/Whale watching-2.jpg", title: "Whale Tail, Calm Water", city: "Grand Manan", region: "nb", date: "2026-07-18T13:26" },
-{ file: "new-brunswick/Seals.jpg", title: "Seal Colony Below the Light", city: "Grand Manan", region: "nb", date: "2026-07-18T10:40" },
-{ file: "new-brunswick/Puffin-1.jpg", title: "Puffin, Close Up", city: "Grand Manan", region: "nb", date: "2026-07-18T09:52" },
-{ file: "new-brunswick/Puffin-2.jpg", title: "Puffin Trio on the Rocks", city: "Grand Manan", region: "nb", date: "2026-07-18T09:51" },
-{ file: "new-brunswick/Razorbill-1.jpg", title: "Razorbill, Standing Watch", city: "Grand Manan", region: "nb", date: "2026-07-18T09:29" },
-{ file: "new-brunswick/Razorbill-3.jpg", title: "Razorbill and Puffin, Sharing a Rock", city: "Grand Manan", region: "nb", date: "2026-07-18T09:28" },
-{ file: "new-brunswick/Puffin-3.jpg", title: "Puffin, Mid-Call", city: "Grand Manan", region: "nb", date: "2026-07-18T09:26" },
-{ file: "new-brunswick/Razorbill-2.jpg", title: "Razorbill in Profile", city: "Grand Manan", region: "nb", date: "2026-07-18T09:25" },
-{ file: "new-brunswick/Puffin-4.jpg", title: "Puffin on the Boulder", city: "Grand Manan", region: "nb", date: "2026-07-18T09:01" },
-{ file: "new-brunswick/Boat dropping.jpg", title: "Dropping Off at the Weir", city: "Grand Manan", region: "nb", date: "2026-07-18T08:40" },
-{ file: "new-brunswick/Hole in the wall.jpg", title: "Hole in the Wall", city: "Grand Manan", region: "nb", date: "2026-07-17T14:28" },
-{ file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", region: "nb", date: "2026-07-17T13:49" },
-{ file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", region: "nb", date: "2026-07-17T13:17" },
-{ file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", region: "nb", date: "2026-07-17T13:07" },
-{ file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", region: "ns", date: "2026-05-19T10:22" },
-{ file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", region: "ns", date: "2026-05-19T10:46" },
-{ file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", region: "ns", date: "2026-05-19T10:47" },
-{ file: "nova-scotia/AS30.jpg", title: "Historic Properties Corner", city: "Halifax", region: "ns", date: "2026-05-19T11:10" },
-{ file: "nova-scotia/AS32.jpg", title: "Spring Blossoms, Downtown Street", city: "Halifax", region: "ns", date: "2026-05-19T14:53" },
-{ file: "nova-scotia/AS33.jpg", title: "Old Town Clock, Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:01" },
-{ file: "nova-scotia/AS35.jpg", title: "View from Citadel Hill", city: "Halifax", region: "ns", date: "2026-05-19T15:16" },
-{ file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-19T17:25" },
-{ file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", region: "ns", date: "2026-05-20T18:17" },
-{ file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", region: "ns", date: "2026-05-20T15:17" },
-{ file: "new-brunswick/SJ4.jpg", title: "Trinity Church Spire, Window Seat", city: "Saint John", region: "nb", date: "2026-03-27T18:45" },
-{ file: "new-brunswick/SJ5.jpg", title: "Trinity Church Spire, Rooftop View", city: "Saint John", region: "nb", date: "2026-03-27T18:46" },
-{ file: "new-brunswick/SJ1.jpg", title: "Harbour Passage, Red Path at Dusk", city: "Saint John", region: "nb", date: "2026-03-27T19:05" },
-{ file: "new-brunswick/SJ2.jpg", title: "Fire Escapes Near the Port, Dusk", city: "Saint John", region: "nb", date: "2026-03-27T19:12" },
-{ file: "new-brunswick/SJ3.jpg", title: "Chubb's Corner, Prince William Street", city: "Saint John", region: "nb", date: "2026-03-28T06:51" },
-{ file: "new-brunswick/DSC03764.jpg", title: "Sleigh Ride Through the Snow, Centennial Park", city: "Moncton", region: "nb", date: "2026-02-15T13:46" },
-{ file: "new-brunswick/DSC03648.jpg", title: "Llama in Winter Blanket, Centennial Park", city: "Moncton", region: "nb", date: "2026-02-15T13:34" },
-{ file: "ontario/DSC03004.jpeg", title: "Silk Worm Nest on Trail, Cheltenham Badlands", city: "Caledon", region: "on", date: "2025-05-12T12:15" },
-{ file: "ontario/DSC02785.jpeg", title: "Red Slopes and Forest, Cheltenham Badlands", city: "Caledon", region: "on", date: "2025-05-12T11:30" },
-{ file: "ontario/DSC02769.jpeg", title: "Rolling Red Hills, Cheltenham Badlands", city: "Caledon", region: "on", date: "2025-05-12T11:26" },
-{ file: "new-brunswick/A.jpg", title: "Suspension bridge trail walk", city: "Grand Manan", region: "nb", date: "2026-07-17T12:29" },
-{ file: "new-brunswick/APS03558.jpg", title: "Ferry porthole reflection portrait", city: "Grand Manan", region: "nb", date: "2026-07-17T11:51" },
-{ file: "new-brunswick/APS07665.jpg", title: "Misty and foggy road view", city: "Blacks Harbour", region: "nb", date: "2026-07-19T07:59" },
-{ file: "new-brunswick/APS08522.jpg", title: "Passengers at the ferry railing", city: "Grand Manan", region: "nb", date: "2026-07-19T10:53" },
-{ file: "new-brunswick/APS08551.jpg", title: "Reading a book by the ferry window", city: "Grand Manan", region: "nb", date: "2026-07-19T11:03" },
-{ file: "new-brunswick/APS08673.jpg", title: "Cloudy walk toward the parking lot", city: "Saint John", region: "nb", date: "2026-07-19T13:38" },
-{ file: "new-brunswick/APS08723.jpg", title: "Hillside house near Reversing Falls", city: "Saint John", region: "nb", date: "2026-07-19T14:17" },
-{ file: "ontario/DSC03065.jpg", title: "Sunny trail and dead tree portrait", city: "Scarborough", region: "on", date: "2025-05-12T14:11" },
-{ file: "ontario/DSC04901.jpg", title: "Kids on the beach at sunset", city: "Toronto", region: "on", date: "2025-07-21T20:39" },
-{ file: "ontario/DSC05496.jpg", title: "Gairloch Gardens sunset view", city: "Mississauga", region: "on", date: "2025-07-25T20:35" },
-{ file: "ontario/DSC08593.jpg", title: "Lush green trail in the woods", city: "North York", region: "on", date: "2025-08-31T19:00" },
-{ file: "new-brunswick/APS05781.jpeg", title: "Peaceful autumn walk through the park", city: "Moncton", region: "nb", date: "2026-10-02T15:04" },
-{ file: "new-brunswick/APS05233.jpeg", title: "Quiet afternoon by the fountain", city: "Moncton", region: "nb", date: "2026-09-24T13:18" },
-{ file: "new-brunswick/APS04742.jpeg", title: "Celebrating the product debut outside Costco", city: "Moncton", region: "nb", date: "2026-09-17T12:00" },
-{ file: "new-brunswick/APS04777.jpeg", title: "Team celebration at Sobeys", city: "Moncton", region: "nb", date: "2026-09-17T12:00" },
+{ file: "new-brunswick/APS06096.jpg", title: "Crow standing on grass", city: "Moncton", tags: ["wildlife"], region: "nb", date: "2026-10-09T09:56" },
+{ file: "new-brunswick/APS05983.jpg", title: "Two crows foraging outdoors", city: "Moncton", tags: ["wildlife"], region: "nb", date: "2026-10-09T09:52" },
+{ file: "new-brunswick/APS07831.jpg", title: "Group portrait by display", city: "Moncton", tags: ["people", "events"], region: "nb", date: "2026-10-10T20:28" },
+{ file: "new-brunswick/APS07812.jpg", title: "Friends gathered at festival entrance", city: "Moncton", tags: ["people", "events"], region: "nb", date: "2026-10-10T19:35" },
+{ file: "new-brunswick/APS06341.jpg", title: "Chickadee taking flight outdoors", city: "Moncton", tags: ["wildlife"], region: "nb", date: "2026-10-09T10:29" },
+{ file: "new-brunswick/APS06161.jpg", title: "Small bird perched on branch", city: "Moncton", tags: ["wildlife"], region: "nb", date: "2026-10-09T10:15" },
+{ file: "new-brunswick/APS00217.jpg", title: "Classic blue car front view", city: "Moncton", tags: ["cars"], region: "nb", date: "2026-10-11T16:11" },
+{ file: "new-brunswick/APS00213.jpg", title: "Vintage blue car parked outside", city: "Moncton", tags: ["cars"], region: "nb", date: "2026-10-11T16:10" },
+{ file: "new-brunswick/APS00207.jpg", title: "Classic car wooden steering wheel", city: "Moncton", tags: ["cars"], region: "nb", date: "2026-10-11T16:10" },
+{ file: "new-brunswick/APS07885.jpg", title: "Traditional dance celebration crowd", city: "Moncton", tags: ["events"], region: "nb", date: "2026-10-10T20:35" },
+{ file: "new-brunswick/APS00357.jpg", title: "Red foliage and autumn landscape", city: "Moncton", tags: ["nature"], region: "nb", date: "2026-10-11T16:43" },
+{ file: "new-brunswick/APS00293.jpg", title: "Classic cars lined up outdoors", city: "Moncton", tags: ["cars"], region: "nb", date: "2026-10-11T16:21" },
+{ file: "new-brunswick/APS00249.jpg", title: "Classic car dashboard interior", city: "Moncton", tags: ["cars"], region: "nb", date: "2026-10-11T16:19" },
+{ file: "new-brunswick/APS00227.jpg", title: "Vintage cars parked in lot", city: "Moncton", tags: ["cars"], region: "nb", date: "2026-10-11T16:17" },
+{ file: "new-brunswick/APS00618.jpg", title: "Sunlight beaming through autumn brush", city: "Moncton", tags: ["nature"], region: "nb", date: "2026-10-11T17:02" },
+{ file: "new-brunswick/APS00588.jpg", title: "Golden hour red foliage close-up", city: "Moncton", tags: ["nature"], region: "nb", date: "2026-10-11T17:01" },
+{ file: "new-brunswick/APS00555.jpg", title: "Vibrant red leaves backlit", city: "Moncton", tags: ["nature"], region: "nb", date: "2026-10-11T16:59" },
+{ file: "new-brunswick/APS00414.jpg", title: "Boardwalk across red autumn fields", city: "Moncton", tags: ["trails", "nature"], region: "nb", date: "2026-10-11T16:48" },
+{ file: "new-brunswick/APS01610.jpg", title: "Scenic valley farm and trees", city: "Sussex", tags: ["nature"], region: "nb", date: "2026-10-12T11:07" },
+{ file: "new-brunswick/APS01343.jpg", title: "Autumn colors in dense forest", city: "Sussex", tags: ["nature"], region: "nb", date: "2026-10-12T10:36" },
+{ file: "new-brunswick/APS01166.jpg", title: "Woodpecker clinging to tree bark", city: "Sussex", tags: ["wildlife"], region: "nb", date: "2026-10-12T10:13" },
+{ file: "new-brunswick/APS01077.jpg", title: "Trail entrance amid golden foliage", city: "Sussex", tags: ["trails", "nature"], region: "nb", date: "2026-10-12T09:59" },
+{ file: "new-brunswick/APS03650.jpg", title: "Couple walking along autumn path", city: "Moncton", tags: ["people", "trails", "nature"], region: "nb", date: "2026-10-20T16:58" },
+{ file: "new-brunswick/APS03555.jpg", title: "Groom adjusting bride's attire outdoors", city: "Moncton", tags: ["people"], region: "nb", date: "2026-10-20T16:54" },
+{ file: "new-brunswick/APS03356.jpg", title: "Couple showcasing wedding rings together", city: "Moncton", tags: ["people"], region: "nb", date: "2026-10-18T11:23" },
+{ file: "new-brunswick/APS03331.jpg", title: "Reading vows at ceremony arch", city: "Moncton", tags: ["people"], region: "nb", date: "2026-10-18T11:17" },
+{ file: "new-brunswick/APS04907.jpg", title: "Bride and groom sharing moment", city: "Moncton", tags: ["people"], region: "nb", date: "2026-10-20T17:33" },
+{ file: "new-brunswick/APS03900.jpg", title: "Groom resting head on bench", city: "Moncton", tags: ["people"], region: "nb", date: "2026-10-20T17:10" },
+{ file: "new-brunswick/APS04338.jpg", title: "Couple posing by wooden fence", city: "Moncton", tags: ["people"], region: "nb", date: "2026-10-20T17:22" },
+{ file: "new-brunswick/APS03818.jpg", title: "Embracing outdoors during golden hour", city: "Moncton", tags: ["people", "nature"], region: "nb", date: "2026-10-20T17:04" },
+{ file: "new-brunswick/APS08891.jpg", title: "Candidate speaking about campaign plans", city: "Moncton", tags: ["events"], region: "nb", date: "2026-08-08T09:54" },
+{ file: "new-brunswick/APS09011.jpg", title: "Locals listening to candidate speech", city: "Moncton", tags: ["events"], region: "nb", date: "2026-08-08T10:07" },
+{ file: "new-brunswick/APS09022.jpg", title: "Supporters gathered at election event", city: "Moncton", tags: ["events"], region: "nb", date: "2026-08-08T10:09" },
+{ file: "new-brunswick/APS09063.jpg", title: "Candidate discussing policy proposals outdoors", city: "Moncton", tags: ["events"], region: "nb", date: "2026-08-08T10:15" },
+{ file: "new-brunswick/APS09189.jpg", title: "Friends posing for a portrait", city: "Moncton", tags: ["people"], region: "nb", date: "2026-08-08T11:50" },
+{ file: "new-brunswick/APS09214.jpg", title: "Couple portrait by the trees", city: "Moncton", tags: ["people"], region: "nb", date: "2026-08-08T11:54" },
+{ file: "ontario/20240421_090541.jpeg", title: "Walking through High Park", city: "Toronto", tags: ["trails"], region: "on", date: "2024-04-21T09:05" },
+{ file: "ontario/20240929_151130.jpeg", title: "Wooden staircase at Art Gallery", city: "Toronto", tags: ["city"], region: "on", date: "2024-09-29T15:11" },
+{ file: "ontario/20240929_151314.jpeg", title: "Archway and wooden stairs view", city: "Toronto", tags: ["city"], region: "on", date: "2024-09-29T15:13" },
+{ file: "ontario/20240929_152757.jpeg", title: "Staircase and glass door view", city: "Toronto", tags: ["city"], region: "on", date: "2024-09-29T15:27" },
+{ file: "ontario/20240929_151601.jpeg", title: "Swirl staircase at Art Gallery", city: "Toronto", tags: ["city"], region: "on", date: "2024-09-29T15:16" },
+{ file: "ontario/IMG-20240930-WA0080.jpeg", title: "CN Tower view through trees", city: "Toronto", tags: ["city"], region: "on", date: "2024-09-30T11:15" },
+{ file: "ontario/IMG-20240930-WA0141.jpeg", title: "Stairs descending at Art Gallery", city: "Toronto", tags: ["city"], region: "on", date: "2024-09-30T12:45" },
+{ file: "ontario/20241201_124711.jpeg", title: "Green snake at Toronto Zoo", city: "Toronto", tags: ["wildlife"], region: "on", date: "2024-12-01T12:47" },
+{ file: "ontario/20241201_131406.jpeg", title: "Green lizard at Toronto Zoo", city: "Toronto", tags: ["wildlife"], region: "on", date: "2024-12-01T13:14" },
+{ file: "ontario/20250220_015823.jpeg", title: "Car trade show display", city: "Toronto", tags: ["cars"], region: "on", date: "2025-02-20T02:58" },
+{ file: "ontario/20250220_074147.jpeg", title: "Red car at trade show", city: "Toronto", tags: ["cars"], region: "on", date: "2025-02-20T07:41" },
+{ file: "ontario/image.jpeg", title: "Upside down at Museum of Illusions", city: "Toronto", tags: ["city"], region: "on", date: "2025-03-04T12:53" },
+{ file: "ontario/DSC03390.jpeg", title: "Downtown CN Tower view", city: "Toronto", tags: ["city"], region: "on", date: "2025-05-28T12:57" },
+{ file: "ontario/DSC04549.jpeg", title: "Black crow on grass", city: "Scarborough", tags: ["wildlife"], region: "on", date: "2025-07-08T12:40" },
+{ file: "ontario/DSC05794.jpeg", title: "Toronto Public Library reading room", city: "Toronto", tags: ["city"], region: "on", date: "2025-07-29T15:26" },
+{ file: "ontario/DSC05800.jpeg", title: "Toronto Public Library multi-level atrium", city: "Toronto", tags: ["city"], region: "on", date: "2025-07-29T15:29" },
+{ file: "ontario/DSC05834.jpeg", title: "Toronto Public Library study desks", city: "Toronto", tags: ["city"], region: "on", date: "2025-07-29T15:43" },
+{ file: "ontario/DSC05848.jpeg", title: "Toronto Public Library balcony overlook", city: "Toronto", tags: ["city"], region: "on", date: "2025-07-29T15:52" },
+{ file: "ontario/20200204_145011.jpeg", title: "Harbourfront Centre, Toronto", city: "Toronto", tags: ["city"], region: "on", date: "2020-02-04T14:50" },
+{ file: "alberta/20230502_151559.jpeg", title: "Lake Louise, Snowy Mountain View", city: "Lake Louise", tags: ["nature"], region: "ab", date: "2023-05-02T15:15" },
+{ file: "alberta/20230502_180351.jpeg", title: "Vermillion Lakes, Mount Rundle Reflection", city: "Banff", tags: ["nature"], region: "ab", date: "2023-05-02T18:03" },
+{ file: "ontario/20240513_181716.jpeg", title: "RC Harris Water Treatment Plant, Toronto", city: "Toronto", tags: ["city"], region: "on", date: "2024-05-13T18:17" },
+{ file: "usa/20240902_141936.jpeg", title: "Green lizard resting on branch", city: "Buffalo", tags: ["wildlife"], region: "usa", date: "2024-09-02T14:19" },
+{ file: "ontario/DSC04437.jpeg", title: "Winding green nature trail path", city: "Scarborough", tags: ["trails"], region: "on", date: "2025-07-08T10:38" },
+{ file: "ontario/LRM_EXPORT_20221228_205919-01.jpeg", title: "Polson Pier, Toronto Skyline at Dusk", city: "Toronto", tags: ["city"], region: "on", date: "2022-12-28T17:00" },
+{ file: "ontario/LRM_EXPORT_20221228_210300-01 (1).jpeg", title: "Polson Pier Skyline Viewpoint, Toronto", city: "Toronto", tags: ["city"], region: "on", date: "2022-12-28T17:05" },
+{ file: "ontario/DSC08261.jpeg", title: "Cyclist by the river", city: "North York", tags: ["trails"], region: "on", date: "2025-08-29T14:56" },
+{ file: "ontario/DSC08300.jpeg", title: "Walker on the trail", city: "North York", tags: ["trails"], region: "on", date: "2025-08-29T15:32" },
+{ file: "ontario/DSC08377.jpeg", title: "Bicycle by the lawn", city: "North York", tags: ["trails"], region: "on", date: "2025-08-30T13:36" },
+{ file: "ontario/DSC08400.jpeg", title: "Bee on purple flowers", city: "North York", tags: ["wildlife", "nature"], region: "on", date: "2025-08-30T13:44" },
+{ file: "ontario/DSC08402.jpeg", title: "Wooden ship art installation", city: "North York", tags: ["city"], region: "on", date: "2025-08-30T13:45" },
+{ file: "ontario/DSC08450.jpeg", title: "Pink water lily blossom", city: "North York", tags: ["nature"], region: "on", date: "2025-08-31T16:46" },
+{ file: "ontario/DSC06747.jpeg", title: "Natural limestone swimming hole", city: "Elora", tags: ["nature"], region: "on", date: "2025-08-01T18:59" },
+{ file: "ontario/DSC06498.jpeg", title: "The dramatic Elora Gorge", city: "Elora", tags: ["nature"], region: "on", date: "2025-08-01T12:44" },
+{ file: "ontario/DSC06396.jpg", title: "Looking Out, Elora Gorge Overlook", city: "Elora", tags: ["nature"], region: "on", date: "2025-08-01T10:48" },
+{ file: "ontario/DSC06564.jpg", title: "Riverbed Portrait, Elora Gorge Bridge", city: "Elora", tags: ["people", "nature"], region: "on", date: "2025-08-01T13:16" },
+{ file: "ontario/DSC06203.jpg", title: "Golden Hour Portrait, Elora Mills overlook", city: "Elora", tags: ["people", "nature"], region: "on", date: "2025-08-01T07:59" },
+{ file: "ontario/DSC06153.jpg", title: "Pedestrian Bridge, Elora Village Entrance", city: "Elora", tags: ["city"], region: "on", date: "2025-08-01T07:43" },
+{ file: "ontario/DSC06165.jpg", title: "Flower-Draped Lamp Post, Elora Streets", city: "Elora", tags: ["city"], region: "on", date: "2025-08-01T07:48" },
+{ file: "new-brunswick/AS1.jpg", title: "Hopewell Rocks — Flowerpot Formations at Low Tide", city: "Hopewell Cape", tags: ["nature"], region: "nb", date: "2026-05-18T10:00" },
+{ file: "new-brunswick/AS2.jpg", title: "Elephant Rock, Hopewell Rocks", city: "Hopewell Cape", tags: ["nature"], region: "nb", date: "2026-05-18T10:05" },
+{ file: "new-brunswick/AS3.jpg", title: "Lovers' Arch, Hopewell Rocks", city: "Hopewell Cape", tags: ["nature"], region: "nb", date: "2026-05-18T10:10" },
+{ file: "new-brunswick/AS4.jpg", title: "Sea Stacks, Bay of Fundy", city: "Hopewell Cape", tags: ["nature"], region: "nb", date: "2026-05-18T10:15" },
+{ file: "new-brunswick/AS5.jpg", title: "Ocean Floor at Low Tide, Hopewell Rocks", city: "Hopewell Cape", tags: ["nature"], region: "nb", date: "2026-05-18T10:20" },
+{ file: "new-brunswick/AS6.jpg", title: "Confederation Bridge", city: "Borden-Carleton", tags: ["city"], region: "nb", date: "2026-05-18T13:00" },
+{ file: "new-brunswick/AS7.jpg", title: "Cape Jourimain Nature Centre", city: "Bayfield", tags: ["nature"], region: "nb", date: "2026-05-18T14:00" },
+{ file: "new-brunswick/AS8.jpg", title: "Boardwalk over the Marsh, Cape Jourimain", city: "Bayfield", tags: ["trails", "nature"], region: "nb", date: "2026-05-18T14:10" },
+{ file: "prince-edward-island/AS9.jpg", title: "Lloyd Inman Memorial Park — Red Sand Beach", city: "Canoe Cove", tags: ["nature"], region: "pe", date: "2026-05-19T09:00" },
+{ file: "prince-edward-island/AS10.jpg", title: "Northumberland Strait View, Canoe Cove", city: "Canoe Cove", tags: ["nature"], region: "pe", date: "2026-05-19T09:05" },
+{ file: "prince-edward-island/AS11.jpg", title: "Shoreline, Lloyd Inman Memorial Park", city: "Canoe Cove", tags: ["nature"], region: "pe", date: "2026-05-19T09:10" },
+{ file: "prince-edward-island/AS12.jpg", title: "Lookoff, Lloyd Inman Memorial Park", city: "Canoe Cove", tags: ["nature"], region: "pe", date: "2026-05-19T09:15" },
+{ file: "prince-edward-island/AS13.jpg", title: "Cavendish Beach — Red Sandstone Cliffs", city: "Cavendish", tags: ["nature"], region: "pe", date: "2026-05-19T11:00" },
+{ file: "prince-edward-island/AS14.jpg", title: "Cavendish Beach — Dunes", city: "Cavendish", tags: ["nature"], region: "pe", date: "2026-05-19T11:05" },
+{ file: "prince-edward-island/AS15.jpg", title: "Cavendish Beach — Shoreline", city: "Cavendish", tags: ["nature"], region: "pe", date: "2026-05-19T11:10" },
+{ file: "prince-edward-island/AS16.jpg", title: "Cavendish Beach — Boardwalk", city: "Cavendish", tags: ["trails", "nature"], region: "pe", date: "2026-05-19T11:15" },
+{ file: "prince-edward-island/AS17.jpg", title: "Cavendish Beach — Cliffside View", city: "Cavendish", tags: ["nature"], region: "pe", date: "2026-05-19T11:20" },
+{ file: "prince-edward-island/AS18.jpg", title: "Cavendish Beach — Waves", city: "Cavendish", tags: ["nature"], region: "pe", date: "2026-05-19T11:25" },
+{ file: "prince-edward-island/AS19.jpg", title: "Cavendish Beach — Dune Grass", city: "Cavendish", tags: ["nature"], region: "pe", date: "2026-05-19T11:30" },
+{ file: "prince-edward-island/AS20.jpg", title: "Cavendish Beach — Coastal Trail", city: "Cavendish", tags: ["trails", "nature"], region: "pe", date: "2026-05-19T11:35" },
+{ file: "prince-edward-island/AS21.jpg", title: "Kirk of St. James Presbyterian Church", city: "Charlottetown", tags: ["city"], region: "pe", date: "2026-05-19T14:00" },
+{ file: "prince-edward-island/AS22.jpg", title: "Brighton Beach Range Front Light", city: "Charlottetown", tags: ["city", "nature"], region: "pe", date: "2026-05-19T15:00" },
+{ file: "prince-edward-island/AS23.jpg", title: "Victoria Park, Charlottetown", city: "Charlottetown", tags: ["trails"], region: "pe", date: "2026-05-19T15:30" },
+{ file: "prince-edward-island/AS24.jpg", title: "Victoria Park — Waterfront Path", city: "Charlottetown", tags: ["trails"], region: "pe", date: "2026-05-19T15:35" },
+{ file: "prince-edward-island/AS25.jpg", title: "Victoria Park — Harbour View", city: "Charlottetown", tags: ["nature", "trails"], region: "pe", date: "2026-05-19T15:40" },
+{ file: "new-brunswick/Bird.jpg", title: "Gull with Its Catch", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-19T09:38" },
+{ file: "new-brunswick/Ships.jpg", title: "Foggy Shoreline, Boats at Rest", city: "Grand Manan", tags: ["nature"], region: "nb", date: "2026-07-19T08:15" },
+{ file: "new-brunswick/Southwest head volcanic cliffs .jpg", title: "Southwest Head Cliffs", city: "Grand Manan", tags: ["nature"], region: "nb", date: "2026-07-18T18:40" },
+{ file: "new-brunswick/Whale watching-1.jpg", title: "Whale Fluke, Diving", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T13:26" },
+{ file: "new-brunswick/Whale watching-2.jpg", title: "Whale Tail, Calm Water", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T13:26" },
+{ file: "new-brunswick/Seals.jpg", title: "Seal Colony Below the Light", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T10:40" },
+{ file: "new-brunswick/Puffin-1.jpg", title: "Puffin, Close Up", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:52" },
+{ file: "new-brunswick/Puffin-2.jpg", title: "Puffin Trio on the Rocks", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:51" },
+{ file: "new-brunswick/Razorbill-1.jpg", title: "Razorbill, Standing Watch", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:29" },
+{ file: "new-brunswick/Razorbill-3.jpg", title: "Razorbill and Puffin, Sharing a Rock", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:28" },
+{ file: "new-brunswick/Puffin-3.jpg", title: "Puffin, Mid-Call", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:26" },
+{ file: "new-brunswick/Razorbill-2.jpg", title: "Razorbill in Profile", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:25" },
+{ file: "new-brunswick/Puffin-4.jpg", title: "Puffin on the Boulder", city: "Grand Manan", tags: ["wildlife", "nature"], region: "nb", date: "2026-07-18T09:01" },
+{ file: "new-brunswick/Boat dropping.jpg", title: "Dropping Off at the Weir", city: "Grand Manan", tags: ["nature"], region: "nb", date: "2026-07-18T08:40" },
+{ file: "new-brunswick/Hole in the wall.jpg", title: "Hole in the Wall", city: "Grand Manan", tags: ["nature"], region: "nb", date: "2026-07-17T14:28" },
+{ file: "new-brunswick/Boat & island.jpg", title: "Ferry Passing the Islets", city: "Grand Manan", tags: ["nature"], region: "nb", date: "2026-07-17T13:49" },
+{ file: "new-brunswick/Lighthouse .jpg", title: "Swallowtail Lighthouse", city: "Grand Manan", tags: ["city"], region: "nb", date: "2026-07-17T13:17" },
+{ file: "new-brunswick/Island .jpg", title: "Rocky Cove", city: "Grand Manan", tags: ["nature"], region: "nb", date: "2026-07-17T13:07" },
+{ file: "nova-scotia/AS25.jpg", title: "Angled Reflections, Waterfront", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-19T10:22" },
+{ file: "nova-scotia/AS27.jpg", title: "Tall Ship at the Wharf", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-19T10:46" },
+{ file: "nova-scotia/AS28.jpg", title: "Queen's Marque, Waterfront Steps", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-19T10:47" },
+{ file: "nova-scotia/AS30.jpg", title: "Historic Properties Corner", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-19T11:10" },
+{ file: "nova-scotia/AS32.jpg", title: "Spring Blossoms, Downtown Street", city: "Halifax", tags: ["city", "nature"], region: "ns", date: "2026-05-19T14:53" },
+{ file: "nova-scotia/AS33.jpg", title: "Old Town Clock, Citadel Hill", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-19T15:01" },
+{ file: "nova-scotia/AS35.jpg", title: "View from Citadel Hill", city: "Halifax", tags: ["nature"], region: "ns", date: "2026-05-19T15:16" },
+{ file: "nova-scotia/AS36.jpg", title: "Painted Storefront, Downtown Halifax", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-19T17:25" },
+{ file: "nova-scotia/AS39.jpg", title: "Prince of Wales Tower, Point Pleasant Park", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-20T18:17" },
+{ file: "nova-scotia/AS41.jpg", title: "Church Spire, Downtown Halifax", city: "Halifax", tags: ["city"], region: "ns", date: "2026-05-20T15:17" },
+{ file: "new-brunswick/SJ4.jpg", title: "Trinity Church Spire, Window Seat", city: "Saint John", tags: ["city"], region: "nb", date: "2026-03-27T18:45" },
+{ file: "new-brunswick/SJ5.jpg", title: "Trinity Church Spire, Rooftop View", city: "Saint John", tags: ["city"], region: "nb", date: "2026-03-27T18:46" },
+{ file: "new-brunswick/SJ1.jpg", title: "Harbour Passage, Red Path at Dusk", city: "Saint John", tags: ["trails"], region: "nb", date: "2026-03-27T19:05" },
+{ file: "new-brunswick/SJ2.jpg", title: "Fire Escapes Near the Port, Dusk", city: "Saint John", tags: ["city"], region: "nb", date: "2026-03-27T19:12" },
+{ file: "new-brunswick/SJ3.jpg", title: "Chubb's Corner, Prince William Street", city: "Saint John", tags: ["city"], region: "nb", date: "2026-03-28T06:51" },
+{ file: "new-brunswick/DSC03764.jpg", title: "Sleigh Ride Through the Snow, Centennial Park", city: "Moncton", tags: ["events"], region: "nb", date: "2026-02-15T13:46" },
+{ file: "new-brunswick/DSC03648.jpg", title: "Llama in Winter Blanket, Centennial Park", city: "Moncton", tags: ["wildlife"], region: "nb", date: "2026-02-15T13:34" },
+{ file: "ontario/DSC03004.jpeg", title: "Silk Worm Nest on Trail, Cheltenham Badlands", city: "Caledon", tags: ["trails", "nature"], region: "on", date: "2025-05-12T12:15" },
+{ file: "ontario/DSC02785.jpeg", title: "Red Slopes and Forest, Cheltenham Badlands", city: "Caledon", tags: ["nature"], region: "on", date: "2025-05-12T11:30" },
+{ file: "ontario/DSC02769.jpeg", title: "Rolling Red Hills, Cheltenham Badlands", city: "Caledon", tags: ["nature"], region: "on", date: "2025-05-12T11:26" },
+{ file: "new-brunswick/A.jpg", title: "Suspension bridge trail walk", city: "Grand Manan", tags: ["trails"], region: "nb", date: "2026-07-17T12:29" },
+{ file: "new-brunswick/APS03558.jpg", title: "Ferry porthole reflection portrait", city: "Grand Manan", tags: ["people"], region: "nb", date: "2026-07-17T11:51" },
+{ file: "new-brunswick/APS07665.jpg", title: "Misty and foggy road view", city: "Blacks Harbour", tags: ["nature"], region: "nb", date: "2026-07-19T07:59" },
+{ file: "new-brunswick/APS08522.jpg", title: "Passengers at the ferry railing", city: "Grand Manan", tags: ["people"], region: "nb", date: "2026-07-19T10:53" },
+{ file: "new-brunswick/APS08551.jpg", title: "Reading a book by the ferry window", city: "Grand Manan", tags: ["people"], region: "nb", date: "2026-07-19T11:03" },
+{ file: "new-brunswick/APS08673.jpg", title: "Cloudy walk toward the parking lot", city: "Saint John", tags: ["trails"], region: "nb", date: "2026-07-19T13:38" },
+{ file: "new-brunswick/APS08723.jpg", title: "Hillside house near Reversing Falls", city: "Saint John", tags: ["city", "nature"], region: "nb", date: "2026-07-19T14:17" },
+{ file: "ontario/DSC03065.jpg", title: "Sunny trail and dead tree portrait", city: "Scarborough", tags: ["people", "trails"], region: "on", date: "2025-05-12T14:11" },
+{ file: "ontario/DSC04901.jpg", title: "Kids on the beach at sunset", city: "Toronto", tags: ["people", "nature"], region: "on", date: "2025-07-21T20:39" },
+{ file: "ontario/DSC05496.jpg", title: "Gairloch Gardens sunset view", city: "Mississauga", tags: ["nature"], region: "on", date: "2025-07-25T20:35" },
+{ file: "ontario/DSC08593.jpg", title: "Lush green trail in the woods", city: "North York", tags: ["trails"], region: "on", date: "2025-08-31T19:00" },
+{ file: "new-brunswick/APS05781.jpeg", title: "Peaceful autumn walk through the park", city: "Moncton", tags: ["trails", "nature"], region: "nb", date: "2026-10-02T15:04" },
+{ file: "new-brunswick/APS05233.jpeg", title: "Quiet afternoon by the fountain", city: "Moncton", tags: ["city"], region: "nb", date: "2026-09-24T13:18" },
+{ file: "new-brunswick/APS04742.jpeg", title: "Celebrating the product debut outside Costco", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-17T12:00" },
+{ file: "new-brunswick/APS04777.jpeg", title: "Team celebration at Sobeys", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-17T12:00" },
 { file: "new-brunswick/APS04767.jpg",  title: "Retail launch team at Costco", city: "Moncton", region: "nb", date: "2026-09-17T08:15" },
-{ file: "new-brunswick/APS04703.jpeg", title: "Family moments during the Ganesh Chaturthi festival", city: "Moncton", region: "nb", date: "2026-09-14T18:13" },
-{ file: "new-brunswick/APS04598.jpeg", title: "The beautifully adorned Ganesh mandap", city: "Moncton", region: "nb", date: "2026-09-14T17:24" },
-{ file: "new-brunswick/APS04506.jpeg", title: "Performing aarti together", city: "Moncton", region: "nb", date: "2026-09-14T17:20" },
-{ file: "new-brunswick/APS04480.jpeg", title: "Traditional prayers and offerings", city: "Moncton", region: "nb", date: "2026-09-14T17:19" },
-{ file: "new-brunswick/APS04470.jpeg", title: "Festive decorations and shrine", city: "Moncton", region: "nb", date: "2026-09-14T17:17" }
+{ file: "new-brunswick/APS04703.jpeg", title: "Family moments during the Ganesh Chaturthi festival", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-14T18:13" },
+{ file: "new-brunswick/APS04598.jpeg", title: "The beautifully adorned Ganesh mandap", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-14T17:24" },
+{ file: "new-brunswick/APS04506.jpeg", title: "Performing aarti together", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-14T17:20" },
+{ file: "new-brunswick/APS04480.jpeg", title: "Traditional prayers and offerings", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-14T17:19" },
+{ file: "new-brunswick/APS04470.jpeg", title: "Festive decorations and shrine", city: "Moncton", tags: ["events"], region: "nb", date: "2026-09-14T17:17" }
 ];
 
 const locations = [
@@ -645,6 +655,20 @@ const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT"
 
 let activeFilter = { type: "location", key: "nb" };
 let monthTabsOpen = false;
+let genreTabsOpen = false;
+let activeGenre = "all";
+
+const GENRES = [
+  { key: "nature",   label: "NATURE" },
+  { key: "wildlife", label: "WILDLIFE & BIRDS" },
+  { key: "trails",   label: "TRAILS & HIKING" },
+  { key: "people",   label: "COUPLES & PEOPLE" },
+  { key: "cars",     label: "CARS" },
+  { key: "city",     label: "CITY & ARCHITECTURE" },
+  { key: "events",   label: "EVENTS" },
+];
+function genreLabel(key) { return (GENRES.find(g => g.key === key) || {}).label || key; }
+function hasGenre(p, key) { return (p.tags || []).includes(key); }
 let searchQuery = "";
 
 let galleryPhotos = [];
@@ -786,13 +810,16 @@ function render() {
     filtered = sorted.filter(p => 
       p.title.toLowerCase().includes(searchQuery) || 
       p.city.toLowerCase().includes(searchQuery) ||
-      p.region.toLowerCase().includes(searchQuery)
+      p.region.toLowerCase().includes(searchQuery) ||
+      (p.tags || []).some(t => genreLabel(t).toLowerCase().includes(searchQuery))
     );
   } else {
     if (activeFilter?.type === "location") {
-      filtered = sorted.filter(p => p.region === activeFilter.key);
+      filtered = sorted.filter(p => p.region === activeFilter.key && (activeGenre === "all" || hasGenre(p, activeGenre)));
     } else if (activeFilter?.type === "month") {
       filtered = sorted.filter(p => p.date.startsWith(activeFilter.key));
+    } else if (activeFilter?.type === "genre") {
+      filtered = sorted.filter(p => hasGenre(p, activeFilter.key));
     }
   }
 
@@ -800,7 +827,8 @@ function render() {
     locations.map(l => `
       <button class="tab ${activeFilter?.type === "location" && activeFilter.key === l.key ? "active" : ""}" onclick="setLocation('${l.key}')">${l.label}</button>
     `).join("") +
-    `<button class="tab goto ${monthTabsOpen ? "open" : ""} ${activeFilter?.type === "month" ? "active" : ""}" onclick="toggleGoTo()">GO TO<span class="chevron">▾</span></button>`;
+    `<button class="tab goto ${monthTabsOpen ? "open" : ""} ${activeFilter?.type === "month" ? "active" : ""}" onclick="toggleGoTo()">GO TO<span class="chevron">▾</span></button>` +
+    `<button class="tab goto ${genreTabsOpen ? "open" : ""} ${activeFilter?.type === "genre" ? "active" : ""}" onclick="toggleByType()">BY TYPE<span class="chevron">▾</span></button>`;
 
   const months = getAvailableMonths();
   document.getElementById("tabs-month").className = `tabs-month ${monthTabsOpen ? "open" : ""}`;
@@ -809,6 +837,28 @@ function render() {
         <button class="tab ${activeFilter?.type === "month" && activeFilter.key === m.key ? "active" : ""}" onclick="setMonth('${m.key}')">${m.label}</button>
       `).join("")
     : `<span class="empty">No dated photos yet.</span>`;
+
+  /* BY TYPE panel: browse one type across every province */
+  document.getElementById("tabs-bytype").className = `tabs-month ${genreTabsOpen ? "open" : ""}`;
+  document.getElementById("tabs-bytype").innerHTML = GENRES.map(g => {
+    const n = photos.filter(p => hasGenre(p, g.key)).length;
+    if (!n) return "";
+    return `<button class="tab ${activeFilter?.type === "genre" && activeFilter.key === g.key ? "active" : ""}" onclick="setByType('${g.key}')">${g.label}<span class="count">${n}</span></button>`;
+  }).join("");
+
+  /* TYPE row: only types that exist inside the open province (hidden if it has fewer than 2) */
+  const genreRow = document.getElementById("genreRow");
+  let rowHtml = "";
+  if (activeFilter?.type === "location") {
+    const inRegion = photos.filter(p => p.region === activeFilter.key);
+    const avail = GENRES.map(g => ({ ...g, n: inRegion.filter(p => hasGenre(p, g.key)).length })).filter(g => g.n > 0);
+    if (avail.length >= 2) {
+      rowHtml = `<button class="tab ${activeGenre === "all" ? "active" : ""}" onclick="setGenre('all')">ALL<span class="count">${inRegion.length}</span></button>` +
+        avail.map(g => `<button class="tab ${activeGenre === g.key ? "active" : ""}" onclick="setGenre('${g.key}')">${g.label}<span class="count">${g.n}</span></button>`).join("");
+    }
+  }
+  genreRow.style.display = rowHtml ? "block" : "none";
+  document.getElementById("tabs-genre").innerHTML = rowHtml;
 
   galleryPhotos = filtered;
 
@@ -835,6 +885,27 @@ function render() {
 
 function setLocation(key) {
   activeFilter = { type: "location", key };
+  activeGenre = "all";
+  monthTabsOpen = false;
+  genreTabsOpen = false;
+  render();
+}
+
+function setGenre(key) {
+  activeGenre = key;
+  render();
+}
+
+function toggleByType() {
+  genreTabsOpen = !genreTabsOpen;
+  monthTabsOpen = false;
+  render();
+}
+
+function setByType(key) {
+  activeFilter = { type: "genre", key };
+  activeGenre = "all";
+  genreTabsOpen = false;
   monthTabsOpen = false;
   render();
 }
@@ -851,7 +922,7 @@ function renderNextLocationPrompt() {
   const promptEl = document.getElementById("nextLocationPrompt");
   if (!promptEl) return;
 
-  if (searchQuery.length > 0 || activeFilter?.type !== "location") {
+  if (searchQuery.length > 0 || activeFilter?.type !== "location" || activeGenre !== "all") {
     promptEl.classList.remove("show");
     promptEl.innerHTML = "";
     return;
@@ -897,12 +968,15 @@ function setupGridEndObserver() {
 
 function toggleGoTo() {
   monthTabsOpen = !monthTabsOpen;
+  genreTabsOpen = false;
   render();
 }
 
 function setMonth(key) {
   activeFilter = { type: "month", key };
+  activeGenre = "all";
   monthTabsOpen = false;
+  genreTabsOpen = false;
   render();
 }
 
